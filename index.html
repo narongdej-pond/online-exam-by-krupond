@@ -1125,7 +1125,7 @@
       }
     }
 
-    function updateCharts() {
+    function updateCharts(counts) {
       const dailyCtx = document.getElementById('chart-daily');
       if (dailyCtx && window.Chart) {
         const existingChart = Chart.getChart(dailyCtx);
