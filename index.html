@@ -1125,55 +1125,32 @@
       }
     }
 
-    function updateCharts(examResults = []) {
-  const dailyCtx = document.getElementById('chart-daily');
-  if (!dailyCtx || !window.Chart) return;
+    function updateCharts() {
+      const dailyCtx = document.getElementById('chart-daily');
+      if (dailyCtx && window.Chart) {
+        const existingChart = Chart.getChart(dailyCtx);
+        if (existingChart) existingChart.destroy();
 
-  const counts = [0, 0, 0, 0, 0, 0, 0];
-  
-  if (Array.isArray(examResults)) {
-    examResults.forEach(item => {
-      const dateVal = item.submittedAt || item.timestamp || item.date;
-      if (!dateVal) return;
-
-      const date = new Date(dateVal);
-      if (!isNaN(date.getTime())) {
-        const day = date.getDay(); 
-        const index = (day + 6) % 7; 
-        counts[index] += 1;
+        new Chart(dailyCtx, {
+          type: 'line',
+          data: {
+            labels: ['จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส', 'อา'],
+            datasets: [{
+              label: 'จำนวนผู้สอบ',
+              data: counts,
+              borderColor: '#3b82f6',
+              backgroundColor: 'rgba(59, 130, 246, 0.1)',
+              fill: true,
+              tension: 0.4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } }
+          }
+        });
       }
-    });
-  }
-
-  const existingChart = Chart.getChart(dailyCtx);
-  if (existingChart) existingChart.destroy();
-
-  new Chart(dailyCtx, {
-    type: 'line',
-    data: {
-      labels: ['จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส', 'อา'],
-      datasets: [{
-        label: 'จำนวนผู้สอบ',
-        data: counts,
-        borderColor: '#3b82f6',
-        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-        fill: true,
-        tension: 0.4
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: { stepSize: 1 }
-        }
-      }
-    }
-  });
-}
 
       const subjectsCtx = document.getElementById('chart-subjects');
       if (subjectsCtx && window.Chart) {
