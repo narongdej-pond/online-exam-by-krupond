@@ -851,7 +851,7 @@
     // -------------------------------------------------------------
     // IMPORTANT: นำ URL ของ Web App ที่ได้จาก Google Apps Script มาใส่ตรงนี้
     // -------------------------------------------------------------
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbw0qJzcjhzmPDM71ZOVJKmcAS8K0wOX5HA8gX622yVwDKhW5ldcdjcLaNGoLJO_XeLk/exec'; 
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwod0HL8fzn7lzmV2o9pVfJ870wtxXwPBXFCS3WwNq9rGCWfj22dlul12KEEFz8A7nF/exec'; 
 
     // Application State
     let appData = [];
@@ -1134,10 +1134,10 @@
         new Chart(dailyCtx, {
           type: 'line',
           data: {
-            labels: labelsdata,
+            labels: ['จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส', 'อา'],
             datasets: [{
               label: 'จำนวนผู้สอบ',
-              data: countsdata,
+              data: counts,
               borderColor: '#3b82f6',
               backgroundColor: 'rgba(59, 130, 246, 0.1)',
               fill: true,
