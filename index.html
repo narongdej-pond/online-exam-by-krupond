@@ -1103,7 +1103,7 @@
       if (window.adminDatetimeInterval) clearInterval(window.adminDatetimeInterval);
       window.adminDatetimeInterval = setInterval(updateAdminDateTime, 1000);
 
-      updateCharts(allResults);
+      updateCharts();
 
       const recentEl = document.getElementById('recent-activity');
       const results = getResults().slice(-5).reverse();
@@ -1125,56 +1125,32 @@
       }
     }
 
-    function updateCharts(resultsData = []) {
+    function updateCharts(counts) {
       const dailyCtx = document.getElementById('chart-daily');
-      if (!dailyCtx || !window.Chart) return;
-
-      const counts = [0, 0, 0, 0, 0, 0, 0];
-      
-      if (Array.isArray(resultsData)) {
-        resultsData.forEach(r => {
-
-          const dateVal = r.submittedAt || r.date || r.created_at;
-          if (dateVal) {
-            const d = new Date(dateVal);
-            if (!isNaN(d.getTime())) {
-              const day = d.getDay(); 
-              const index = (day + 6) % 7; 
-              counts[index] += 1;
-            }
+      if (dailyCtx && window.Chart) {
+        const existingChart = Chart.getChart(dailyCtx);
+        if (existingChart) existingChart.destroy();
+        
+        new Chart(dailyCtx, {
+          type: 'line',
+          data: {
+            labels: ['จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส', 'อา'],
+            datasets: [{
+              label: 'จำนวนผู้สอบ',
+              data: counts,
+              borderColor: '#3b82f6',
+              backgroundColor: 'rgba(59, 130, 246, 0.1)',
+              fill: true,
+              tension: 0.4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } }
           }
         });
       }
-
-      const existingChart = Chart.getChart(dailyCtx);
-      if (existingChart) existingChart.destroy();
-
-      new Chart(dailyCtx, {
-        type: 'line',
-        data: {
-          labels: ['จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส', 'อา'],
-          datasets: [{
-            label: 'จำนวนผู้สอบ',
-            data: counts,
-            borderColor: '#3b82f6',
-            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-            fill: true,
-            tension: 0.4
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: { stepSize: 1 }
-            }
-          }
-        }
-      });
-    }
 
       const subjectsCtx = document.getElementById('chart-subjects');
       if (subjectsCtx && window.Chart) {
@@ -1199,6 +1175,7 @@
           }
         });
       }
+    }
 
     function updateMembersTable() {
       const tbody = document.getElementById('members-table');
