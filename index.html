@@ -1103,7 +1103,7 @@
       if (window.adminDatetimeInterval) clearInterval(window.adminDatetimeInterval);
       window.adminDatetimeInterval = setInterval(updateAdminDateTime, 1000);
 
-      updateCharts();
+      updateCharts(allResults);
 
       const recentEl = document.getElementById('recent-activity');
       const results = getResults().slice(-5).reverse();
