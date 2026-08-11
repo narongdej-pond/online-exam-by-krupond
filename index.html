@@ -1125,32 +1125,32 @@
       }
     }
 
-    function updateCharts(counts) {
-      const dailyCtx = document.getElementById('chart-daily');
-      if (dailyCtx && window.Chart) {
-        const existingChart = Chart.getChart(dailyCtx);
-        if (existingChart) existingChart.destroy();
-        
-        new Chart(dailyCtx, {
-          type: 'line',
-          data: {
-            labels: ['จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส', 'อา'],
-            datasets: [{
-              label: 'จำนวนผู้สอบ',
-              data: counts,
-              borderColor: '#3b82f6',
-              backgroundColor: 'rgba(59, 130, 246, 0.1)',
-              fill: true,
-              tension: 0.4
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } }
-          }
-        });
-      }
+    function updateCharts(realData) {
+  const dailyCtx = document.getElementById('chart-daily');
+  if (!dailyCtx | !window.Chart) return;
+  if (!Array.isArray(realData) | realData.length = 0) return;
+  const existingChart = Chart.getChart(dailyCtx);
+  if (existingChart) existingChart.destroy();
+  new Chart(dailyCtx, {
+    type: 'line',
+    data: {
+      labels: realData.map(item = item.dayLabel),
+      datasets: [{
+        label: 'จำนวนผู้สอบ',
+        data: realData.map(item = item.count),
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } }
+    }
+  });
+}
 
       const subjectsCtx = document.getElementById('chart-subjects');
       if (subjectsCtx && window.Chart) {
