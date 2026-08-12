@@ -8,12 +8,14 @@
   <!-- PWA & Mobile Meta Tags -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#2563eb">
+  
+  <!-- สำหรับ iOS (Apple) -->
   <link rel="apple-touch-icon" href="icon-192.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="สอบออนไลน์">
 
-  <!-- Service Worker Registration -->
+  <!-- สำหรับเรียกใช้งาน Service Worker -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -24,11 +26,11 @@
     }
   </script>
   
-  <!-- External CSS & Fonts -->
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
+  <!-- Tailwind Configuration -->
   <script>
     tailwind.config = {
       theme: {
@@ -54,7 +56,7 @@
       }
     }
   </script>
-
+  
   <style>
     * { font-family: 'Sarabun', sans-serif; }
     .gradient-bg { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%); }
@@ -131,57 +133,27 @@
        </div>
        <form id="student-form" class="space-y-5">
         <div>
-         <label class="block text-gray-700 font-medium mb-2"> <i class="fas fa-id-card mr-2 text-primary-500"></i>รหัสนักเรียน </label> 
-         <input type="text" id="student-id" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none transition text-lg" placeholder="กรอกรหัสนักเรียน">
+         <label class="block text-gray-700 font-medium mb-2"> <i class="fas fa-id-card mr-2 text-primary-500"></i>รหัสนักเรียน </label> <input type="text" id="student-id" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none transition text-lg" placeholder="กรอกรหัสนักเรียน">
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
          <div>
-          <label class="block text-gray-700 font-medium mb-2"> <i class="fas fa-user mr-2 text-primary-500"></i>ชื่อ-สกุล </label> 
-          <input type="text" id="student-name" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none transition text-lg" placeholder="กรอกชื่อ-สกุล">
+          <label class="block text-gray-700 font-medium mb-2"> <i class="fas fa-user mr-2 text-primary-500"></i>ชื่อ-สกุล </label> <input type="text" id="student-name" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none transition text-lg" placeholder="กรอกชื่อ-สกุล">
          </div>
          <div>
-          <label class="block text-gray-700 font-medium mb-2"> <i class="fas fa-school mr-2 text-primary-500"></i>ชั้นเรียน </label> 
-          <select id="student-class" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none transition text-lg"> 
-            <option value="">เลือกชั้นเรียน</option> 
-            <option value="ปวช.1">ปวช.1</option> 
-            <option value="ปวช.2">ปวช.2</option> 
-            <option value="ปวช.3">ปวช.3</option> 
-            <option value="ปวส.1">ปวส.1</option> 
-            <option value="ปวส.2">ปวส.2</option> 
-          </select>
+          <label class="block text-gray-700 font-medium mb-2"> <i class="fas fa-school mr-2 text-primary-500"></i>ชั้นเรียน </label> <select id="student-class" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none transition text-lg"> <option value="">เลือกชั้นเรียน</option> <option value="ปวช.1">ปวช.1</option> <option value="ปวช.2">ปวช.2</option> <option value="ปวช.3">ปวช.3</option> <option value="ปวส.1">ปวส.1</option> <option value="ปวส.2">ปวส.2</option> </select>
          </div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
          <div>
-          <label class="block text-gray-700 font-medium mb-2"> <i class="fas fa-door-open mr-2 text-primary-500"></i>ห้องเรียน </label> 
-          <select id="student-room" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none transition text-lg"> 
-            <option value="">เลือกห้องเรียน</option> 
-            <option value="1">ห้อง 1</option> 
-            <option value="2">ห้อง 2</option> 
-            <option value="3">ห้อง 3</option> 
-            <option value="4">ห้อง 4</option> 
-            <option value="5">ห้อง 5</option> 
-            <option value="6">ห้อง 6</option> 
-            <option value="7">ห้อง 7</option> 
-            <option value="8">ห้อง 8</option> 
-            <option value="9">ห้อง 9</option> 
-            <option value="10">ห้อง 10</option> 
-          </select>
+          <label class="block text-gray-700 font-medium mb-2"> <i class="fas fa-door-open mr-2 text-primary-500"></i>ห้องเรียน </label> <select id="student-room" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none transition text-lg"> <option value="">เลือกห้องเรียน</option> <option value="1">ห้อง 1</option> <option value="2">ห้อง 2</option> <option value="3">ห้อง 3</option> <option value="4">ห้อง 4</option> <option value="5">ห้อง 5</option> <option value="6">ห้อง 6</option> <option value="7">ห้อง 7</option> <option value="8">ห้อง 8</option> <option value="9">ห้อง 9</option> <option value="10">ห้อง 10</option> </select>
          </div>
          <div>
-          <label class="block text-gray-700 font-medium mb-2"> <i class="fas fa-list-ol mr-2 text-primary-500"></i>เลขที่ </label> 
-          <input type="number" id="student-number" required min="1" max="50" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none transition text-lg" placeholder="กรอกเลขที่">
+          <label class="block text-gray-700 font-medium mb-2"> <i class="fas fa-list-ol mr-2 text-primary-500"></i>เลขที่ </label> <input type="number" id="student-number" required min="1" max="50" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none transition text-lg" placeholder="กรอกเลขที่">
          </div>
         </div>
         <div>
-         <label class="block text-gray-700 font-medium mb-2"> <i class="fas fa-book mr-2 text-primary-500"></i>เลือกรายวิชาสอบ </label> 
-         <select id="subject-select" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none transition text-lg"> 
-           <option value="">เลือกรายวิชา</option> 
-         </select>
-        </div>
-        <button type="submit" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-4 px-6 rounded-xl btn-hover text-xl flex items-center justify-center gap-3"> 
-          <i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบสอบ 
-        </button>
+         <label class="block text-gray-700 font-medium mb-2"> <i class="fas fa-book mr-2 text-primary-500"></i>เลือกรายวิชาสอบ </label> <select id="subject-select" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none transition text-lg"> <option value="">เลือกรายวิชา</option> </select>
+        </div><button type="submit" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-4 px-6 rounded-xl btn-hover text-xl flex items-center justify-center gap-3"> <i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบสอบ </button>
        </form>
       </div>
      </div>
@@ -193,10 +165,7 @@
       <p class="text-xs text-blue-200 mt-1">พัฒนาโดย ครูปอนด์ นายณรงค์เดช ชัยเดชะ @2026 V.2</p>
      </div>
     </footer>
-    <!-- Admin Login Button --> 
-    <button id="admin-login-btn" onclick="showModal('admin-login-modal')" class="fixed bottom-20 right-4 w-12 h-12 bg-gray-800 hover:bg-gray-700 text-white rounded-full shadow-lg flex items-center justify-center transition z-40" title="เข้าสู่ระบบผู้ดูแล"> 
-      <i class="fas fa-user-shield"></i> 
-    </button>
+    <!-- Admin Login Button --> <button id="admin-login-btn" onclick="showModal('admin-login-modal')" class="fixed bottom-20 right-4 w-12 h-12 bg-gray-800 hover:bg-gray-700 text-white rounded-full shadow-lg flex items-center justify-center transition z-40"> <i class="fas fa-user-shield"></i> </button>
    </div>
    
    <!-- Page 2: Exam Page -->
@@ -242,19 +211,12 @@
       </div>
       <!-- Navigation -->
       <div class="flex items-center justify-between mt-6">
-       <button id="prev-btn" onclick="prevQuestion()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 px-6 rounded-xl flex items-center gap-2 transition disabled:opacity-50"> 
-        <i class="fas fa-chevron-left"></i> ข้อก่อนหน้า 
-       </button>
-       <div id="question-dots" class="hidden md:flex gap-2 flex-wrap justify-center"></div>
-       <button id="next-btn" onclick="nextQuestion()" class="bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-6 rounded-xl flex items-center gap-2 transition"> 
-        ข้อถัดไป <i class="fas fa-chevron-right"></i> 
-       </button>
+       <button id="prev-btn" onclick="prevQuestion()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 px-6 rounded-xl flex items-center gap-2 transition disabled:opacity-50"> <i class="fas fa-chevron-left"></i> ข้อก่อนหน้า </button>
+       <div id="question-dots" class="hidden md:flex gap-2 flex-wrap justify-center"></div><button id="next-btn" onclick="nextQuestion()" class="bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-6 rounded-xl flex items-center gap-2 transition"> ข้อถัดไป <i class="fas fa-chevron-right"></i> </button>
       </div>
       <!-- Submit Button -->
       <div id="submit-container" class="hidden mt-6 text-center">
-       <button onclick="submitExam()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-xl btn-hover text-xl flex items-center justify-center gap-3 mx-auto"> 
-        <i class="fas fa-paper-plane"></i> ส่งคำตอบ 
-       </button>
+       <button onclick="submitExam()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-8 rounded-xl btn-hover text-xl flex items-center justify-center gap-3 mx-auto"> <i class="fas fa-paper-plane"></i> ส่งคำตอบ </button>
       </div>
      </div>
     </main>
@@ -288,24 +250,17 @@
         <div id="result-info" class="space-y-2 text-sm text-gray-600"></div>
        </div>
        <div id="answer-review-container" class="hidden text-left bg-blue-50 rounded-xl p-4 mb-6 border-2 border-blue-200">
-        <div id="answer-review-blocked" class="hidden bg-red-50 border-2 border-red-300 rounded-lg p-4 text-center">
-         <i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-3 block"></i>
+        <div id="answer-review-blocked" class="hidden bg-red-50 border-2 border-red-300 rounded-lg p-4 text-center"><i class="fas fa-exclamation-triangle text-4xl text-red-500 mb-3 block"></i>
          <p class="text-red-700 font-bold text-lg">ตรวจพบการทุจริต</p>
          <p class="text-red-600 text-sm mt-2">ไม่แสดงเฉลยให้ผู้ทุจริตการสอบ</p>
         </div>
         <div id="answer-review-allowed" class="hidden">
          <div class="flex items-center justify-between mb-4">
-          <h3 class="font-bold text-blue-800">ดูเฉลย</h3>
-          <button onclick="toggleAnswerReview()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg transition text-lg" title="แสดง/ซ่อนเฉลย"> 
-            <i id="review-toggle-icon" class="fas fa-eye"></i> 
-          </button>
+          <h3 class="font-bold text-blue-800">ดูเฉลย</h3><button onclick="toggleAnswerReview()" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg transition text-lg" title="แสดง/ซ่อนเฉลย"> <i id="review-toggle-icon" class="fas fa-eye"></i> </button>
          </div>
          <div id="answer-review-content" class="hidden space-y-4 max-h-96 overflow-y-auto"></div>
         </div>
-       </div>
-       <button onclick="goHome()" class="bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-8 rounded-xl btn-hover"> 
-         <i class="fas fa-home mr-2"></i> กลับหน้าหลัก 
-       </button>
+       </div><button onclick="goHome()" class="bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-8 rounded-xl btn-hover"> <i class="fas fa-home mr-2"></i> กลับหน้าหลัก </button>
       </div>
      </div>
     </main>
@@ -346,11 +301,10 @@
       </div>
      </nav>
      <div class="p-4 border-t border-white/20">
-      <button onclick="adminLogout()" class="w-full bg-white/10 hover:bg-white/20 py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition"> 
-        <i class="fas fa-sign-out-alt"></i> ออกจากระบบ 
-      </button>
+      <button onclick="adminLogout()" class="w-full bg-white/10 hover:bg-white/20 py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition"> <i class="fas fa-sign-out-alt"></i> ออกจากระบบ </button>
      </div>
     </aside>
+
     <!-- Main Content -->
     <div class="flex-1 flex flex-col overflow-hidden">
      <!-- Top Bar -->
@@ -362,8 +316,7 @@
       <div class="flex items-center gap-4">
        <div class="text-right">
         <p id="admin-datetime" class="text-sm font-medium text-gray-800"></p>
-       </div>
-       <button onclick="refreshData()" class="bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-2 rounded-lg transition" title="รีเฟรช"> <i class="fas fa-sync-alt"></i> </button>
+       </div><button onclick="refreshData()" class="bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-2 rounded-lg transition" title="รีเฟรช"> <i class="fas fa-sync-alt"></i> </button>
       </div>
      </header>
 
@@ -420,7 +373,7 @@
        <!-- Charts -->
        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div class="bg-white rounded-xl card-shadow p-4">
-         <h3 class="font-bold text-gray-800 mb-4">สถิติการสอบรายวัน</h3>
+         <h3 class="font-bold text-gray-800 mb-4">สถิติการสอบรายวัน (ข้อมูลจริงย้อนหลัง 7 วัน)</h3>
          <div class="h-64">
           <canvas id="chart-daily"></canvas>
          </div>
@@ -440,7 +393,7 @@
         </div>
        </div>
       </div>
-
+      
       <!-- Members Management -->
       <div id="admin-members" class="admin-content hidden">
        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
@@ -472,8 +425,8 @@
         </div>
        </div>
       </div>
-
-      <!-- Create Exam -->
+      
+      <!-- Create Exam with Passing Score Input -->
       <div id="admin-create-exam" class="admin-content hidden">
        <div class="bg-white rounded-xl card-shadow p-6">
         <h3 class="text-xl font-bold text-gray-800 mb-6">สร้างข้อสอบใหม่</h3>
@@ -486,11 +439,11 @@
           </div>
           <div>
            <label class="block text-gray-700 font-medium mb-2">คะแนนเต็ม</label> 
-           <input type="number" id="exam-total-score" required min="1" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none" placeholder="คะแนนเต็ม">
+           <input type="number" id="exam-total-score" required min="1" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none" placeholder="เช่น 100">
           </div>
           <div>
            <label class="block text-gray-700 font-medium mb-2">คะแนนที่ผ่านเกณฑ์</label> 
-           <input type="number" id="exam-pass-score" required min="0" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none" placeholder="เช่น 50">
+           <input type="number" id="exam-passing-score" required min="0" step="0.5" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none" placeholder="เช่น 50">
           </div>
          </div>
          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -509,36 +462,46 @@
           <label class="flex items-center gap-2 cursor-pointer"> <input type="checkbox" id="exam-shuffle-questions" class="w-5 h-5 text-primary-500 rounded"> <span class="text-gray-700">สุ่มลำดับข้อ</span> </label> 
           <label class="flex items-center gap-2 cursor-pointer"> <input type="checkbox" id="exam-shuffle-choices" class="w-5 h-5 text-primary-500 rounded"> <span class="text-gray-700">สุ่มตัวเลือก</span> </label>
          </div>
+         
          <!-- Multiple Choice Section -->
          <div class="border-2 border-gray-200 rounded-xl p-4">
-          <h4 class="font-bold text-gray-800 mb-4"><i class="fas fa-list-ul mr-2 text-primary-500"></i>ตอนที่ 1: ข้อสอบปรนัย (รองรับ ไทย / English / 中文)</h4>
+          <h4 class="font-bold text-gray-800 mb-2"><i class="fas fa-list-ul mr-2 text-primary-500"></i>ตอนที่ 1: ข้อสอบปรนัย (รองรับ ไทย / English / 中文)</h4>
+          <p class="text-xs text-gray-500 mb-4">รองรับรูปแบบตัวเลือก: ก.-จ., A.-E., a.-e., 1.-5. หรือตัวเลือกจีน A、 B、 C、</p>
           <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 text-sm text-blue-800">
-           <p class="font-medium mb-1">📋 ตัวอย่างรูปแบบที่รองรับ:</p>
-           <pre class="text-xs overflow-auto font-mono">1. คำถาม (ไทย / English / 中文)
-ก. ตัวเลือก1  หรือ  A. Option 1  หรือ  A. 选项一
-ข. ตัวเลือก2  หรือ  B. Option 2  หรือ  B. 选项二
-ค. ตัวเลือก3  หรือ  C. Option 3  หรือ  C. 选项三
-ง. ตัวเลือก4  หรือ  D. Option 4  หรือ  D. 选项四
-เฉลย: ก. (หรือ Answer: A / 答案: A)
-คะแนน: 1 (หรือ Score: 1 / 分数: 1)</pre>
+           <p class="font-medium mb-1">📋 รูปแบบตัวอย่างที่รองรับ:</p>
+           <pre class="text-xs overflow-auto font-mono">1.คำถาม (ไทย / English / 中文)
+ก.ตัวเลือก1 หรือ A.Choice1 หรือ A、选项1
+ข.ตัวเลือก2 หรือ B.Choice2 หรือ B、选项2
+ค.ตัวเลือก3 หรือ C.Choice3 หรือ C、选项3
+ง.ตัวเลือก4 หรือ D.Choice4 หรือ D、选项4
+เฉลย: ก. (หรือ Answer: A. หรือ 答案: A)
+คะแนน: 1 (หรือ Score: 1 หรือ 得分: 1)</pre>
           </div>
           <div class="mb-4">
            <label class="block text-gray-700 font-medium mb-2">วางข้อสอบที่นี่</label> 
-           <textarea id="mc-input" rows="12" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none font-mono text-sm" placeholder="1. What is the capital of Thailand?
-A. Chiang Mai
-B. Bangkok
+           <textarea id="mc-input" rows="12" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none font-mono text-sm" placeholder="1.ข้อใดคือเมืองหลวงของไทย
+ก.กรุงเทพมหานคร
+ข.เชียงใหม่
+ค.ภูเก็ต
+ง.ชลบุรี
+เฉลย: ก.
+คะแนน: 1
+
+2.What is the capital of Thailand?
+A. Bangkok
+B. Chiang Mai
 C. Phuket
-D. Pattaya
-Answer: B
+D. Chonburi
+Answer: A.
 Score: 1
 
-2. 中国的首都市哪里？
-A. 上海
-B. 北京
-C. 广州
-D. 深圳
-答案: B
-分数: 1"></textarea>
+3. 泰国的首都是哪里？
+A、曼谷
+B、清迈
+C、普吉岛
+D、芭提雅
+答案: A
+得分: 1"></textarea>
           </div>
           <div class="flex gap-2">
            <button type="button" onclick="parseMultipleChoice()" class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition font-medium"> <i class="fas fa-wand-magic-sparkles"></i> แปลงเป็นข้อสอบ </button> 
@@ -548,34 +511,33 @@ D. 深圳
            <h5 class="font-bold text-gray-700 mb-3"><i class="fas fa-eye mr-2 text-primary-500"></i>ตัวอย่างข้อสอบ:</h5>
            <div id="mc-preview-content" class="bg-gray-50 rounded-lg p-4 space-y-3 max-h-96 overflow-y-auto"></div>
            <p id="mc-preview-count" class="text-sm text-gray-500 mt-3 text-center font-medium"></p>
-           <div id="mc-edit-message" class="hidden bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3 text-sm text-blue-800"><i class="fas fa-info-circle mr-2"></i>สามารถแก้ไขข้อสอบในช่องข้างต้น แล้วกดปุ่ม <strong>แปลงเป็นข้อสอบ</strong> อีกครั้ง</div>
+           <div id="mc-edit-message" class="hidden bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3 text-sm text-blue-800"><i class="fas fa-info-circle mr-2"></i>สามารถแก้ไขข้อสอบในช่องข้างต้น แล้วกดปุ่ม <strong>แปลงเป็นข้อสอบ</strong> อีกครั้ง
+           </div>
            <div class="mt-3 flex gap-2">
-             <button type="button" onclick="editMCQuestions()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm flex items-center justify-center gap-2 transition"> <i class="fas fa-edit"></i> แก้ไขข้อสอบ </button> 
-             <button type="button" onclick="clearMCPreview()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-2 rounded-lg text-sm flex items-center justify-center gap-2 transition"> <i class="fas fa-trash"></i> ลบทั้งหมด </button>
+            <button type="button" onclick="editMCQuestions()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm flex items-center justify-center gap-2 transition"> <i class="fas fa-edit"></i> แก้ไขข้อสอบ </button> 
+            <button type="button" onclick="clearMCPreview()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-2 rounded-lg text-sm flex items-center justify-center gap-2 transition"> <i class="fas fa-trash"></i> ลบทั้งหมด </button>
            </div>
           </div>
          </div>
+         
          <!-- Essay Section -->
          <div class="border-2 border-orange-300 rounded-xl p-4 bg-orange-50">
-          <h4 class="font-bold text-gray-800 mb-4"><i class="fas fa-pen-fancy mr-2 text-orange-600"></i>ตอนที่ 2: ข้อสอบอัตนัย (รองรับ ไทย / English / 中文)</h4>
+          <h4 class="font-bold text-gray-800 mb-4"><i class="fas fa-pen-fancy mr-2 text-orange-600"></i>ตอนที่ 2: ข้อสอบอัตนัย</h4>
           <div class="bg-white border-2 border-orange-200 rounded-lg p-4 mb-4">
-           <p class="font-bold text-orange-900 mb-3">📋 ตัวอย่างรูปแบบที่รองรับ:</p>
-           <pre class="text-xs overflow-auto bg-orange-100 p-3 rounded border-l-4 border-orange-500 font-mono">1. จงอธิบายความหมายของระบบสารสนเทศ
-คะแนน: 10
+           <p class="font-bold text-orange-900 mb-3">📋 รูปแบบที่ถูกต้อง:</p>
+           <pre class="text-xs overflow-auto bg-orange-100 p-3 rounded border-l-4 border-orange-500 font-mono">1.คำถาม1
+คะแนน: 10 (หรือ Score: 10 / 得分: 10)
 
-2. Please describe the main components of a computer system.
-Score: 10
-
-3. 请简述计算机网络的基本概念。
-分数: 10</pre>
+2.คำถาม2
+คะแนน: 5</pre>
           </div>
           <div class="mb-4">
            <label class="block text-gray-700 font-medium mb-2">วางข้อสอบที่นี่</label> 
-           <textarea id="essay-input" rows="10" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none font-mono text-sm" placeholder="1. จงอธิบายขั้นตอนการทำงานของระบบ
+           <textarea id="essay-input" rows="10" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none font-mono text-sm" placeholder="1.อธิบายความสำคัญของระบบเครือข่ายคอมพิวเตอร์
 คะแนน: 10
 
-2. Explain the concept of Cloud Computing.
-Score: 10"></textarea>
+2.Explain the OSI Model layers.
+Score: 5"></textarea>
           </div>
           <div class="flex gap-2">
            <button type="button" onclick="parseEssay()" class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition font-medium"> <i class="fas fa-wand-magic-sparkles"></i> แปลงเป็นข้อสอบ </button> 
@@ -585,10 +547,11 @@ Score: 10"></textarea>
            <h5 class="font-bold text-gray-700 mb-3"><i class="fas fa-eye mr-2 text-primary-500"></i>ตัวอย่างข้อสอบ:</h5>
            <div id="essay-preview-content" class="bg-gray-50 rounded-lg p-4 space-y-3 max-h-96 overflow-y-auto"></div>
            <p id="essay-preview-count" class="text-sm text-gray-500 mt-3 text-center font-medium"></p>
-           <div id="essay-edit-message" class="hidden bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3 text-sm text-blue-800"><i class="fas fa-info-circle mr-2"></i>สามารถแก้ไขข้อสอบในช่องข้างต้น แล้วกดปุ่ม <strong>แปลงเป็นข้อสอบ</strong> อีกครั้ง</div>
+           <div id="essay-edit-message" class="hidden bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3 text-sm text-blue-800"><i class="fas fa-info-circle mr-2"></i>สามารถแก้ไขข้อสอบในช่องข้างต้น แล้วกดปุ่ม <strong>แปลงเป็นข้อสอบ</strong> อีกครั้ง
+           </div>
            <div class="mt-3 flex gap-2">
-             <button type="button" onclick="editEssayQuestions()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm flex items-center justify-center gap-2 transition"> <i class="fas fa-edit"></i> แก้ไขข้อสอบ </button> 
-             <button type="button" onclick="clearEssayPreview()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-2 rounded-lg text-sm flex items-center justify-center gap-2 transition"> <i class="fas fa-trash"></i> ลบทั้งหมด </button>
+            <button type="button" onclick="editEssayQuestions()" class="flex-1 bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm flex items-center justify-center gap-2 transition"> <i class="fas fa-edit"></i> แก้ไขข้อสอบ </button> 
+            <button type="button" onclick="clearEssayPreview()" class="flex-1 bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-2 rounded-lg text-sm flex items-center justify-center gap-2 transition"> <i class="fas fa-trash"></i> ลบทั้งหมด </button>
            </div>
           </div>
          </div>
@@ -599,7 +562,7 @@ Score: 10"></textarea>
         </form>
        </div>
       </div>
-
+      
       <!-- Exams Management -->
       <div id="admin-exams" class="admin-content hidden">
        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
@@ -616,7 +579,7 @@ Score: 10"></textarea>
             <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">#</th>
             <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">รายวิชา</th>
             <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">จำนวนข้อ</th>
-            <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">คะแนน</th>
+            <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">คะแนนเต็ม (เกณฑ์ผ่าน)</th>
             <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">เวลา</th>
             <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">สถานะ</th>
             <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">จัดการ</th>
@@ -631,8 +594,8 @@ Score: 10"></textarea>
         </div>
        </div>
       </div>
-
-      <!-- Students Data -->
+      
+      <!-- Students Data with Delete Column -->
       <div id="admin-students" class="admin-content hidden">
        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
         <div class="flex gap-2">
@@ -664,8 +627,8 @@ Score: 10"></textarea>
         </div>
        </div>
       </div>
-
-      <!-- Results -->
+      
+      <!-- Results with View Answers Action -->
       <div id="admin-results" class="admin-content hidden">
        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
         <div class="flex gap-2">
@@ -684,7 +647,7 @@ Score: 10"></textarea>
             <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">คะแนน</th>
             <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">เวลาส่ง</th>
             <th class="px-4 py-3 text-left text-sm font-medium text-gray-600">สถานะ</th>
-            <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">จัดการ</th>
+            <th class="px-4 py-3 text-center text-sm font-medium text-gray-600">ดูคำตอบ / จัดการ</th>
            </tr>
           </thead>
           <tbody id="results-table" class="divide-y divide-gray-100">
@@ -696,7 +659,7 @@ Score: 10"></textarea>
         </div>
        </div>
       </div>
-
+      
       <!-- Essay Grading -->
       <div id="admin-grading" class="admin-content hidden">
        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
@@ -725,7 +688,7 @@ Score: 10"></textarea>
         </div>
        </div>
       </div>
-
+      
       <!-- Time Settings -->
       <div id="admin-settings" class="admin-content hidden">
        <div class="bg-white rounded-xl card-shadow p-6">
@@ -735,7 +698,7 @@ Score: 10"></textarea>
         </div>
        </div>
       </div>
-
+      
       <!-- Profile -->
       <div id="admin-profile" class="admin-content hidden">
        <div class="max-w-xl mx-auto">
@@ -759,13 +722,7 @@ Score: 10"></textarea>
            <label class="block text-gray-700 font-medium mb-2">รหัสผ่านใหม่ (เว้นว่างถ้าไม่เปลี่ยน)</label>
            <div class="relative">
             <input type="password" id="profile-password" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none pr-12"> 
-            <button type="button" 
-              onmousedown="peekPassword('profile-password', true)" 
-              onmouseup="peekPassword('profile-password', false)" 
-              onmouseleave="peekPassword('profile-password', false)" 
-              ontouchstart="peekPassword('profile-password', true)" 
-              ontouchend="peekPassword('profile-password', false)"
-              class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition select-none"> 
+            <button type="button" class="password-toggle-btn absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition" data-target="profile-password"> 
               <i class="fas fa-eye" id="profile-password-icon"></i> 
             </button>
            </div>
@@ -780,11 +737,25 @@ Score: 10"></textarea>
    </div>
    
    <!-- Modals --> 
+   <!-- Detailed Result View Modal -->
+   <div id="view-result-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center modal-overlay">
+    <div class="bg-white rounded-2xl card-shadow p-6 w-full max-w-3xl mx-4 fade-in max-h-[90%] overflow-auto">
+     <div class="flex items-center justify-between mb-4 pb-3 border-b">
+      <h3 class="text-xl font-bold text-gray-800"><i class="fas fa-file-invoice mr-2 text-primary-500"></i>รายละเอียดคำตอบของผู้สอบ</h3>
+      <button onclick="hideModal('view-result-modal')" class="text-gray-400 hover:text-gray-600"> <i class="fas fa-times text-xl"></i> </button>
+     </div>
+     <div id="view-result-content" class="space-y-4"></div>
+     <div class="mt-6 text-right">
+      <button onclick="hideModal('view-result-modal')" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-xl transition"> ปิด </button>
+     </div>
+    </div>
+   </div>
+
    <!-- Admin Login Modal -->
    <div id="admin-login-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center modal-overlay">
     <div class="bg-white rounded-2xl card-shadow p-6 w-full max-w-md mx-4 fade-in">
      <div class="flex items-center justify-between mb-6">
-      <h3 class="text-xl font-bold text-gray-800">เข้าสู่ระบบผู้ดูแล</h3>
+      <h3 class="text-xl font-bold text-gray-800">เข้าสู่ระบบผู้ดูแล/ครู</h3>
       <button onclick="hideModal('admin-login-modal')" class="text-gray-400 hover:text-gray-600"> <i class="fas fa-times text-xl"></i> </button>
      </div>
      <form id="admin-login-form" class="space-y-4">
@@ -796,13 +767,7 @@ Score: 10"></textarea>
        <label class="block text-gray-700 font-medium mb-2">รหัสผ่าน</label>
        <div class="relative">
         <input type="password" id="admin-password" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none pr-12"> 
-        <button type="button" 
-          onmousedown="peekPassword('admin-password', true)" 
-          onmouseup="peekPassword('admin-password', false)" 
-          onmouseleave="peekPassword('admin-password', false)" 
-          ontouchstart="peekPassword('admin-password', true)" 
-          ontouchend="peekPassword('admin-password', false)"
-          class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition select-none"> 
+        <button type="button" class="password-toggle-btn absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition" data-target="admin-password"> 
           <i class="fas fa-eye" id="admin-password-icon"></i> 
         </button>
        </div>
@@ -839,13 +804,7 @@ Score: 10"></textarea>
        <label class="block text-gray-700 font-medium mb-2">รหัสผ่าน</label>
        <div class="relative">
         <input type="password" id="reg-password" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none pr-12"> 
-        <button type="button" 
-          onmousedown="peekPassword('reg-password', true)" 
-          onmouseup="peekPassword('reg-password', false)" 
-          onmouseleave="peekPassword('reg-password', false)" 
-          ontouchstart="peekPassword('reg-password', true)" 
-          ontouchend="peekPassword('reg-password', false)"
-          class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition select-none"> 
+        <button type="button" class="password-toggle-btn absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition" data-target="reg-password"> 
           <i class="fas fa-eye" id="reg-password-icon"></i> 
         </button>
        </div>
@@ -882,23 +841,14 @@ Score: 10"></textarea>
        <label class="block text-gray-700 font-medium mb-2">รหัสผ่าน</label>
        <div class="relative">
         <input type="password" id="member-password" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none pr-12"> 
-        <button type="button" 
-          onmousedown="peekPassword('member-password', true)" 
-          onmouseup="peekPassword('member-password', false)" 
-          onmouseleave="peekPassword('member-password', false)" 
-          ontouchstart="peekPassword('member-password', true)" 
-          ontouchend="peekPassword('member-password', false)"
-          class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition select-none"> 
+        <button type="button" class="password-toggle-btn absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition" data-target="member-password"> 
           <i class="fas fa-eye" id="member-password-icon"></i> 
         </button>
        </div>
       </div>
       <div>
        <label class="block text-gray-700 font-medium mb-2">บทบาท</label> 
-       <select id="member-role" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none"> 
-         <option value="admin">ผู้ดูแลระบบ</option> 
-         <option value="teacher">ครู</option> 
-       </select>
+       <select id="member-role" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none"> <option value="admin">ผู้ดูแลระบบ</option> <option value="teacher">ครู</option> </select>
       </div>
       <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-xl btn-hover"> <i class="fas fa-plus mr-2"></i> เพิ่มสมาชิก </button>
      </form>
@@ -930,51 +880,24 @@ Score: 10"></textarea>
        <label class="block text-gray-700 font-medium mb-2">รหัสผ่านใหม่ (เว้นว่างถ้าไม่เปลี่ยน)</label>
        <div class="relative">
         <input type="password" id="edit-member-password" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none pr-12"> 
-        <button type="button" 
-          onmousedown="peekPassword('edit-member-password', true)" 
-          onmouseup="peekPassword('edit-member-password', false)" 
-          onmouseleave="peekPassword('edit-member-password', false)" 
-          ontouchstart="peekPassword('edit-member-password', true)" 
-          ontouchend="peekPassword('edit-member-password', false)"
-          class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition select-none"> 
+        <button type="button" class="password-toggle-btn absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 transition" data-target="edit-member-password"> 
           <i class="fas fa-eye" id="edit-member-password-icon"></i> 
         </button>
        </div>
       </div>
       <div>
        <label class="block text-gray-700 font-medium mb-2">สถานะ</label> 
-       <select id="edit-member-status" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none"> 
-         <option value="active">อนุมัติแล้ว</option> 
-         <option value="pending">รออนุมัติ</option> 
-       </select>
+       <select id="edit-member-status" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none"> <option value="active">อนุมัติแล้ว</option> <option value="pending">รออนุมัติ</option> </select>
       </div>
       <div>
        <label class="block text-gray-700 font-medium mb-2">บทบาท</label> 
-       <select id="edit-member-role" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none"> 
-         <option value="admin">ผู้ดูแลระบบ</option> 
-         <option value="teacher">ครู</option> 
-       </select>
+       <select id="edit-member-role" class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none"> <option value="admin">ผู้ดูแลระบบ</option> <option value="teacher">ครู</option> </select>
       </div>
       <button type="submit" class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-6 rounded-xl btn-hover"> <i class="fas fa-save mr-2"></i> บันทึก </button>
      </form>
     </div>
    </div>
    
-   <!-- Detailed Result View Modal (Admin) -->
-   <div id="result-detail-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center modal-overlay">
-    <div class="bg-white rounded-2xl card-shadow p-6 w-full max-w-3xl mx-4 fade-in max-h-[90%] overflow-auto">
-     <div class="flex items-center justify-between mb-4 border-b pb-3">
-      <h3 class="text-xl font-bold text-gray-800"><i class="fas fa-file-invoice mr-2 text-primary-500"></i>รายละเอียดคำตอบของผู้สอบ</h3>
-      <button onclick="hideModal('result-detail-modal')" class="text-gray-400 hover:text-gray-600"> <i class="fas fa-times text-xl"></i> </button>
-     </div>
-     <div id="result-detail-info" class="bg-primary-50 rounded-xl p-4 mb-4 text-sm space-y-1 text-gray-700 border border-primary-200"></div>
-     <div id="result-detail-answers" class="space-y-4 max-h-96 overflow-y-auto"></div>
-     <div class="mt-6 text-right">
-      <button onclick="hideModal('result-detail-modal')" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-6 rounded-xl transition"> ปิด </button>
-     </div>
-    </div>
-   </div>
-
    <!-- Confirm Delete Modal -->
    <div id="confirm-delete-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center modal-overlay">
     <div class="bg-white rounded-2xl card-shadow p-6 w-full max-w-sm mx-4 fade-in text-center">
@@ -1033,37 +956,8 @@ Score: 10"></textarea>
   
   <script>
     // -------------------------------------------------------------
-    // Global Helper Utilities
+    // IMPORTANT: URL ของ Web App ที่ได้จาก Google Apps Script
     // -------------------------------------------------------------
-    function safeAddEventListener(elementId, eventName, handler) {
-      const element = document.getElementById(elementId);
-      if (element) {
-        element.addEventListener(eventName, handler);
-      } else {
-        console.warn(`Element with ID '${elementId}' not found for event '${eventName}'.`);
-      }
-    }
-
-    function peekPassword(inputId, show) {
-      const input = document.getElementById(inputId);
-      const icon = document.getElementById(inputId + '-icon');
-      if (!input) return;
-      if (show) {
-        input.type = 'text';
-        if (icon) {
-          icon.classList.remove('fa-eye');
-          icon.classList.add('fa-eye-slash');
-        }
-      } else {
-        input.type = 'password';
-        if (icon) {
-          icon.classList.remove('fa-eye-slash');
-          icon.classList.add('fa-eye');
-        }
-      }
-    }
-
-    // Google Apps Script Web App URL
     const GAS_URL = 'https://script.google.com/macros/s/AKfycbwod0HL8fzn7lzmV2o9pVfJ870wtxXwPBXFCS3WwNq9rGCWfj22dlul12KEEFz8A7nF/exec'; 
 
     // Application State
@@ -1073,187 +967,130 @@ Score: 10"></textarea>
     let currentQuestionIndex = 0;
     let examTimer = null;
     let examTimeLeft = 0;
-    let studentAnswers = { mc: {}, essay: {} };
+    let studentAnswers = {};
     let warningCount = 0;
     let parsedMCQuestions = [];
     let parsedEssayQuestions = [];
     let deleteCallback = null;
     let currentGradingResult = null;
+    let editingExamId = '';
 
-    // Default Initial Seed Data if Local/Server Data is Empty
-    const initialSeedData = [
-      {
-        id: 'admin_1',
-        type: 'member',
-        username: 'admin',
-        password: '123',
-        fullname: 'ผู้ดูแลระบบหลัก',
-        email: 'admin@donmueang.ac.th',
-        role: 'admin',
-        status: 'active',
-        created_at: new Date().toISOString()
-      },
-      {
-        id: 'exam_sample_1',
-        type: 'exam',
-        member_id: 'admin_1',
-        subject_name: 'เทคโนโลยีสารสนเทศเพื่อการอาชีพ',
-        total_score: 20,
-        pass_score: 10,
-        time_limit: 30,
-        score_per_question: 1,
-        is_visible: true,
-        show_answer: true,
-        shuffle_questions: false,
-        shuffle_choices: false,
-        questions: JSON.stringify({
-          mc: [
-            {
-              question: 'ข้อใดคือส่วนประกอบหลักของระบบคอมพิวเตอร์ (Hardware)?',
-              choices: [
-                { key: 'ก', text: 'ซีพียู (CPU)' },
-                { key: 'ข', text: 'ระบบปฏิบัติการ Windows' },
-                { key: 'ค', text: 'โปรแกรม Microsoft Word' },
-                { key: 'ง', text: 'เว็บเบราว์เซอร์ Chrome' }
-              ],
-              answer: 'ก',
-              score: 1
-            },
-            {
-              question: 'Which device is an input device?',
-              choices: [
-                { key: 'A', text: 'Monitor' },
-                { key: 'B', text: 'Keyboard' },
-                { key: 'C', text: 'Printer' },
-                { key: 'D', text: 'Speaker' }
-              ],
-              answer: 'B',
-              score: 1
-            },
-            {
-              question: '下列哪个是计算机的输出设备 (Output Device)？',
-              choices: [
-                { key: 'A', text: '鼠标 (Mouse)' },
-                { key: 'B', text: '键盘 (Keyboard)' },
-                { key: 'C', text: '显示器 (Monitor)' },
-                { key: 'D', text: '扫描仪 (Scanner)' }
-              ],
-              answer: 'C',
-              score: 1
-            }
-          ],
-          essay: [
-            {
-              question: 'จงอธิบายความสำคัญของระบบเทคโนโลยีสารสนเทศในชีวิตประจำวัน',
-              maxScore: 10
-            }
-          ]
-        }),
-        created_at: new Date().toISOString()
-      }
-    ];
-
-    // Storage Utilities with Offline LocalStorage Fallback
-    function loadLocalData() {
-      const local = localStorage.getItem('donmueang_exam_data');
-      if (local) {
-        try { return JSON.parse(local); } catch (e) { return initialSeedData; }
-      }
-      localStorage.setItem('donmueang_exam_data', JSON.stringify(initialSeedData));
-      return initialSeedData;
-    }
-
-    function saveLocalData(data) {
-      localStorage.setItem('donmueang_exam_data', JSON.stringify(data));
-    }
-
-    // Data SDK
+    // MOCK dataSdk TO USE fetch()
     window.dataSdk = {
-      _callAPI: async function(action, payload = null) {
-        try {
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 4000);
-          
-          const response = await fetch(GAS_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: JSON.stringify({ action: action, payload: payload }),
-            signal: controller.signal
-          });
-          clearTimeout(timeoutId);
-          const result = await response.json();
-          if (result && result.status === 'success') {
-            return result.data;
-          } else {
-            throw new Error(result ? result.message : 'Unknown error');
-          }
-        } catch (error) {
-          console.warn("GAS API sync unavailable/failed, using local storage:", error.message);
-          return null;
+        _callAPI: async function(action, payload = null) {
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: action, payload: payload })
+                });
+                const result = await response.json();
+                if (result.status === 'success') {
+                    return result.data;
+                } else {
+                    throw new Error(result.message);
+                }
+            } catch (error) {
+                console.error("API Error:", error);
+                throw error;
+            }
+        },
+        create: async function(item) {
+            try {
+                const savedItem = await this._callAPI('createData', item);
+                appData.push(savedItem);
+                updateUI();
+                return { isOk: true, data: savedItem };
+            } catch (err) {
+                return { isOk: false, error: err };
+            }
+        },
+        update: async function(item) {
+            try {
+                const updatedItem = await this._callAPI('updateData', item);
+                const index = appData.findIndex(d => d.id === updatedItem.id);
+                if (index !== -1) appData[index] = updatedItem;
+                updateUI();
+                return { isOk: true, data: updatedItem };
+            } catch (err) {
+                return { isOk: false, error: err };
+            }
+        },
+        delete: async function(item) {
+            try {
+                const success = await this._callAPI('deleteData', item);
+                if (success) {
+                    appData = appData.filter(d => d.id !== item.id);
+                    updateUI();
+                    return { isOk: true };
+                }
+                return { isOk: false };
+            } catch (err) {
+                return { isOk: false, error: err };
+            }
         }
-      },
-      create: async function(item) {
-        let savedItem = item;
-        try {
-          const remoteItem = await this._callAPI('createData', item);
-          if (remoteItem) savedItem = remoteItem;
-        } catch (e) { /* use local item */ }
-        
-        appData.push(savedItem);
-        saveLocalData(appData);
-        updateUI();
-        return { isOk: true, data: savedItem };
-      },
-      update: async function(item) {
-        let updatedItem = item;
-        try {
-          const remoteItem = await this._callAPI('updateData', item);
-          if (remoteItem) updatedItem = remoteItem;
-        } catch (e) { /* use local item */ }
-
-        const index = appData.findIndex(d => (d.id && d.id === updatedItem.id) || (d.__backendId && d.__backendId === updatedItem.__backendId));
-        if (index !== -1) appData[index] = updatedItem;
-        saveLocalData(appData);
-        updateUI();
-        return { isOk: true, data: updatedItem };
-      },
-      delete: async function(item) {
-        try {
-          await this._callAPI('deleteData', item);
-        } catch (e) { /* silent catch */ }
-
-        appData = appData.filter(d => d.id !== item.id && (!item.__backendId || d.__backendId !== item.__backendId));
-        saveLocalData(appData);
-        updateUI();
-        return { isOk: true };
-      }
     };
 
     // Initialize App
     async function initApp() {
-      try {
-        const remoteData = await window.dataSdk._callAPI('getData');
-        if (remoteData && remoteData.length > 0) {
-          appData = remoteData;
-          saveLocalData(appData);
-        } else {
-          appData = loadLocalData();
-        }
-      } catch (err) {
-        appData = loadLocalData();
-      } finally {
-        const loadingEl = document.getElementById('loading');
-        if (loadingEl) loadingEl.classList.add('hidden');
-        showPage('home');
-        updateUI();
+      if (GAS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
+          showAlert('warning', 'แจ้งเตือน', 'กรุณาเปลี่ยน YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL เป็น URL ที่ได้จากการ Deploy ก่อนใช้งาน');
+          return;
       }
+        
+      try {
+          const data = await window.dataSdk._callAPI('getData');
+          appData = data || [];
+          document.getElementById('loading').classList.add('hidden');
+          showPage('home');
+          updateUI();
+          setupPasswordHoldToReveal();
+      } catch (err) {
+          console.error("Failed to load data:", err);
+          showAlert('error', 'ผิดพลาด', 'โหลดข้อมูลล้มเหลว โปรดตรวจสอบ URL ของ Google Apps Script หรือรีเฟรชหน้าเว็บ');
+          document.getElementById('loading').classList.add('hidden');
+      }
+    }
+
+    function setupPasswordHoldToReveal() {
+      const toggleButtons = document.querySelectorAll('.password-toggle-btn');
+      
+      toggleButtons.forEach(btn => {
+        const targetId = btn.getAttribute('data-target');
+        const input = document.getElementById(targetId);
+        const icon = btn.querySelector('i');
+        if (!input || !icon) return;
+
+        const showPass = (e) => {
+          e.preventDefault();
+          input.type = 'text';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+        };
+
+        const hidePass = (e) => {
+          e.preventDefault();
+          input.type = 'password';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+        };
+
+        // Desktop Events
+        btn.addEventListener('mousedown', showPass);
+        btn.addEventListener('mouseup', hidePass);
+        btn.addEventListener('mouseleave', hidePass);
+
+        // Touch Screen Mobile Events
+        btn.addEventListener('touchstart', showPass, { passive: false });
+        btn.addEventListener('touchend', hidePass);
+        btn.addEventListener('touchcancel', hidePass);
+      });
     }
 
     // Page Navigation
     function showPage(page) {
       document.querySelectorAll('[id^="page-"]').forEach(p => p.classList.add('hidden'));
-      const targetPage = document.getElementById(`page-${page}`);
-      if (targetPage) targetPage.classList.remove('hidden');
+      document.getElementById(`page-${page}`).classList.remove('hidden');
     }
 
     function goHome() {
@@ -1263,13 +1100,11 @@ Score: 10"></textarea>
 
     // Modal Functions
     function showModal(id) {
-      const modal = document.getElementById(id);
-      if (modal) modal.classList.remove('hidden');
+      document.getElementById(id).classList.remove('hidden');
     }
 
     function hideModal(id) {
-      const modal = document.getElementById(id);
-      if (modal) modal.classList.add('hidden');
+      document.getElementById(id).classList.add('hidden');
     }
 
     function showAlert(type, title, message) {
@@ -1277,8 +1112,6 @@ Score: 10"></textarea>
       const titleEl = document.getElementById('alert-title');
       const messageEl = document.getElementById('alert-message');
       
-      if (!iconEl || !titleEl || !messageEl) return;
-
       if (type === 'success') {
         iconEl.className = 'w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4';
         iconEl.innerHTML = '<i class="fas fa-check text-3xl text-green-500"></i>';
@@ -1299,18 +1132,14 @@ Score: 10"></textarea>
     }
 
     function showConfirmDelete(message, callback) {
-      const msgEl = document.getElementById('delete-message');
-      if (msgEl) msgEl.textContent = message;
+      document.getElementById('delete-message').textContent = message;
       deleteCallback = callback;
-      const btn = document.getElementById('confirm-delete-btn');
-      if (btn) {
-        btn.onclick = async () => {
-          if (deleteCallback) {
-            await deleteCallback();
-          }
-          hideModal('confirm-delete-modal');
-        };
-      }
+      document.getElementById('confirm-delete-btn').onclick = async () => {
+        if (deleteCallback) {
+          await deleteCallback();
+        }
+        hideModal('confirm-delete-modal');
+      };
       showModal('confirm-delete-modal');
     }
 
@@ -1320,11 +1149,11 @@ Score: 10"></textarea>
     }
 
     function getExams() {
-      const isMainAdmin = currentUser && currentUser.role === 'admin';
+      const isMainAdmin = currentUser && getMembers().find(m => m.role === 'admin' && m.__backendId === currentUser.__backendId);
       if (isMainAdmin) {
         return appData.filter(d => d.type === 'exam');
       }
-      return appData.filter(d => d.type === 'exam' && d.member_id === (currentUser?.__backendId || currentUser?.id));
+      return appData.filter(d => d.type === 'exam' && d.member_id === currentUser?.__backendId);
     }
 
     function getStudents() {
@@ -1351,7 +1180,7 @@ Score: 10"></textarea>
       return Date.now().toString(36) + Math.random().toString(36).substr(2);
     }
 
-    // Update UI Components
+    // Update UI
     function updateUI() {
       updateSubjectSelect();
       if (currentUser) {
@@ -1367,7 +1196,6 @@ Score: 10"></textarea>
 
     function updateSubjectSelect() {
       const select = document.getElementById('subject-select');
-      if (!select) return;
       const exams = appData.filter(d => d.type === 'exam' && d.is_visible);
       select.innerHTML = '<option value="">เลือกรายวิชา</option>';
       exams.forEach(exam => {
@@ -1376,15 +1204,10 @@ Score: 10"></textarea>
     }
 
     function updateDashboard() {
-      const membersEl = document.getElementById('stat-members');
-      const examsEl = document.getElementById('stat-exams');
-      const studentsEl = document.getElementById('stat-students');
-      const resultsEl = document.getElementById('stat-results');
-
-      if (membersEl) membersEl.textContent = getMembers().length;
-      if (examsEl) examsEl.textContent = getExams().length;
-      if (studentsEl) studentsEl.textContent = getStudents().length;
-      if (resultsEl) resultsEl.textContent = getResults().length;
+      document.getElementById('stat-members').textContent = getMembers().length;
+      document.getElementById('stat-exams').textContent = getExams().length;
+      document.getElementById('stat-students').textContent = getStudents().length;
+      document.getElementById('stat-results').textContent = getResults().length;
 
       const updateAdminDateTime = () => {
         const now = new Date();
@@ -1403,67 +1226,67 @@ Score: 10"></textarea>
       };
       
       updateAdminDateTime();
+      
       if (window.adminDatetimeInterval) clearInterval(window.adminDatetimeInterval);
       window.adminDatetimeInterval = setInterval(updateAdminDateTime, 1000);
 
-      updateCharts();
+      // Compute Real Daily Exam Statistics for last 7 days
+      const results = getResults();
+      const last7Days = [];
+      const counts = [0, 0, 0, 0, 0, 0, 0];
+      const dayNames = ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'];
+      const dayLabels = [];
+
+      const today = new Date();
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(today.getDate() - i);
+        last7Days.push(d.toISOString().split('T')[0]);
+        dayLabels.push(dayNames[d.getDay()]);
+      }
+
+      results.forEach(r => {
+        if (r.submitted_at) {
+          const submittedDate = new Date(r.submitted_at).toISOString().split('T')[0];
+          const index = last7Days.indexOf(submittedDate);
+          if (index !== -1) {
+            counts[index]++;
+          }
+        }
+      });
+
+      updateCharts(counts, dayLabels);
 
       const recentEl = document.getElementById('recent-activity');
-      if (recentEl) {
-        const results = getResults().slice(-5).reverse();
-        if (results.length > 0) {
-          recentEl.innerHTML = results.map(r => `
-            <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-              <div class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-                <i class="fas fa-user text-primary-600"></i>
-              </div>
-              <div class="flex-1">
-                <p class="font-medium text-gray-800">${r.student_id} - ${r.fullname}</p>
-                <p class="text-sm text-gray-500">สอบวิชา ${r.subject_name} ได้ ${r.score}/${r.total_score} คะแนน</p>
-              </div>
-              <span class="badge ${r.graded ? 'badge-success' : 'badge-warning'}">${r.graded ? 'ตรวจแล้ว' : 'รอตรวจ'}</span>
+      const recentResults = results.slice(-5).reverse();
+      if (recentResults.length > 0) {
+        recentEl.innerHTML = recentResults.map(r => `
+          <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+            <div class="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
+              <i class="fas fa-user text-primary-600"></i>
             </div>
-          `).join('');
-        } else {
-          recentEl.innerHTML = '<p class="text-gray-500 text-center py-4">ยังไม่มีกิจกรรม</p>';
-        }
+            <div class="flex-1">
+              <p class="font-medium text-gray-800">${r.student_id} - ${r.fullname}</p>
+              <p class="text-sm text-gray-500">สอบวิชา ${r.subject_name} ได้ ${r.score}/${r.total_score} คะแนน</p>
+            </div>
+            <span class="badge ${r.graded ? 'badge-success' : 'badge-warning'}">${r.graded ? 'ตรวจแล้ว' : 'รอตรวจ'}</span>
+          </div>
+        `).join('');
+      } else {
+        recentEl.innerHTML = '<p class="text-gray-500 text-center py-4">ยังไม่มีกิจกรรม</p>';
       }
     }
 
-    function updateCharts() {
+    function updateCharts(counts, dayLabels) {
       const dailyCtx = document.getElementById('chart-daily');
       if (dailyCtx && window.Chart) {
         const existingChart = Chart.getChart(dailyCtx);
         if (existingChart) existingChart.destroy();
         
-        const counts = [0, 0, 0, 0, 0, 0, 0];
-        const results = getResults();
-        
-        const now = new Date();
-        const currentDay = now.getDay();
-        const distanceToMon = (currentDay === 0 ? 6 : currentDay - 1);
-        const monday = new Date(now);
-        monday.setDate(now.getDate() - distanceToMon);
-        monday.setHours(0, 0, 0, 0);
-
-        const sunday = new Date(monday);
-        sunday.setDate(monday.getDate() + 6);
-        sunday.setHours(23, 59, 59, 999);
-
-        results.forEach(r => {
-          if (r.submitted_at) {
-            const subDate = new Date(r.submitted_at);
-            if (subDate >= monday && subDate <= sunday) {
-              const dayIdx = (subDate.getDay() === 0 ? 6 : subDate.getDay() - 1);
-              counts[dayIdx]++;
-            }
-          }
-        });
-
         new Chart(dailyCtx, {
           type: 'line',
           data: {
-            labels: ['จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส', 'อา'],
+            labels: dayLabels || ['จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส', 'อา'],
             datasets: [{
               label: 'จำนวนผู้สอบ',
               data: counts,
@@ -1476,7 +1299,13 @@ Score: 10"></textarea>
           options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { display: false } }
+            plugins: { legend: { display: false } },
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: { stepSize: 1 }
+              }
+            }
           }
         });
       }
@@ -1487,21 +1316,18 @@ Score: 10"></textarea>
         if (existingChart) existingChart.destroy();
         
         const exams = getExams().slice(0, 5);
-        const labels = exams.map(e => e.subject_name);
-        const averages = exams.map(e => {
-          const resList = getResults().filter(r => r.subject_id === e.id);
-          if (resList.length === 0) return 0;
-          const sum = resList.reduce((acc, curr) => acc + (parseFloat(curr.score) || 0), 0);
-          return Math.round((sum / resList.length) * 10) / 10;
-        });
-
         new Chart(subjectsCtx, {
           type: 'bar',
           data: {
-            labels: labels.length > 0 ? labels : ['ยังไม่มีข้อสอบ'],
+            labels: exams.length > 0 ? exams.map(e => e.subject_name) : ['ไม่มีข้อมูล'],
             datasets: [{
               label: 'คะแนนเฉลี่ย',
-              data: averages.length > 0 ? averages : [0],
+              data: exams.length > 0 ? exams.map(e => {
+                const examRes = getResults().filter(r => r.subject_id === e.id);
+                if (examRes.length === 0) return 0;
+                const total = examRes.reduce((acc, curr) => acc + (curr.score || 0), 0);
+                return Math.round((total / examRes.length) * 10) / 10;
+              }) : [0],
               backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
             }]
           },
@@ -1516,7 +1342,6 @@ Score: 10"></textarea>
 
     function updateMembersTable() {
       const tbody = document.getElementById('members-table');
-      if (!tbody) return;
       const members = getMembers();
       if (members.length === 0) {
         tbody.innerHTML = '<tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">ไม่พบข้อมูล</td></tr>';
@@ -1537,10 +1362,10 @@ Score: 10"></textarea>
             <span class="badge badge-info">${m.role === 'admin' ? 'ผู้ดูแลระบบ' : 'ครู'}</span>
           </td>
           <td class="px-4 py-3 text-center">
-            <button onclick="editMember('${m.__backendId || m.id}')" class="text-primary-500 hover:text-primary-600 mx-1" title="แก้ไข">
+            <button onclick="editMember('${m.__backendId}')" class="text-primary-500 hover:text-primary-600 mx-1" title="แก้ไข">
               <i class="fas fa-edit"></i>
             </button>
-            <button onclick="deleteMember('${m.__backendId || m.id}')" class="text-red-500 hover:text-red-600 mx-1" title="ลบ">
+            <button onclick="deleteMember('${m.__backendId}')" class="text-red-500 hover:text-red-600 mx-1" title="ลบ">
               <i class="fas fa-trash"></i>
             </button>
           </td>
@@ -1550,7 +1375,6 @@ Score: 10"></textarea>
 
     function updateExamsTable() {
       const tbody = document.getElementById('exams-table');
-      if (!tbody) return;
       const exams = getExams();
       if (exams.length === 0) {
         tbody.innerHTML = '<tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">ไม่พบข้อมูล</td></tr>';
@@ -1559,13 +1383,13 @@ Score: 10"></textarea>
       tbody.innerHTML = exams.map((e, i) => {
         const questions = e.questions ? (typeof e.questions === 'string' ? JSON.parse(e.questions) : e.questions) : { mc: [], essay: [] };
         const totalQuestions = (questions.mc?.length || 0) + (questions.essay?.length || 0);
-        const bId = e.__backendId || e.id;
+        const passScore = e.passing_score !== undefined ? e.passing_score : (e.total_score / 2);
         return `
           <tr class="hover:bg-gray-50">
             <td class="px-4 py-3 text-sm">${i + 1}</td>
             <td class="px-4 py-3 text-sm font-medium">${e.subject_name}</td>
             <td class="px-4 py-3 text-sm">${totalQuestions} ข้อ</td>
-            <td class="px-4 py-3 text-sm">${e.total_score} คะแนน</td>
+            <td class="px-4 py-3 text-sm">${e.total_score} <span class="text-xs text-gray-500">(${passScore})</span></td>
             <td class="px-4 py-3 text-sm">${e.time_limit} นาที</td>
             <td class="px-4 py-3">
               <span class="badge ${e.is_visible ? 'badge-success' : 'badge-danger'}">
@@ -1573,25 +1397,25 @@ Score: 10"></textarea>
               </span>
             </td>
             <td class="px-4 py-3 text-center">
-              <button onclick="editExamQuestions('${bId}')" class="px-2 py-1 rounded text-white text-xs font-medium bg-blue-500 hover:bg-blue-600 transition mb-1" title="แก้ไข">
+              <button onclick="editExamQuestions('${e.__backendId}')" class="px-3 py-1 rounded text-white text-xs font-medium bg-blue-500 hover:bg-blue-600 transition mb-1" title="แก้ไข">
                 <i class="fas fa-edit mr-1"></i>แก้ไข
               </button>
-              <button onclick="toggleExamVisibility('${bId}')" class="px-2 py-1 rounded text-white text-xs font-medium transition mb-1 ${e.is_visible ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-400 hover:bg-gray-500'}" title="${e.is_visible ? 'ซ่อนรายวิชา' : 'แสดงรายวิชา'}">
+              <button onclick="toggleExamVisibility('${e.__backendId}')" class="px-3 py-1 rounded text-white text-xs font-medium transition mb-1 ${e.is_visible ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-400 hover:bg-gray-500'}" title="${e.is_visible ? 'ซ่อนรายวิชา' : 'แสดงรายวิชา'}">
                 <i class="fas fa-${e.is_visible ? 'eye' : 'eye-slash'} mr-1"></i>${e.is_visible ? 'แสดง' : 'ซ่อน'}
               </button>
-              <button onclick="toggleExamAnswer('${bId}')" class="px-2 py-1 rounded text-white text-xs font-medium transition mb-1 ${e.show_answer ? 'bg-purple-500 hover:bg-purple-600' : 'bg-gray-400 hover:bg-gray-500'}" title="${e.show_answer ? 'ปิดเฉลย' : 'เปิดเฉลย'}">
+              <button onclick="toggleExamAnswer('${e.__backendId}')" class="px-3 py-1 rounded text-white text-xs font-medium transition mb-1 ${e.show_answer ? 'bg-purple-500 hover:bg-purple-600' : 'bg-gray-400 hover:bg-gray-500'}" title="${e.show_answer ? 'ปิดเฉลย' : 'เปิดเฉลย'}">
                 <i class="fas fa-${e.show_answer ? 'book-open' : 'book'} mr-1"></i>เฉลย
               </button>
-              <button onclick="toggleShuffleQuestions('${bId}')" class="px-2 py-1 rounded text-white text-xs font-medium transition mb-1 ${e.shuffle_questions ? 'bg-cyan-500 hover:bg-cyan-600' : 'bg-gray-400 hover:bg-gray-500'}" title="${e.shuffle_questions ? 'ปิดสุ่มข้อ' : 'เปิดสุ่มข้อ'}">
-                <i class="fas fa-shuffle mr-1"></i>${e.shuffle_questions ? 'เปิด' : 'ปิด'}
+              <button onclick="toggleShuffleQuestions('${e.__backendId}')" class="px-3 py-1 rounded text-white text-xs font-medium transition mb-1 ${e.shuffle_questions ? 'bg-cyan-500 hover:bg-cyan-600' : 'bg-gray-400 hover:bg-gray-500'}" title="${e.shuffle_questions ? 'ปิดสุ่มข้อ' : 'เปิดสุ่มข้อ'}">
+                <i class="fas fa-shuffle mr-1"></i>สุ่มข้อ
               </button>
-              <button onclick="toggleShuffleChoices('${bId}')" class="px-2 py-1 rounded text-white text-xs font-medium transition mb-1 ${e.shuffle_choices ? 'bg-indigo-500 hover:bg-indigo-600' : 'bg-gray-400 hover:bg-gray-500'}" title="${e.shuffle_choices ? 'ปิดสุ่มตัวเลือก' : 'เปิดสุ่มตัวเลือก'}">
-                <i class="fas fa-list mr-1"></i>${e.shuffle_choices ? 'เปิด' : 'ปิด'}
+              <button onclick="toggleShuffleChoices('${e.__backendId}')" class="px-3 py-1 rounded text-white text-xs font-medium transition mb-1 ${e.shuffle_choices ? 'bg-indigo-500 hover:bg-indigo-600' : 'bg-gray-400 hover:bg-gray-500'}" title="${e.shuffle_choices ? 'ปิดสุ่มตัวเลือก' : 'เปิดสุ่มตัวเลือก'}">
+                <i class="fas fa-list mr-1"></i>สุ่มตัวเลือก
               </button>
-              <button onclick="duplicateExam('${bId}')" class="px-2 py-1 rounded text-white text-xs font-medium bg-blue-500 hover:bg-blue-600 transition mb-1" title="ทำซ้ำ">
+              <button onclick="duplicateExam('${e.__backendId}')" class="px-3 py-1 rounded text-white text-xs font-medium bg-blue-500 hover:bg-blue-600 transition mb-1" title="ทำซ้ำ">
                 <i class="fas fa-copy mr-1"></i>ทำซ้ำ
               </button>
-              <button onclick="deleteExam('${bId}')" class="px-2 py-1 rounded text-white text-xs font-medium bg-red-500 hover:bg-red-600 transition mb-1" title="ลบ">
+              <button onclick="deleteExam('${e.__backendId}')" class="px-3 py-1 rounded text-white text-xs font-medium bg-red-500 hover:bg-red-600 transition mb-1" title="ลบ">
                 <i class="fas fa-trash mr-1"></i>ลบ
               </button>
             </td>
@@ -1602,7 +1426,6 @@ Score: 10"></textarea>
 
     function updateStudentsTable() {
       const filterSelect = document.getElementById('students-filter-subject');
-      if (!filterSelect) return;
       const students = getStudents();
       
       const subjects = [...new Set(students.map(s => s.subject_name))].sort();
@@ -1618,9 +1441,7 @@ Score: 10"></textarea>
 
     function filterStudentsTable() {
       const tbody = document.getElementById('students-table');
-      const filterSelect = document.getElementById('students-filter-subject');
-      if (!tbody || !filterSelect) return;
-      const filterValue = filterSelect.value;
+      const filterValue = document.getElementById('students-filter-subject').value;
       const students = getStudents();
       
       const filtered = filterValue ? students.filter(s => s.subject_name === filterValue) : students;
@@ -1637,7 +1458,6 @@ Score: 10"></textarea>
           ? '<span class="badge badge-danger"><i class="fas fa-exclamation-triangle mr-1"></i>ตรวจพบทุจริต</span>'
           : result ? `<span class="badge badge-success"><i class="fas fa-check-circle mr-1"></i>สอบแล้ว</span>` 
           : '<span class="badge badge-warning"><i class="fas fa-hourglass-half mr-1"></i>รอสอบ</span>';
-        const bId = s.__backendId || s.id;
         return `
           <tr class="hover:bg-gray-50">
             <td class="px-4 py-3 text-sm">${i + 1}</td>
@@ -1648,8 +1468,8 @@ Score: 10"></textarea>
             <td class="px-4 py-3 text-sm">${s.subject_name}</td>
             <td class="px-4 py-3">${statusBadge}</td>
             <td class="px-4 py-3 text-center">
-              <button onclick="deleteStudent('${bId}')" class="text-red-500 hover:text-red-600 mx-1" title="ลบข้อมูลผู้สอบ">
-                <i class="fas fa-trash"></i>
+              <button onclick="deleteStudent('${s.__backendId}')" class="text-red-500 hover:text-red-700 font-medium px-2 py-1 rounded hover:bg-red-50 transition" title="ลบข้อมูลผู้สอบ">
+                <i class="fas fa-trash mr-1"></i>ลบ
               </button>
             </td>
           </tr>
@@ -1659,7 +1479,6 @@ Score: 10"></textarea>
 
     function updateResultsTable() {
       const filterSelect = document.getElementById('results-filter-subject');
-      if (!filterSelect) return;
       const results = getResults();
       
       const subjects = [...new Set(results.map(r => r.subject_name))].sort();
@@ -1675,9 +1494,7 @@ Score: 10"></textarea>
 
     function filterResultsTable() {
       const tbody = document.getElementById('results-table');
-      const filterSelect = document.getElementById('results-filter-subject');
-      if (!tbody || !filterSelect) return;
-      const filterValue = filterSelect.value;
+      const filterValue = document.getElementById('results-filter-subject').value;
       const results = getResults();
       
       const filtered = filterValue ? results.filter(r => r.subject_name === filterValue) : results;
@@ -1687,36 +1504,108 @@ Score: 10"></textarea>
         return;
       }
 
-      tbody.innerHTML = filtered.map((r, i) => {
-        const bId = r.__backendId || r.id;
-        return `
-          <tr class="hover:bg-gray-50">
-            <td class="px-4 py-3 text-sm">${i + 1}</td>
-            <td class="px-4 py-3 text-sm font-medium">${r.student_id} - ${r.fullname}</td>
-            <td class="px-4 py-3 text-sm">${r.subject_name}</td>
-            <td class="px-4 py-3 text-sm font-bold text-primary-600">${r.score}/${r.total_score}</td>
-            <td class="px-4 py-3 text-sm">${new Date(r.submitted_at).toLocaleString('th-TH')}</td>
-            <td class="px-4 py-3">
-              <span class="badge ${r.graded ? 'badge-success' : 'badge-warning'}">
-                ${r.graded ? 'ตรวจแล้ว' : 'รอตรวจ'}
-              </span>
-            </td>
-            <td class="px-4 py-3 text-center">
-              <button onclick="viewResultDetail('${bId}')" class="text-blue-500 hover:text-blue-600 mx-1" title="ดูคำตอบ">
-                <i class="fas fa-eye"></i>
-              </button>
-              <button onclick="deleteResult('${bId}')" class="text-red-500 hover:text-red-600 mx-1" title="ลบ">
-                <i class="fas fa-trash"></i>
-              </button>
-            </td>
-          </tr>
+      tbody.innerHTML = filtered.map((r, i) => `
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-3 text-sm">${i + 1}</td>
+          <td class="px-4 py-3 text-sm font-medium">${r.student_id} - ${r.fullname}</td>
+          <td class="px-4 py-3 text-sm">${r.subject_name}</td>
+          <td class="px-4 py-3 text-sm font-bold text-primary-600">${r.score}/${r.total_score}</td>
+          <td class="px-4 py-3 text-sm">${new Date(r.submitted_at).toLocaleString('th-TH')}</td>
+          <td class="px-4 py-3">
+            <span class="badge ${r.graded ? 'badge-success' : 'badge-warning'}">
+              ${r.graded ? 'ตรวจแล้ว' : 'รอตรวจ'}
+            </span>
+          </td>
+          <td class="px-4 py-3 text-center">
+            <button onclick="viewResultDetails('${r.__backendId}')" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs font-medium mr-1 transition" title="ดูคำตอบอย่างละเอียด">
+              <i class="fas fa-eye mr-1"></i>ดูคำตอบ
+            </button>
+            <button onclick="deleteResult('${r.__backendId}')" class="text-red-500 hover:text-red-600 px-2 py-1" title="ลบผลสอบ">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function viewResultDetails(backendId) {
+      const resultData = appData.find(d => d.__backendId === backendId);
+      if (!resultData) return;
+
+      const exam = appData.find(e => e.id === resultData.subject_id && e.type === 'exam');
+      const questions = exam && exam.questions ? (typeof exam.questions === 'string' ? JSON.parse(exam.questions) : exam.questions) : { mc: [], essay: [] };
+      const answers = resultData.answers ? (typeof resultData.answers === 'string' ? JSON.parse(resultData.answers) : resultData.answers) : { mc: {}, essay: {} };
+
+      let html = `
+        <div class="bg-gray-50 rounded-xl p-4 mb-4 grid grid-cols-1 md:grid-cols-2 gap-2 text-sm border">
+          <p><strong>ผู้สอบ:</strong> ${resultData.fullname} (${resultData.student_id})</p>
+          <p><strong>ชั้น/ห้อง:</strong> ${resultData.class_name}/${resultData.room} เลขที่ ${resultData.number}</p>
+          <p><strong>รายวิชา:</strong> ${resultData.subject_name}</p>
+          <p><strong>เวลาส่งคำตอบ:</strong> ${new Date(resultData.submitted_at).toLocaleString('th-TH')}</p>
+          <p><strong>คะแนนรวม:</strong> <span class="text-primary-600 font-bold text-base">${resultData.score} / ${resultData.total_score}</span></p>
+          <p><strong>สถานะการตรวจ:</strong> ${resultData.graded ? '<span class="badge badge-success">ตรวจแล้ว</span>' : '<span class="badge badge-warning">รอตรวจ</span>'}</p>
+        </div>
+      `;
+
+      if (resultData.cheating_detected || resultData.warnings >= 4) {
+        html += `
+          <div class="bg-red-50 border-2 border-red-300 rounded-xl p-4 mb-4 text-center text-red-700">
+            <i class="fas fa-exclamation-triangle text-3xl text-red-500 mb-2"></i>
+            <p class="font-bold">ตรวจพบการทุจริตในระหว่างสอบ (${resultData.warnings || 4} ครั้ง)</p>
+          </div>
         `;
-      }).join('');
+      }
+
+      html += `<h4 class="font-bold text-gray-800 mb-3"><i class="fas fa-list-ol mr-2 text-primary-500"></i>รายละเอียดการตอบข้อสอบ:</h4>`;
+
+      if (questions.mc && questions.mc.length > 0) {
+        questions.mc.forEach((q, idx) => {
+          const studentAns = answers.mc ? answers.mc[idx] : null;
+          const isCorrect = studentAns === q.answer;
+          html += `
+            <div class="p-4 border-2 ${isCorrect ? 'border-green-200 bg-green-50/50' : 'border-red-200 bg-red-50/50'} rounded-xl mb-3">
+              <div class="flex justify-between items-start mb-2">
+                <p class="font-bold text-gray-800"><span class="text-primary-600">ข้อที่ ${idx + 1}.</span> ${q.question}</p>
+                <span class="badge ${isCorrect ? 'badge-success' : 'badge-danger'} whitespace-nowrap">
+                  ${isCorrect ? '✓ ถูกต้อง' : '✗ ผิด'} (${isCorrect ? (q.score || exam.score_per_question || 1) : 0}/${q.score || exam.score_per_question || 1} คะแนน)
+                </span>
+              </div>
+              <div class="space-y-1 text-sm pl-4 my-2">
+                ${q.choices.map(c => `
+                  <div class="p-1 rounded ${c.key === q.answer ? 'bg-green-100 font-bold text-green-800' : (c.key === studentAns ? 'bg-red-100 text-red-800 font-semibold' : 'text-gray-700')}">
+                    <span class="mr-2">${c.key}.</span> ${c.text}
+                    ${c.key === q.answer ? ' <i class="fas fa-check text-green-600 ml-2" title="คำตอบที่ถูกต้อง"></i>' : ''}
+                    ${c.key === studentAns && c.key !== q.answer ? ' <i class="fas fa-times text-red-600 ml-2" title="ผู้สอบเลือกข้อนี้"></i>' : ''}
+                  </div>
+                `).join('')}
+              </div>
+              <p class="text-xs text-gray-600 mt-2">คำตอบของผู้สอบ: <strong class="${isCorrect ? 'text-green-700' : 'text-red-700'}">${studentAns || 'ไม่ได้ตอบ'}</strong> | เฉลยที่ถูกต้อง: <strong class="text-green-700">${q.answer}</strong></p>
+            </div>
+          `;
+        });
+      }
+
+      if (questions.essay && questions.essay.length > 0) {
+        questions.essay.forEach((q, idx) => {
+          const essayAns = answers.essay ? answers.essay[idx] : null;
+          html += `
+            <div class="p-4 border-2 border-orange-200 bg-orange-50/50 rounded-xl mb-3">
+              <p class="font-bold text-gray-800 mb-2"><span class="text-orange-600">ข้อที่ ${(questions.mc?.length || 0) + idx + 1} (อัตนัย).</span> ${q.question}</p>
+              <div class="bg-white p-3 rounded-lg border text-sm text-gray-800 font-mono mb-2 whitespace-pre-wrap">
+                ${essayAns || '<em class="text-gray-400">ผู้สอบไม่ได้ตอบข้อนี้</em>'}
+              </div>
+              <p class="text-xs text-orange-700 font-medium"><i class="fas fa-star mr-1"></i>คะแนนเต็ม: ${q.maxScore || exam.score_per_question || 1}</p>
+            </div>
+          `;
+        });
+      }
+
+      document.getElementById('view-result-content').innerHTML = html;
+      showModal('view-result-modal');
     }
 
     function updateGradingTable() {
       const filterSelect = document.getElementById('grading-filter-subject');
-      if (!filterSelect) return;
       const results = getResults().filter(r => !r.graded && !r.cheating_detected);
       
       const subjects = [...new Set(results.map(r => r.subject_name))].sort();
@@ -1732,9 +1621,7 @@ Score: 10"></textarea>
 
     function filterGradingTable() {
       const tbody = document.getElementById('grading-table');
-      const filterSelect = document.getElementById('grading-filter-subject');
-      if (!tbody || !filterSelect) return;
-      const filterValue = filterSelect.value;
+      const filterValue = document.getElementById('grading-filter-subject').value;
       const results = getResults().filter(r => !r.graded && !r.cheating_detected);
       
       const filtered = filterValue ? results.filter(r => r.subject_name === filterValue) : results;
@@ -1743,59 +1630,52 @@ Score: 10"></textarea>
         tbody.innerHTML = '<tr><td colspan="5" class="px-4 py-8 text-center text-gray-500">ไม่พบข้อมูลที่ต้องตรวจ</td></tr>';
         return;
       }
-      tbody.innerHTML = filtered.map((r, i) => {
-        const bId = r.__backendId || r.id;
-        return `
-          <tr class="hover:bg-gray-50">
-            <td class="px-4 py-3 text-sm">${i + 1}</td>
-            <td class="px-4 py-3 text-sm font-medium">${r.student_id} - ${r.fullname}</td>
-            <td class="px-4 py-3 text-sm">${r.subject_name}</td>
-            <td class="px-4 py-3">
-              <span class="badge badge-warning">รอตรวจ</span>
-            </td>
-            <td class="px-4 py-3 text-center">
-              <button onclick="openGrading('${bId}')" class="bg-primary-500 hover:bg-primary-600 text-white px-3 py-1 rounded-lg text-sm">
-                <i class="fas fa-pen mr-1"></i> ตรวจ
-              </button>
-            </td>
-          </tr>
-        `;
-      }).join('');
+      tbody.innerHTML = filtered.map((r, i) => `
+        <tr class="hover:bg-gray-50">
+          <td class="px-4 py-3 text-sm">${i + 1}</td>
+          <td class="px-4 py-3 text-sm font-medium">${r.student_id} - ${r.fullname}</td>
+          <td class="px-4 py-3 text-sm">${r.subject_name}</td>
+          <td class="px-4 py-3">
+            <span class="badge badge-warning">รอตรวจ</span>
+          </td>
+          <td class="px-4 py-3 text-center">
+            <button onclick="openGrading('${r.__backendId}')" class="bg-primary-500 hover:bg-primary-600 text-white px-3 py-1 rounded-lg text-sm">
+              <i class="fas fa-pen mr-1"></i> ตรวจ
+            </button>
+          </td>
+        </tr>
+      `).join('');
     }
 
     function updateTimeSettings() {
       const container = document.getElementById('time-settings-list');
-      if (!container) return;
       const exams = getExams();
       if (exams.length === 0) {
         container.innerHTML = '<p class="text-gray-500 text-center py-4">ไม่พบข้อสอบที่ต้องตั้งค่า</p>';
         return;
       }
-      container.innerHTML = exams.map(e => {
-        const bId = e.__backendId || e.id;
-        return `
-          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-            <div>
-              <p class="font-medium text-gray-800">${e.subject_name}</p>
-              <p class="text-sm text-gray-500">เวลาปัจจุบัน: ${e.time_limit} นาที</p>
-            </div>
-            <div class="flex items-center gap-2">
-              <input type="number" id="time-${bId}" value="${e.time_limit}" min="1"
-                class="w-20 px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none text-center">
-              <span class="text-gray-500">นาที</span>
-              <button onclick="updateExamTime('${bId}')" class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition">
-                <i class="fas fa-save"></i>
-              </button>
-            </div>
+      container.innerHTML = exams.map(e => `
+        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+          <div>
+            <p class="font-medium text-gray-800">${e.subject_name}</p>
+            <p class="text-sm text-gray-500">เวลาปัจจุบัน: ${e.time_limit} นาที</p>
           </div>
-        `;
-      }).join('');
+          <div class="flex items-center gap-2">
+            <input type="number" id="time-${e.__backendId}" value="${e.time_limit}" min="1"
+              class="w-20 px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none text-center">
+            <span class="text-gray-500">นาที</span>
+            <button onclick="updateExamTime('${e.__backendId}')" class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg transition">
+              <i class="fas fa-save"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
     }
 
+    // Admin Functions
     function showAdminPage(page) {
       document.querySelectorAll('.admin-content').forEach(c => c.classList.add('hidden'));
-      const target = document.getElementById(`admin-${page}`);
-      if (target) target.classList.remove('hidden');
+      document.getElementById(`admin-${page}`).classList.remove('hidden');
       
       document.querySelectorAll('.sidebar-item').forEach(item => {
         item.classList.remove('active');
@@ -1813,40 +1693,31 @@ Score: 10"></textarea>
         'settings': 'ตั้งค่าเวลา',
         'profile': 'แก้ไขข้อมูลส่วนตัว'
       };
-      const titleEl = document.getElementById('admin-page-title');
-      if (titleEl) titleEl.textContent = titles[page] || 'แดชบอร์ด';
+      document.getElementById('admin-page-title').textContent = titles[page] || 'แดชบอร์ด';
     }
 
     function toggleSidebar() {
       const sidebar = document.getElementById('admin-sidebar');
-      if (!sidebar) return;
       const isCollapsed = sidebar.style.marginLeft === '-256px';
       sidebar.style.marginLeft = isCollapsed ? '0' : '-256px';
     }
 
     async function refreshData() {
-      try {
-        const loadingEl = document.getElementById('loading');
-        if (loadingEl) loadingEl.classList.remove('hidden');
-        const remoteData = await window.dataSdk._callAPI('getData');
-        if (remoteData && remoteData.length > 0) {
-          appData = remoteData;
-          saveLocalData(appData);
-        } else {
-          appData = loadLocalData();
+        try {
+            document.getElementById('loading').classList.remove('hidden');
+            const data = await window.dataSdk._callAPI('getData');
+            appData = data || [];
+            updateUI();
+            document.getElementById('loading').classList.add('hidden');
+            showAlert('info', 'รีเฟรชข้อมูล', 'ข้อมูลได้รับการอัปเดตแล้ว');
+        } catch (err) {
+            document.getElementById('loading').classList.add('hidden');
+            showAlert('error', 'ผิดพลาด', 'ไม่สามารถรีเฟรชข้อมูลได้');
         }
-        updateUI();
-        if (loadingEl) loadingEl.classList.add('hidden');
-        showAlert('info', 'รีเฟรชข้อมูล', 'ข้อมูลได้รับการอัปเดตแล้ว');
-      } catch (err) {
-        const loadingEl = document.getElementById('loading');
-        if (loadingEl) loadingEl.classList.add('hidden');
-        showAlert('error', 'ผิดพลาด', 'ไม่สามารถรีเฟรชข้อมูลได้');
-      }
     }
 
-    // Auth Listeners
-    safeAddEventListener('admin-login-form', 'submit', async (e) => {
+    // Auth Functions
+    document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = e.target.querySelector('button[type="submit"]');
       const originalHTML = btn.innerHTML;
@@ -1866,16 +1737,10 @@ Score: 10"></textarea>
             return;
           }
           currentUser = member;
-          const adminNameEl = document.getElementById('admin-name');
-          const adminRoleEl = document.getElementById('admin-role');
-          const profNameEl = document.getElementById('profile-fullname');
-          const profEmailEl = document.getElementById('profile-email');
-
-          if (adminNameEl) adminNameEl.textContent = member.fullname;
-          if (adminRoleEl) adminRoleEl.textContent = member.role === 'admin' ? 'ผู้ดูแลหลัก' : 'ครู';
-          if (profNameEl) profNameEl.value = member.fullname;
-          if (profEmailEl) profEmailEl.value = member.email;
-
+          document.getElementById('admin-name').textContent = member.fullname;
+          document.getElementById('admin-role').textContent = member.role === 'admin' ? 'ผู้ดูแลหลัก' : 'ครู';
+          document.getElementById('profile-fullname').value = member.fullname;
+          document.getElementById('profile-email').value = member.email;
           btn.disabled = false;
           btn.innerHTML = originalHTML;
           hideModal('admin-login-modal');
@@ -1890,7 +1755,7 @@ Score: 10"></textarea>
       }, 300);
     });
 
-    safeAddEventListener('admin-register-form', 'submit', async (e) => {
+    document.getElementById('admin-register-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = e.target.querySelector('button[type="submit"]');
       const originalHTML = btn.innerHTML;
@@ -1899,6 +1764,14 @@ Score: 10"></textarea>
 
       setTimeout(async () => {
         const members = getMembers();
+        
+        if (members.length >= 999) {
+          btn.disabled = false;
+          btn.innerHTML = originalHTML;
+          showAlert('warning', 'ถึงขีดจำกัด', 'ไม่สามารถเพิ่มสมาชิกได้อีก');
+          return;
+        }
+
         const username = document.getElementById('reg-username').value;
         if (members.find(m => m.username === username)) {
           btn.disabled = false;
@@ -1941,10 +1814,17 @@ Score: 10"></textarea>
     function adminLogout() {
       currentUser = null;
       if (examTimer) clearInterval(examTimer);
+      document.removeEventListener('contextmenu', preventAction);
+      document.removeEventListener('copy', preventAction);
+      document.removeEventListener('paste', preventAction);
+      document.removeEventListener('cut', preventAction);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('blur', handleWindowBlur);
       showPage('home');
     }
 
-    safeAddEventListener('add-member-form', 'submit', async (e) => {
+    // Member Management
+    document.getElementById('add-member-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = e.target.querySelector('button[type="submit"]');
       const originalHTML = btn.innerHTML;
@@ -1955,11 +1835,18 @@ Score: 10"></textarea>
         const members = getMembers();
         const mainAdmin = members.find(m => m.role === 'admin');
         
-        if (!currentUser || !mainAdmin || (currentUser.__backendId || currentUser.id) !== (mainAdmin.__backendId || mainAdmin.id)) {
+        if (!currentUser || !mainAdmin || currentUser.__backendId !== mainAdmin.__backendId) {
           btn.disabled = false;
           btn.innerHTML = originalHTML;
           showAlert('error', 'ไม่มีสิทธิ์', 'เฉพาะผู้ดูแลระบบหลักเท่านั้นที่สามารถเพิ่มสมาชิกได้');
           hideModal('add-member-modal');
+          return;
+        }
+
+        if (members.length >= 999) {
+          btn.disabled = false;
+          btn.innerHTML = originalHTML;
+          showAlert('warning', 'ถึงขีดจำกัด', 'ไม่สามารถเพิ่มสมาชิกได้อีก');
           return;
         }
 
@@ -1998,11 +1885,11 @@ Score: 10"></textarea>
     });
 
     function editMember(backendId) {
-      const member = appData.find(d => (d.__backendId && d.__backendId === backendId) || d.id === backendId);
+      const member = appData.find(d => d.__backendId === backendId);
       if (!member) return;
 
       const mainAdmin = getMembers().find(m => m.role === 'admin');
-      if (!currentUser || (currentUser.__backendId || currentUser.id) !== (mainAdmin.__backendId || mainAdmin.id)) {
+      if (!currentUser || currentUser.__backendId !== mainAdmin?.__backendId) {
         showAlert('error', 'ไม่มีสิทธิ์', 'เฉพาะผู้ดูแลระบบหลักเท่านั้นที่สามารถแก้ไขสมาชิก');
         return;
       }
@@ -2016,7 +1903,7 @@ Score: 10"></textarea>
       showModal('edit-member-modal');
     }
 
-    safeAddEventListener('edit-member-form', 'submit', async (e) => {
+    document.getElementById('edit-member-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = e.target.querySelector('button[type="submit"]');
       const originalHTML = btn.innerHTML;
@@ -2025,7 +1912,7 @@ Score: 10"></textarea>
 
       setTimeout(async () => {
         const backendId = document.getElementById('edit-member-id').value;
-        const member = appData.find(d => (d.__backendId && d.__backendId === backendId) || d.id === backendId);
+        const member = appData.find(d => d.__backendId === backendId);
         
         if (member) {
           const newPassword = document.getElementById('edit-member-password').value;
@@ -2059,18 +1946,18 @@ Score: 10"></textarea>
     });
 
     function deleteMember(backendId) {
-      const member = appData.find(d => (d.__backendId && d.__backendId === backendId) || d.id === backendId);
+      const member = appData.find(d => d.__backendId === backendId);
       if (!member) return;
 
       const members = getMembers();
       const mainAdmin = members.find(m => m.role === 'admin');
       
-      if (!currentUser || (currentUser.__backendId || currentUser.id) !== (mainAdmin.__backendId || mainAdmin.id)) {
+      if (!currentUser || !mainAdmin || currentUser.__backendId !== mainAdmin.__backendId) {
         showAlert('error', 'ไม่มีสิทธิ์', 'เฉพาะผู้ดูแลระบบหลักเท่านั้นที่สามารถลบสมาชิก');
         return;
       }
 
-      if ((currentUser.__backendId || currentUser.id) === backendId) {
+      if (currentUser.__backendId === backendId) {
         showAlert('error', 'ไม่สามารถลบได้', 'ผู้ดูแลระบบหลักไม่สามารถลบตัวเองได้');
         return;
       }
@@ -2083,7 +1970,6 @@ Score: 10"></textarea>
       });
     }
 
-    // Multilingual Exam Parser Logic (Thai / English / Chinese)
     function parseMultipleChoice() {
       const input = document.getElementById('mc-input').value.trim();
       if (!input) {
@@ -2091,67 +1977,84 @@ Score: 10"></textarea>
         return;
       }
 
-      const questionBlocks = input.split(/\n(?=\d+[\.\)])/);
-      parsedMCQuestions = [];
+      const btn = event.target;
+      const originalHTML = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner spin mr-2"></i> กำลังแปลง...';
 
-      questionBlocks.forEach(block => {
-        const lines = block.trim().split('\n');
-        if (lines.length < 3) return;
+      setTimeout(() => {
+        const questionBlocks = input.split(/\n(?=\d+[\.\、\)])/);
+        parsedMCQuestions = [];
 
-        const questionMatch = lines[0].match(/^\d+[\.\)]\s*(.*)/);
-        if (!questionMatch) return;
+        questionBlocks.forEach(block => {
+          const lines = block.trim().split('\n');
+          if (lines.length < 3) return;
 
-        const question = questionMatch[1].trim();
-        const choices = [];
-        let answer = '';
-        let score = 0;
+          const questionMatch = lines[0].match(/^\d+[\.\、\)]\s*(.*)/);
+          if (!questionMatch) return;
 
-        for (let i = 1; i < lines.length; i++) {
-          const line = lines[i].trim();
-          const choiceMatch = line.match(/^([ก-จA-Ea-e甲乙丙丁戊])[\.\)]\s*(.*)/);
-          const answerMatch = line.match(/^(?:เฉลย|Answer|答案|Key|Ans):\s*([ก-จA-Ea-e甲乙丙丁戊])[\.\)]?/i);
-          const scoreMatch = line.match(/^(?:คะแนน|Score|Points|分数):\s*(\d+(?:\.\d+)?)/i);
+          const question = questionMatch[1].trim();
+          const choices = [];
+          let answer = '';
+          let score = 0;
 
-          if (choiceMatch) {
-            choices.push({ key: choiceMatch[1].toUpperCase(), text: choiceMatch[2].trim() });
-          } else if (answerMatch) {
-            answer = answerMatch[1].toUpperCase();
-          } else if (scoreMatch) {
-            score = parseFloat(scoreMatch[1]);
+          for (let i = 1; i < lines.length; i++) {
+            const line = lines[i].trim();
+            // Regex match for Thai (ก-จ), EN (A-E, a-e), CN (A-E, 1-5 with . or 、 or ))
+            const choiceMatch = line.match(/^([ก-จA-Ea-e1-5])[\.\、\)]\s*(.*)/);
+            // Regex match for answers in TH, EN, CN
+            const answerMatch = line.match(/^(?:เฉลย|Answer|答案):\s*([ก-จA-Ea-e1-5])[\.\、\)]?/i);
+            // Regex match for scores in TH, EN, CN
+            const scoreMatch = line.match(/^(?:คะแนน|Score|points|分數|分数|得分):\s*(\d+(?:\.\d+)?)/i);
+
+            if (choiceMatch) {
+              const rawKey = choiceMatch[1].toUpperCase();
+              choices.push({ key: rawKey, text: choiceMatch[2].trim() });
+            } else if (answerMatch) {
+              answer = answerMatch[1].toUpperCase();
+            } else if (scoreMatch) {
+              score = parseFloat(scoreMatch[1]);
+            }
           }
-        }
 
-        if (question && choices.length >= 2 && answer) {
-          parsedMCQuestions.push({ question, choices, answer, score: score || 1 });
-        }
-      });
+          if (question && choices.length >= 2 && answer) {
+            parsedMCQuestions.push({ question, choices, answer, score: score || 1 });
+          }
+        });
 
-      if (parsedMCQuestions.length > 0) {
-        document.getElementById('mc-preview').classList.remove('hidden');
-        const previewLimit = 3;
-        document.getElementById('mc-preview-content').innerHTML = parsedMCQuestions.slice(0, previewLimit).map((q, i) => `
-          <div class="border-2 border-blue-300 rounded-lg p-4 bg-gradient-to-br from-white to-blue-50 hover:shadow-lg transition">
-            <div class="flex items-start justify-between mb-3">
-              <p class="font-bold text-gray-900 flex-1"><span class="text-blue-600 bg-blue-100 px-2 py-1 rounded">ข้อที่ ${i + 1}</span> ${q.question}</p>
-              <span class="badge badge-info ml-2 whitespace-nowrap"><i class="fas fa-star mr-1"></i>${q.score} คะแนน</span>
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+
+        if (parsedMCQuestions.length > 0) {
+          document.getElementById('mc-preview').classList.remove('hidden');
+          const previewLimit = 3;
+          document.getElementById('mc-preview-content').innerHTML = parsedMCQuestions.slice(0, previewLimit).map((q, i) => `
+            <div class="border-2 border-blue-300 rounded-lg p-4 bg-gradient-to-br from-white to-blue-50 hover:shadow-lg transition">
+              <div class="flex items-start justify-between mb-3">
+                <p class="font-bold text-gray-900 flex-1"><span class="text-blue-600 bg-blue-100 px-2 py-1 rounded">ข้อที่ ${i + 1}</span> ${q.question}</p>
+                <span class="badge badge-info ml-2 whitespace-nowrap"><i class="fas fa-star mr-1"></i>${q.score} คะแนน</span>
+              </div>
+              <div class="space-y-2 pl-4 text-sm">
+                ${q.choices.map(c => `
+                  <p class="${c.key === q.answer ? 'text-green-600 font-bold bg-green-50 -ml-4 pl-4 py-1' : 'text-gray-700'}">
+                    <span class="font-semibold">${c.key}.</span> ${c.text} ${c.key === q.answer ? '<i class="fas fa-check-circle ml-2 text-green-500"></i>' : ''}
+                  </p>
+                `).join('')}
+              </div>
             </div>
-            <div class="space-y-2 pl-4 text-sm">
-              ${q.choices.map(c => `
-                <p class="${c.key === q.answer ? 'text-green-600 font-bold bg-green-50 -ml-4 pl-4 py-1 rounded' : 'text-gray-700'}">
-                  <span class="font-semibold">${c.key}.</span> ${c.text} ${c.key === q.answer ? '<i class="fas fa-check-circle ml-2 text-green-500"></i>' : ''}
-                </p>
-              `).join('')}
-            </div>
-          </div>
-        `).join('');
-        
-        let countText = `✓ พบ <strong class="text-blue-600">${parsedMCQuestions.length}</strong> ข้อสอบปรนัย`;
-        if (parsedMCQuestions.length > previewLimit) countText += ` (แสดง ${previewLimit} ข้อแรก)`;
-        document.getElementById('mc-preview-count').innerHTML = countText;
-        showAlert('success', 'แปลงสำเร็จ', `พบข้อสอบปรนัย ${parsedMCQuestions.length} ข้อ`);
-      } else {
-        showAlert('error', 'แปลงไม่สำเร็จ', 'ไม่พบข้อสอบที่ถูกต้องตามรูปแบบ');
-      }
+          `).join('');
+          
+          let countText = `✓ พบ <strong class="text-blue-600">${parsedMCQuestions.length}</strong> ข้อสอบปรนัย`;
+          if (parsedMCQuestions.length > previewLimit) {
+            countText += ` (แสดง ${previewLimit} ข้อแรก)`;
+          }
+          document.getElementById('mc-preview-count').innerHTML = countText;
+          
+          showAlert('success', 'แปลงสำเร็จ', `พบข้อสอบปรนัย ${parsedMCQuestions.length} ข้อ พร้อมระบบตรวจสอบเฉลหลายภาษาแล้ว`);
+        } else {
+          showAlert('error', 'แปลงไม่สำเร็จ', 'ไม่พบข้อสอบที่ถูกต้องตามรูปแบบ (กรุณาตรวจสอบการระบุข้อ เช่น 1.คำถาม และ ตัวเลือก A. B. C. / ก. ข. ค.)');
+        }
+      }, 300);
     }
 
     function parseEssay() {
@@ -2161,54 +2064,67 @@ Score: 10"></textarea>
         return;
       }
 
-      const questionBlocks = input.split(/\n(?=\d+[\.\)])/);
-      parsedEssayQuestions = [];
+      const btn = event.target;
+      const originalHTML = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner spin mr-2"></i> กำลังแปลง...';
 
-      questionBlocks.forEach(block => {
-        const lines = block.trim().split('\n');
-        if (lines.length < 1) return;
+      setTimeout(() => {
+        const questionBlocks = input.split(/\n(?=\d+[\.\、\)])/);
+        parsedEssayQuestions = [];
 
-        const questionMatch = lines[0].match(/^\d+[\.\)]\s*(.*)/);
-        if (!questionMatch) return;
+        questionBlocks.forEach(block => {
+          const lines = block.trim().split('\n');
+          if (lines.length < 1) return;
 
-        const question = questionMatch[1].trim();
-        let maxScore = 0;
+          const questionMatch = lines[0].match(/^\d+[\.\、\)]\s*(.*)/);
+          if (!questionMatch) return;
 
-        for (let i = 1; i < lines.length; i++) {
-          const scoreMatch = lines[i].match(/(?:คะแนน|score|points|分数):\s*(\d+)/i);
-          if (scoreMatch) {
-            maxScore = parseInt(scoreMatch[1]);
-            break;
+          const question = questionMatch[1].trim();
+          let maxScore = 0;
+
+          for (let i = 1; i < lines.length; i++) {
+            const scoreMatch = lines[i].match(/(?:คะแนน|Score|points|分數|分数|得分):\s*(\d+(?:\.\d+)?)/i);
+            if (scoreMatch) {
+              maxScore = parseFloat(scoreMatch[1]);
+              break;
+            }
           }
-        }
 
-        if (question) {
-          parsedEssayQuestions.push({ question, maxScore: maxScore || 10 });
-        }
-      });
+          if (question) {
+            parsedEssayQuestions.push({ question, maxScore: maxScore || 1 });
+          }
+        });
 
-      if (parsedEssayQuestions.length > 0) {
-        document.getElementById('essay-preview').classList.remove('hidden');
-        const previewLimit = 3;
-        document.getElementById('essay-preview-content').innerHTML = parsedEssayQuestions.slice(0, previewLimit).map((q, i) => `
-          <div class="border-2 border-orange-300 rounded-lg p-4 bg-gradient-to-br from-white to-orange-50 hover:shadow-lg transition">
-            <div class="flex items-start justify-between mb-3">
-              <p class="font-bold text-gray-900 flex-1"><span class="text-orange-600 bg-orange-100 px-2 py-1 rounded">ข้อที่ ${i + 1}</span> ${q.question}</p>
-              <span class="badge badge-warning ml-2 whitespace-nowrap"><i class="fas fa-star mr-1"></i>${q.maxScore} คะแนน</span>
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+
+        if (parsedEssayQuestions.length > 0) {
+          document.getElementById('essay-preview').classList.remove('hidden');
+          const previewLimit = 3;
+          document.getElementById('essay-preview-content').innerHTML = parsedEssayQuestions.slice(0, previewLimit).map((q, i) => `
+            <div class="border-2 border-orange-300 rounded-lg p-4 bg-gradient-to-br from-white to-orange-50 hover:shadow-lg transition">
+              <div class="flex items-start justify-between mb-3">
+                <p class="font-bold text-gray-900 flex-1"><span class="text-orange-600 bg-orange-100 px-2 py-1 rounded">ข้อที่ ${i + 1}</span> ${q.question}</p>
+                <span class="badge badge-warning ml-2 whitespace-nowrap"><i class="fas fa-star mr-1"></i>${q.maxScore} คะแนน</span>
+              </div>
+              <div class="bg-gradient-to-r from-orange-50 to-amber-50 rounded p-3 text-gray-600 text-sm border-l-4 border-orange-400">
+                <i class="fas fa-pen-nib mr-2 text-orange-500"></i> <strong>พื้นที่สำหรับตอบอัตนัย</strong>
+              </div>
             </div>
-            <div class="bg-gradient-to-r from-orange-50 to-amber-50 rounded p-3 text-gray-600 text-sm border-l-4 border-orange-400">
-              <i class="fas fa-pen-nib mr-2 text-orange-500"></i> <strong>พื้นที่สำหรับตอบอัตนัย</strong>
-            </div>
-          </div>
-        `).join('');
-        
-        let countText = `✓ พบ <strong class="text-orange-600">${parsedEssayQuestions.length}</strong> ข้อสอบอัตนัย`;
-        if (parsedEssayQuestions.length > previewLimit) countText += ` (แสดง ${previewLimit} ข้อแรก)`;
-        document.getElementById('essay-preview-count').innerHTML = countText;
-        showAlert('success', 'แปลงสำเร็จ', `พบข้อสอบอัตนัย ${parsedEssayQuestions.length} ข้อ`);
-      } else {
-        showAlert('error', 'แปลงไม่สำเร็จ', 'ไม่พบข้อสอบที่ถูกต้องตามรูปแบบ');
-      }
+          `).join('');
+          
+          let countText = `✓ พบ <strong class="text-orange-600">${parsedEssayQuestions.length}</strong> ข้อสอบอัตนัย`;
+          if (parsedEssayQuestions.length > previewLimit) {
+            countText += ` (แสดง ${previewLimit} ข้อแรก)`;
+          }
+          document.getElementById('essay-preview-count').innerHTML = countText;
+          
+          showAlert('success', 'แปลงสำเร็จ', `พบข้อสอบอัตนัย ${parsedEssayQuestions.length} ข้อ พร้อมคะแนนแล้ว`);
+        } else {
+          showAlert('error', 'แปลงไม่สำเร็จ', 'ไม่พบข้อสอบอัตนัยที่ถูกต้องตามรูปแบบ');
+        }
+      }, 300);
     }
 
     function clearInput(inputId) {
@@ -2225,14 +2141,18 @@ Score: 10"></textarea>
     function editMCQuestions() {
       let textContent = '';
       parsedMCQuestions.forEach((q, index) => {
-        textContent += `${index + 1}. ${q.question}\n`;
-        q.choices.forEach(c => { textContent += `${c.key}. ${c.text}\n`; });
-        textContent += `เฉลย: ${q.answer}\n`;
+        textContent += `${index + 1}.${q.question}\n`;
+        q.choices.forEach(c => {
+          textContent += `${c.key}.${c.text}\n`;
+        });
+        textContent += `เฉลย: ${q.answer}.\n`;
         textContent += `คะแนน: ${q.score}\n\n`;
       });
       document.getElementById('mc-input').value = textContent.trim();
       document.getElementById('mc-preview').classList.add('hidden');
       document.getElementById('mc-edit-message').classList.remove('hidden');
+      document.getElementById('mc-input').focus();
+      document.getElementById('mc-input').scrollIntoView({ behavior: 'smooth' });
     }
 
     function clearMCPreview() {
@@ -2247,12 +2167,14 @@ Score: 10"></textarea>
     function editEssayQuestions() {
       let textContent = '';
       parsedEssayQuestions.forEach((q, index) => {
-        textContent += `${index + 1}. ${q.question}\n`;
+        textContent += `${index + 1}.${q.question}\n`;
         textContent += `คะแนน: ${q.maxScore}\n\n`;
       });
       document.getElementById('essay-input').value = textContent.trim();
       document.getElementById('essay-preview').classList.add('hidden');
       document.getElementById('essay-edit-message').classList.remove('hidden');
+      document.getElementById('essay-input').focus();
+      document.getElementById('essay-input').scrollIntoView({ behavior: 'smooth' });
     }
 
     function clearEssayPreview() {
@@ -2270,10 +2192,12 @@ Score: 10"></textarea>
       parsedEssayQuestions = [];
       document.getElementById('mc-preview').classList.add('hidden');
       document.getElementById('essay-preview').classList.add('hidden');
+      document.getElementById('mc-edit-message').classList.add('hidden');
+      document.getElementById('essay-edit-message').classList.add('hidden');
       document.getElementById('edit-exam-id').value = '';
     }
 
-    safeAddEventListener('create-exam-form', 'submit', async (e) => {
+    document.getElementById('create-exam-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       
       if (parsedMCQuestions.length === 0 && parsedEssayQuestions.length === 0) {
@@ -2288,9 +2212,11 @@ Score: 10"></textarea>
 
       setTimeout(async () => {
         const editExamId = document.getElementById('edit-exam-id').value;
-        
+        const totalScoreVal = parseFloat(document.getElementById('exam-total-score').value);
+        const passingScoreVal = parseFloat(document.getElementById('exam-passing-score').value);
+
         if (editExamId) {
-          const exam = appData.find(d => (d.__backendId && d.__backendId === editExamId) || d.id === editExamId);
+          const exam = appData.find(d => d.__backendId === editExamId);
           if (!exam) {
             showAlert('error', 'ผิดพลาด', 'ไม่พบข้อสอบที่ต้องแก้ไข');
             submitBtn.disabled = false;
@@ -2301,8 +2227,8 @@ Score: 10"></textarea>
           const updatedExam = {
             ...exam,
             subject_name: document.getElementById('exam-subject-name').value,
-            total_score: parseInt(document.getElementById('exam-total-score').value),
-            pass_score: parseInt(document.getElementById('exam-pass-score').value || 0),
+            total_score: totalScoreVal,
+            passing_score: passingScoreVal,
             time_limit: parseInt(document.getElementById('exam-time-limit').value),
             score_per_question: parseFloat(document.getElementById('exam-score-per-question').value),
             is_visible: document.getElementById('exam-visible').checked,
@@ -2316,17 +2242,26 @@ Score: 10"></textarea>
           if (result.isOk) {
             showAlert('success', 'สำเร็จ', 'อัปเดตข้อสอบเรียบร้อยแล้ว');
             resetExamForm();
+            document.getElementById('edit-exam-id').value = '';
           } else {
             showAlert('error', 'ผิดพลาด', 'ไม่สามารถอัปเดตข้อสอบได้');
           }
         } else {
+          const exams = getExams();
+          if (exams.length >= 999) {
+            showAlert('warning', 'ถึงขีดจำกัด', 'ไม่สามารถเพิ่มข้อสอบได้อีก');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalHTML;
+            return;
+          }
+
           const newExam = {
             id: generateId(),
             type: 'exam',
-            member_id: currentUser.__backendId || currentUser.id,
+            member_id: currentUser.__backendId,
             subject_name: document.getElementById('exam-subject-name').value,
-            total_score: parseInt(document.getElementById('exam-total-score').value),
-            pass_score: parseInt(document.getElementById('exam-pass-score').value || 0),
+            total_score: totalScoreVal,
+            passing_score: passingScoreVal,
             time_limit: parseInt(document.getElementById('exam-time-limit').value),
             score_per_question: parseFloat(document.getElementById('exam-score-per-question').value),
             is_visible: document.getElementById('exam-visible').checked,
@@ -2351,15 +2286,16 @@ Score: 10"></textarea>
       }, 300);
     });
 
+    // Exam Management Controls
     function editExamQuestions(backendId) {
-      const exam = appData.find(d => (d.__backendId && d.__backendId === backendId) || d.id === backendId);
+      const exam = appData.find(d => d.__backendId === backendId);
       if (!exam) return;
 
       const questions = exam.questions ? (typeof exam.questions === 'string' ? JSON.parse(exam.questions) : exam.questions) : { mc: [], essay: [] };
 
       document.getElementById('exam-subject-name').value = exam.subject_name;
       document.getElementById('exam-total-score').value = exam.total_score;
-      document.getElementById('exam-pass-score').value = exam.pass_score || 0;
+      document.getElementById('exam-passing-score').value = exam.passing_score !== undefined ? exam.passing_score : (exam.total_score / 2);
       document.getElementById('exam-time-limit').value = exam.time_limit;
       document.getElementById('exam-score-per-question').value = exam.score_per_question;
       document.getElementById('exam-visible').checked = exam.is_visible;
@@ -2367,44 +2303,122 @@ Score: 10"></textarea>
       document.getElementById('exam-shuffle-questions').checked = exam.shuffle_questions;
       document.getElementById('exam-shuffle-choices').checked = exam.shuffle_choices;
 
-      parsedMCQuestions = [...(questions.mc || [])];
-      parsedEssayQuestions = [...(questions.essay || [])];
+      let mcText = '';
+      questions.mc.forEach((q, idx) => {
+        mcText += `${idx + 1}.${q.question}\n`;
+        q.choices.forEach(c => {
+          mcText += `${c.key}.${c.text}\n`;
+        });
+        mcText += `เฉลย: ${q.answer}.\n`;
+        mcText += `คะแนน: ${q.score}\n\n`;
+      });
+
+      let essayText = '';
+      questions.essay.forEach((q, idx) => {
+        essayText += `${idx + 1}.${q.question}\n`;
+        essayText += `คะแนน: ${q.maxScore}\n\n`;
+      });
+
+      document.getElementById('mc-input').value = mcText.trim();
+      document.getElementById('essay-input').value = essayText.trim();
+
+      parsedMCQuestions = [...questions.mc];
+      parsedEssayQuestions = [...questions.essay];
+
+      if (parsedMCQuestions.length > 0) {
+        document.getElementById('mc-preview').classList.remove('hidden');
+        const previewLimit = 3;
+        document.getElementById('mc-preview-content').innerHTML = parsedMCQuestions.slice(0, previewLimit).map((q, i) => `
+          <div class="border-2 border-blue-300 rounded-lg p-4 bg-gradient-to-br from-white to-blue-50 hover:shadow-lg transition">
+            <div class="flex items-start justify-between mb-3">
+              <p class="font-bold text-gray-900 flex-1"><span class="text-blue-600 bg-blue-100 px-2 py-1 rounded">ข้อที่ ${i + 1}</span> ${q.question}</p>
+              <span class="badge badge-info ml-2 whitespace-nowrap"><i class="fas fa-star mr-1"></i>${q.score} คะแนน</span>
+            </div>
+            <div class="space-y-2 pl-4 text-sm">
+              ${q.choices.map(c => `
+                <p class="${c.key === q.answer ? 'text-green-600 font-bold bg-green-50 -ml-4 pl-4 py-1' : 'text-gray-700'}">
+                  <span class="font-semibold">${c.key}.</span> ${c.text} ${c.key === q.answer ? '<i class="fas fa-check-circle ml-2 text-green-500"></i>' : ''}
+                </p>
+              `).join('')}
+            </div>
+          </div>
+        `).join('');
+        let countText = `✓ พบ <strong class="text-blue-600">${parsedMCQuestions.length}</strong> ข้อสอบปรนัย`;
+        if (parsedMCQuestions.length > previewLimit) {
+          countText += ` (แสดง ${previewLimit} ข้อแรก)`;
+        }
+        document.getElementById('mc-preview-count').innerHTML = countText;
+      }
+
+      if (parsedEssayQuestions.length > 0) {
+        document.getElementById('essay-preview').classList.remove('hidden');
+        const previewLimit = 3;
+        document.getElementById('essay-preview-content').innerHTML = parsedEssayQuestions.slice(0, previewLimit).map((q, i) => `
+          <div class="border-2 border-orange-300 rounded-lg p-4 bg-gradient-to-br from-white to-orange-50 hover:shadow-lg transition">
+            <div class="flex items-start justify-between mb-3">
+              <p class="font-bold text-gray-900 flex-1"><span class="text-orange-600 bg-orange-100 px-2 py-1 rounded">ข้อที่ ${i + 1}</span> ${q.question}</p>
+              <span class="badge badge-warning ml-2 whitespace-nowrap"><i class="fas fa-star mr-1"></i>${q.maxScore} คะแนน</span>
+            </div>
+            <div class="bg-gradient-to-r from-orange-50 to-amber-50 rounded p-3 text-gray-600 text-sm border-l-4 border-orange-400">
+              <i class="fas fa-pen-nib mr-2 text-orange-500"></i> <strong>พื้นที่สำหรับตอบอัตนัย</strong>
+            </div>
+          </div>
+        `).join('');
+        let countText = `✓ พบ <strong class="text-orange-600">${parsedEssayQuestions.length}</strong> ข้อสอบอัตนัย`;
+        if (parsedEssayQuestions.length > previewLimit) {
+          countText += ` (แสดง ${previewLimit} ข้อแรก)`;
+        }
+        document.getElementById('essay-preview-count').innerHTML = countText;
+      }
 
       document.getElementById('edit-exam-id').value = backendId;
+      document.getElementById('admin-create-exam').scrollIntoView({ behavior: 'smooth' });
       showAdminPage('create-exam');
-      showAlert('info', 'แก้ไขข้อสอบ', 'ระบบโหลดข้อมูลข้อสอบแล้ว สามารถแก้ไขและกดบันทึกได้ทันที');
+      showAlert('info', 'แก้ไขข้อสอบ', 'แก้ไขข้อสอบแล้วกดบันทึกเพื่ออัปเดต');
     }
 
     async function toggleExamVisibility(backendId) {
-      const exam = appData.find(d => (d.__backendId && d.__backendId === backendId) || d.id === backendId);
+      const exam = appData.find(d => d.__backendId === backendId);
       if (exam) {
-        await window.dataSdk.update({ ...exam, is_visible: !exam.is_visible });
+        const result = await window.dataSdk.update({ ...exam, is_visible: !exam.is_visible });
+        if (result.isOk) {
+          showAlert('success', 'สำเร็จ', exam.is_visible ? 'ซ่อนรายวิชาเรียบร้อย' : 'แสดงรายวิชาเรียบร้อย');
+        }
       }
     }
 
     async function toggleExamAnswer(backendId) {
-      const exam = appData.find(d => (d.__backendId && d.__backendId === backendId) || d.id === backendId);
+      const exam = appData.find(d => d.__backendId === backendId);
       if (exam) {
-        await window.dataSdk.update({ ...exam, show_answer: !exam.show_answer });
+        const result = await window.dataSdk.update({ ...exam, show_answer: !exam.show_answer });
+        if (result.isOk) {
+          showAlert('success', 'สำเร็จ', exam.show_answer ? 'ปิดการแสดงเฉลยเรียบร้อย' : 'เปิดการแสดงเฉลยเรียบร้อย');
+        }
       }
     }
 
     async function toggleShuffleQuestions(backendId) {
-      const exam = appData.find(d => (d.__backendId && d.__backendId === backendId) || d.id === backendId);
+      const exam = appData.find(d => d.__backendId === backendId);
       if (exam) {
-        await window.dataSdk.update({ ...exam, shuffle_questions: !exam.shuffle_questions });
+        const result = await window.dataSdk.update({ ...exam, shuffle_questions: !exam.shuffle_questions });
+        if (result.isOk) {
+          showAlert('success', 'สำเร็จ', exam.shuffle_questions ? 'ปิดการสุ่มลำดับข้อเรียบร้อย' : 'เปิดการสุ่มลำดับข้อเรียบร้อย');
+        }
       }
     }
 
     async function toggleShuffleChoices(backendId) {
-      const exam = appData.find(d => (d.__backendId && d.__backendId === backendId) || d.id === backendId);
+      const exam = appData.find(d => d.__backendId === backendId);
       if (exam) {
-        await window.dataSdk.update({ ...exam, shuffle_choices: !exam.shuffle_choices });
+        const result = await window.dataSdk.update({ ...exam, shuffle_choices: !exam.shuffle_choices });
+        if (result.isOk) {
+          showAlert('success', 'สำเร็จ', exam.shuffle_choices ? 'ปิดการสุ่มตัวเลือกเรียบร้อย' : 'เปิดการสุ่มตัวเลือกเรียบร้อย');
+        }
       }
     }
 
     async function duplicateExam(backendId) {
-      const exam = appData.find(d => (d.__backendId && d.__backendId === backendId) || d.id === backendId);
+      const exam = appData.find(d => d.__backendId === backendId);
       if (exam) {
         const newExam = {
           ...exam,
@@ -2413,109 +2427,64 @@ Score: 10"></textarea>
           created_at: new Date().toISOString()
         };
         delete newExam.__backendId;
-        await window.dataSdk.create(newExam);
-        showAlert('success', 'สำเร็จ', 'ทำซ้ำข้อสอบเรียบร้อยแล้ว');
+        
+        const result = await window.dataSdk.create(newExam);
+        if (result.isOk) {
+          showAlert('success', 'สำเร็จ', 'ทำซ้ำข้อสอบเรียบร้อย');
+        }
       }
     }
 
     function deleteExam(backendId) {
       showConfirmDelete('คุณต้องการลบข้อสอบนี้ใช่หรือไม่?', async () => {
-        const exam = appData.find(d => (d.__backendId && d.__backendId === backendId) || d.id === backendId);
+        const exam = appData.find(d => d.__backendId === backendId);
         if (exam) {
-          await window.dataSdk.delete(exam);
-          showAlert('success', 'สำเร็จ', 'ลบข้อสอบเรียบร้อยแล้ว');
+          const result = await window.dataSdk.delete(exam);
+          if (result.isOk) {
+            showAlert('success', 'สำเร็จ', 'ลบข้อสอบเรียบร้อยแล้ว');
+          }
         }
       });
     }
 
     async function updateExamTime(backendId) {
-      const exam = appData.find(d => (d.__backendId && d.__backendId === backendId) || d.id === backendId);
-      const inputEl = document.getElementById(`time-${backendId}`);
-      if (exam && inputEl) {
-        const newTime = parseInt(inputEl.value);
-        if (newTime > 0) {
-          await window.dataSdk.update({ ...exam, time_limit: newTime });
-          showAlert('success', 'สำเร็จ', 'อัปเดตเวลาเรียบร้อยแล้ว');
+      const exam = appData.find(d => d.__backendId === backendId);
+      const newTime = parseInt(document.getElementById(`time-${backendId}`).value);
+      if (exam && newTime > 0) {
+        const result = await window.dataSdk.update({ ...exam, time_limit: newTime });
+        if (result.isOk) {
+          showAlert('success', 'สำเร็จ', 'อัปเดตเวลาเรียบร้อย');
         }
       }
     }
 
-    function viewResultDetail(backendId) {
-      const r = appData.find(d => (d.__backendId && d.__backendId === backendId) || d.id === backendId);
-      if (!r) return;
-      const exam = getExams().find(e => e.id === r.subject_id);
-      const questions = exam ? (typeof exam.questions === 'string' ? JSON.parse(exam.questions) : exam.questions) : { mc: [], essay: [] };
-      const answers = r.answers ? (typeof r.answers === 'string' ? JSON.parse(r.answers) : r.answers) : { mc: {}, essay: {} };
-
-      const infoEl = document.getElementById('result-detail-info');
-      if (infoEl) {
-        infoEl.innerHTML = `
-          <p><strong>นักเรียน:</strong> ${r.student_id} - ${r.fullname} (${r.class_name}/${r.room} เลขที่ ${r.number})</p>
-          <p><strong>วิชาที่สอบ:</strong> ${r.subject_name}</p>
-          <p><strong>คะแนนที่ได้:</strong> <span class="text-primary-600 font-bold text-base">${r.score}/${r.total_score}</span></p>
-          <p><strong>เวลาส่ง:</strong> ${new Date(r.submitted_at).toLocaleString('th-TH')}</p>
-          <p><strong>จำนวนคำเตือน:</strong> <span class="${r.warnings >= 4 ? 'text-red-600 font-bold' : 'text-gray-700'}">${r.warnings || 0} ครั้ง</span></p>
-        `;
-      }
-
-      const answersEl = document.getElementById('result-detail-answers');
-      if (answersEl) {
-        let html = '';
-        (questions.mc || []).forEach((q, i) => {
-          const userAnswer = answers.mc ? answers.mc[i] : null;
-          const isCorrect = userAnswer === q.answer;
-          html += `
-            <div class="border p-3 rounded-lg ${isCorrect ? 'border-green-300 bg-green-50' : 'border-red-300 bg-red-50'}">
-              <p class="font-bold text-gray-800 mb-1">ข้อที่ ${i + 1} (ปรนัย): ${q.question}</p>
-              <div class="space-y-1 text-sm pl-2">
-                ${(q.choices || []).map(c => `
-                  <p class="${c.key === q.answer ? 'text-green-700 font-bold' : c.key === userAnswer ? 'text-red-700 font-bold' : 'text-gray-600'}">
-                    ${c.key}. ${c.text} ${c.key === q.answer ? '✓ (เฉลย)' : ''} ${c.key === userAnswer && !isCorrect ? '✗ (ตอบ)' : ''}
-                  </p>
-                `).join('')}
-              </div>
-            </div>
-          `;
-        });
-        (questions.essay || []).forEach((q, i) => {
-          const userAnswer = answers.essay ? answers.essay[i] : '';
-          html += `
-            <div class="border border-orange-300 bg-orange-50 p-3 rounded-lg">
-              <p class="font-bold text-gray-800 mb-1">ข้อที่ ${(questions.mc || []).length + i + 1} (อัตนัย): ${q.question}</p>
-              <div class="bg-white p-2 rounded border border-orange-200 text-sm text-gray-800 mt-1">
-                ${userAnswer ? userAnswer : '<em class="text-gray-400">ไม่ได้ตอบ</em>'}
-              </div>
-            </div>
-          `;
-        });
-        answersEl.innerHTML = html || '<p class="text-gray-500 text-center">ไม่พบรายละเอียดคำตอบ</p>';
-      }
-
-      showModal('result-detail-modal');
-    }
-
     function deleteStudent(backendId) {
       showConfirmDelete('คุณต้องการลบข้อมูลผู้สอบนี้ใช่หรือไม่?', async () => {
-        const student = appData.find(d => (d.__backendId && d.__backendId === backendId) || d.id === backendId);
+        const student = appData.find(d => d.__backendId === backendId);
         if (student) {
-          await window.dataSdk.delete(student);
-          showAlert('success', 'สำเร็จ', 'ลบข้อมูลผู้สอบเรียบร้อยแล้ว');
+          const result = await window.dataSdk.delete(student);
+          if (result.isOk) {
+            showAlert('success', 'สำเร็จ', 'ลบข้อมูลผู้สอบเรียบร้อยแล้ว');
+          }
         }
       });
     }
 
     function deleteResult(backendId) {
       showConfirmDelete('คุณต้องการลบผลสอบนี้ใช่หรือไม่?', async () => {
-        const resultItem = appData.find(d => (d.__backendId && d.__backendId === backendId) || d.id === backendId);
-        if (resultItem) {
-          await window.dataSdk.delete(resultItem);
-          showAlert('success', 'สำเร็จ', 'ลบผลสอบเรียบร้อยแล้ว');
+        const result_data = appData.find(d => d.__backendId === backendId);
+        if (result_data) {
+          const result = await window.dataSdk.delete(result_data);
+          if (result.isOk) {
+            showAlert('success', 'สำเร็จ', 'ลบผลสอบเรียบร้อยแล้ว');
+          }
         }
       });
     }
 
+    // Grading Functions
     function openGrading(backendId) {
-      const result_data = appData.find(d => (d.__backendId && d.__backendId === backendId) || d.id === backendId);
+      const result_data = appData.find(d => d.__backendId === backendId);
       if (!result_data) return;
 
       currentGradingResult = result_data;
@@ -2531,66 +2500,226 @@ Score: 10"></textarea>
       const essayAnswers = answers.essay || {};
 
       const content = document.getElementById('grading-content');
-      if (content) {
-        content.innerHTML = `
-          <div class="bg-gray-50 rounded-lg p-4 mb-4">
-            <p class="font-medium">${result_data.student_id} - ${result_data.fullname}</p>
-            <p class="text-sm text-gray-500">${result_data.subject_name}</p>
-          </div>
-          ${(questions.essay || []).map((q, i) => `
-            <div class="border border-gray-200 rounded-lg p-4">
-              <p class="font-medium text-gray-800 mb-2">ข้อที่ ${i + 1}: ${q.question}</p>
-              <div class="bg-blue-50 rounded p-3 mb-3">
-                <p class="text-sm text-gray-500 mb-1">คำตอบ:</p>
-                <p class="text-gray-800">${essayAnswers[i] || '<em class="text-gray-400">ไม่ได้ตอบ</em>'}</p>
-              </div>
-              <div class="flex items-center gap-2">
-                <label class="text-sm text-gray-600">คะแนน:</label>
-                <input type="number" id="essay-score-${i}" min="0" max="${q.maxScore || 10}" step="0.5" value="0"
-                  class="w-20 px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none text-center">
-                <span class="text-sm text-gray-500">/ ${q.maxScore || 10}</span>
-              </div>
+      content.innerHTML = `
+        <div class="bg-gray-50 rounded-lg p-4 mb-4">
+          <p class="font-medium">${result_data.student_id} - ${result_data.fullname}</p>
+          <p class="text-sm text-gray-500">${result_data.subject_name}</p>
+        </div>
+        ${questions.essay.map((q, i) => `
+          <div class="border border-gray-200 rounded-lg p-4">
+            <p class="font-medium text-gray-800 mb-2">ข้อที่ ${i + 1}: ${q.question}</p>
+            <div class="bg-blue-50 rounded p-3 mb-3">
+              <p class="text-sm text-gray-500 mb-1">คำตอบ:</p>
+              <p class="text-gray-800 font-mono">${essayAnswers[i] || '<em class="text-gray-400">ไม่ได้ตอบ</em>'}</p>
             </div>
-          `).join('')}
-        `;
-      }
+            <div class="flex items-center gap-2">
+              <label class="text-sm text-gray-600">คะแนน:</label>
+              <input type="number" id="essay-score-${i}" min="0" max="${q.maxScore || exam.score_per_question}" step="0.5" value="0"
+                class="w-20 px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none text-center">
+              <span class="text-sm text-gray-500">/ ${q.maxScore || exam.score_per_question}</span>
+            </div>
+          </div>
+        `).join('')}
+      `;
       showModal('grading-modal');
     }
 
     async function saveGrading() {
       if (!currentGradingResult) return;
 
-      const exam = getExams().find(e => e.id === currentGradingResult.subject_id);
-      if (!exam) return;
+      const btn = event.target;
+      const originalHTML = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner spin mr-2"></i> กำลังบันทึก...';
 
-      const questions = (typeof exam.questions === 'string') ? JSON.parse(exam.questions) : exam.questions;
-      let essayScore = 0;
-
-      (questions.essay || []).forEach((q, i) => {
-        const scoreInput = document.getElementById(`essay-score-${i}`);
-        if (scoreInput) {
-          essayScore += parseFloat(scoreInput.value) || 0;
+      setTimeout(async () => {
+        const exam = getExams().find(e => e.id === currentGradingResult.subject_id);
+        if (!exam) {
+          btn.disabled = false;
+          btn.innerHTML = originalHTML;
+          return;
         }
+
+        const questions = (typeof exam.questions === 'string') ? JSON.parse(exam.questions) : exam.questions;
+        let essayScore = 0;
+
+        questions.essay.forEach((q, i) => {
+          const scoreInput = document.getElementById(`essay-score-${i}`);
+          if (scoreInput) {
+            essayScore += parseFloat(scoreInput.value) || 0;
+          }
+        });
+
+        const mcScore = currentGradingResult.mc_score || 0;
+        const totalScore = mcScore + essayScore;
+
+        const result = await window.dataSdk.update({
+          ...currentGradingResult,
+          score: totalScore,
+          essay_score: essayScore,
+          graded: true
+        });
+
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+
+        if (result.isOk) {
+          hideModal('grading-modal');
+          showAlert('success', 'สำเร็จ', 'บันทึกคะแนนเรียบร้อย');
+          currentGradingResult = null;
+        }
+      }, 300);
+    }
+
+    // Profile Update
+    document.getElementById('profile-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      const originalHTML = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner spin mr-2"></i> กำลังบันทึก...';
+
+      setTimeout(async () => {
+        if (!currentUser) {
+          btn.disabled = false;
+          btn.innerHTML = originalHTML;
+          return;
+        }
+
+        const fullname = document.getElementById('profile-fullname').value;
+        const email = document.getElementById('profile-email').value;
+        const newPassword = document.getElementById('profile-password').value;
+
+        const updatedUser = {
+          ...currentUser,
+          fullname: fullname,
+          email: email
+        };
+
+        if (newPassword) {
+          updatedUser.password = newPassword;
+        }
+
+        const result = await window.dataSdk.update(updatedUser);
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+        
+        if (result.isOk) {
+          currentUser = updatedUser;
+          document.getElementById('admin-name').textContent = updatedUser.fullname;
+          showAlert('success', 'สำเร็จ', 'บันทึกข้อมูลส่วนตัวเรียบร้อย');
+        } else {
+          showAlert('error', 'ผิดพลาด', 'ไม่สามารถบันทึกได้');
+        }
+      }, 300);
+    });
+
+    // Export Data Functions
+    function exportData(type, format = 'csv') {
+      let data = [];
+      let filename = '';
+      let headers = [];
+
+      switch(type) {
+        case 'members':
+          data = getMembers();
+          filename = 'สมาชิกระบบ';
+          headers = ['ลำดับ', 'ชื่อผู้ใช้', 'ชื่อ-สกุล', 'อีเมล', 'สถานะ', 'บทบาท'];
+          break;
+        case 'exams':
+          data = getExams();
+          filename = 'ข้อสอบ';
+          headers = ['ลำดับ', 'รายวิชา', 'จำนวนข้อ', 'คะแนนเต็ม', 'เกณฑ์ผ่าน', 'เวลา(นาที)', 'สถานะ'];
+          break;
+        case 'students':
+          data = getStudents();
+          filename = 'ข้อมูลผู้สอบ';
+          headers = ['ลำดับ', 'รหัสนักเรียน', 'ชื่อ-สกุล', 'ชั้น', 'ห้อง', 'เลขที่', 'รายวิชา'];
+          break;
+        case 'results':
+          data = getResults();
+          filename = 'ผลสอบ';
+          headers = ['ลำดับ', 'รหัสนักเรียน', 'ชื่อ-สกุล', 'รายวิชา', 'คะแนน', 'เวลาส่ง', 'สถานะ'];
+          break;
+      }
+
+      if (data.length === 0) {
+        showAlert('warning', 'ไม่มีข้อมูล', 'ไม่พบข้อมูลสำหรับส่งออก');
+        return;
+      }
+
+      let rows = [];
+      data.forEach((item, index) => {
+        let row = [];
+        switch(type) {
+          case 'members':
+            row = [index + 1, item.username, item.fullname, item.email, item.status === 'active' ? 'อนุมัติแล้ว' : 'รออนุมัติ', item.role === 'admin' ? 'ผู้ดูแลระบบ' : 'ครู'];
+            break;
+          case 'exams':
+            const questions = item.questions ? (typeof item.questions === 'string' ? JSON.parse(item.questions) : item.questions) : { mc: [], essay: [] };
+            const totalQuestions = (questions.mc?.length || 0) + (questions.essay?.length || 0);
+            row = [index + 1, item.subject_name, totalQuestions, item.total_score, item.passing_score !== undefined ? item.passing_score : (item.total_score / 2), item.time_limit, item.is_visible ? 'เปิด' : 'ปิด'];
+            break;
+          case 'students':
+            row = [index + 1, item.student_id, item.fullname, item.class_name, item.room, item.number, item.subject_name];
+            break;
+          case 'results':
+            row = [index + 1, item.student_id, item.fullname, item.subject_name, `${item.score}/${item.total_score}`, new Date(item.submitted_at).toLocaleString('th-TH'), item.graded ? 'ตรวจแล้ว' : 'รอตรวจ'];
+            break;
+        }
+        rows.push(row);
       });
 
-      const mcScore = currentGradingResult.mc_score || 0;
-      const totalScore = mcScore + essayScore;
+      if (format === 'excel') {
+        try {
+          if (typeof XLSX === 'undefined') {
+            showAlert('error', 'ผิดพลาด', 'ไม่สามารถสร้างไฟล์ Excel ได้');
+            return;
+          }
 
-      const result = await window.dataSdk.update({
-        ...currentGradingResult,
-        score: totalScore,
-        essay_score: essayScore,
-        graded: true
-      });
+          const wsData = [headers, ...rows];
+          const worksheet = XLSX.utils.aoa_to_sheet(wsData);
+          
+          const colWidths = headers.map(() => ({ wch: 20 }));
+          worksheet['!cols'] = colWidths;
+          
+          const workbook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(workbook, worksheet, 'ข้อมูล');
+          
+          const timestamp = new Date().toISOString().split('T')[0];
+          const filename_excel = `${filename}_${timestamp}.xlsx`;
+          XLSX.writeFile(workbook, filename_excel);
+          showAlert('success', 'ส่งออกสำเร็จ', `ดาวน์โหลดไฟล์ ${filename}.xlsx เรียบร้อยแล้ว`);
+        } catch (error) {
+          console.error('Excel export error:', error);
+          showAlert('error', 'ผิดพลาด', 'ไม่สามารถสร้างไฟล์ Excel ได้ โปรดลองใช้ CSV แทน');
+        }
+      } else {
+        let csv = '\uFEFF' + headers.join(',') + '\n';
+        rows.forEach(row => {
+          csv += row.map(cell => {
+            const cellStr = String(cell);
+            return cellStr.includes(',') || cellStr.includes('"') || cellStr.includes('\n') 
+              ? `"${cellStr.replace(/"/g, '""')}"` 
+              : `"${cellStr}"`;
+          }).join(',') + '\n';
+        });
 
-      if (result.isOk) {
-        hideModal('grading-modal');
-        showAlert('success', 'สำเร็จ', 'บันทึกคะแนนเรียบร้อย');
-        currentGradingResult = null;
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        const timestamp = new Date().toISOString().split('T')[0];
+        link.download = `${filename}_${timestamp}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(link.href);
+        showAlert('success', 'ส่งออกสำเร็จ', `ดาวน์โหลดไฟล์ ${filename}.csv เรียบร้อยแล้ว`);
       }
     }
 
-    safeAddEventListener('student-form', 'submit', async (e) => {
+    // Student Exam Functions
+    document.getElementById('student-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = e.target.querySelector('button[type="submit"]');
       const originalHTML = btn.innerHTML;
@@ -2639,8 +2768,8 @@ Score: 10"></textarea>
 
           const questions = (typeof exam.questions === 'string') ? JSON.parse(exam.questions) : exam.questions;
           if (exam.shuffle_questions) {
-            questions.mc = shuffleArray([...(questions.mc || [])]);
-            questions.essay = shuffleArray([...(questions.essay || [])]);
+            questions.mc = shuffleArray([...questions.mc]);
+            questions.essay = shuffleArray([...questions.essay]);
           }
           currentExam.parsedQuestions = questions;
 
@@ -2662,7 +2791,6 @@ Score: 10"></textarea>
 
     function startExamTimer() {
       updateTimerDisplay();
-      if (examTimer) clearInterval(examTimer);
       examTimer = setInterval(() => {
         examTimeLeft--;
         updateTimerDisplay();
@@ -2674,25 +2802,21 @@ Score: 10"></textarea>
     }
 
     function updateTimerDisplay() {
-      const timerEl = document.getElementById('exam-timer');
-      if (!timerEl) return;
       const hours = Math.floor(examTimeLeft / 3600);
       const minutes = Math.floor((examTimeLeft % 3600) / 60);
       const seconds = examTimeLeft % 60;
-      timerEl.textContent = 
+      document.getElementById('exam-timer').textContent = 
         `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
       
       if (examTimeLeft <= 300) {
-        timerEl.classList.add('text-red-300');
+        document.getElementById('exam-timer').classList.add('text-red-300');
       }
     }
 
     function renderQuestion() {
-      const questions = currentExam.parsedQuestions || { mc: [], essay: [] };
-      const allQuestions = [
-        ...(questions.mc || []).map((q, i) => ({ ...q, type: 'mc', originalIndex: i })),
-        ...(questions.essay || []).map((q, i) => ({ ...q, type: 'essay', originalIndex: i }))
-      ];
+      const questions = currentExam.parsedQuestions;
+      const allQuestions = [...questions.mc.map((q, i) => ({ ...q, type: 'mc', originalIndex: i })),
+                            ...questions.essay.map((q, i) => ({ ...q, type: 'essay', originalIndex: i }))];
       
       const totalQuestions = allQuestions.length;
       document.getElementById('exam-progress-text').textContent = `${currentQuestionIndex + 1}/${totalQuestions} ข้อ`;
@@ -2704,10 +2828,14 @@ Score: 10"></textarea>
 
       if (q.type === 'mc') {
         let displayChoices = [...q.choices];
+        // If random choices option is enabled, shuffle choices every time the question is loaded
         if (currentExam.shuffle_choices) {
           displayChoices = shuffleArray([...q.choices]);
         }
         
+        // Sequential Display Labels ALWAYS "ก., ข., ค., ง., จ." regardless of shuffled choices
+        const displayLabels = ['ก', 'ข', 'ค', 'ง', 'จ'];
+
         container.innerHTML = `
           <div class="fade-in">
             <div class="flex items-center gap-2 mb-4">
@@ -2716,19 +2844,27 @@ Score: 10"></textarea>
             </div>
             <h3 class="text-xl font-bold text-gray-800 mb-6">${q.question}</h3>
             <div class="space-y-3">
-              ${displayChoices.map((choice) => `
-                <label class="flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition
-                  ${studentAnswers.mc[q.originalIndex] === choice.key ? 'border-primary-500 bg-primary-50' : 'border-gray-200 hover:border-primary-300'}">
-                  <input type="radio" name="mc-answer" value="${choice.key}" 
-                    ${studentAnswers.mc[q.originalIndex] === choice.key ? 'checked' : ''}
-                    onchange="selectMCAnswer(${q.originalIndex}, '${choice.key}')"
-                    class="w-5 h-5 text-primary-500">
-                  <span class="text-lg"><strong class="mr-1">${choice.key}.</strong> ${choice.text}</span>
-                </label>
-              `).join('')}
+              ${displayChoices.map((choice, idx) => {
+                const uiLabel = displayLabels[idx] || (idx + 1);
+                // Value sent to studentAnswers is the REAL original choice key/identifier (choice.key)
+                const isChecked = studentAnswers.mc[q.originalIndex] === choice.key;
+                return `
+                  <label class="flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition
+                    ${isChecked ? 'border-primary-500 bg-primary-50' : 'border-gray-200 hover:border-primary-300'}">
+                    <input type="radio" name="mc-answer" value="${choice.key}" 
+                      ${isChecked ? 'checked' : ''}
+                      onchange="selectMCAnswer(${q.originalIndex}, '${choice.key}')"
+                      class="w-5 h-5 text-primary-500">
+                    <span class="text-lg font-medium"><strong class="text-primary-600 mr-1">${uiLabel}.</strong> ${choice.text}</span>
+                  </label>
+                `;
+              }).join('')}
             </div>
           </div>
         `;
+        
+        if (!currentExam.answerMap) currentExam.answerMap = {};
+        currentExam.answerMap[q.originalIndex] = q.answer;
       } else {
         container.innerHTML = `
           <div class="fade-in">
@@ -2738,7 +2874,7 @@ Score: 10"></textarea>
             </div>
             <h3 class="text-xl font-bold text-gray-800 mb-6">${q.question}</h3>
             <textarea id="essay-answer" rows="8"
-              class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none text-lg"
+              class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none text-lg font-mono"
               placeholder="พิมพ์คำตอบของคุณที่นี่..."
               onchange="selectEssayAnswer(${q.originalIndex}, this.value)">${studentAnswers.essay[q.originalIndex] || ''}</textarea>
           </div>
@@ -2753,12 +2889,13 @@ Score: 10"></textarea>
       document.getElementById('submit-container').classList.toggle('hidden', currentQuestionIndex !== totalQuestions - 1);
     }
 
-    function selectMCAnswer(index, key) {
-      studentAnswers.mc[index] = key;
+    window.selectMCAnswer = function(index, choiceKey) {
+      // Stores actual choice key/id for scoring
+      studentAnswers.mc[index] = choiceKey;
       renderQuestion();
     }
 
-    function selectEssayAnswer(index, value) {
+    window.selectEssayAnswer = function(index, value) {
       studentAnswers.essay[index] = value;
     }
 
@@ -2771,7 +2908,8 @@ Score: 10"></textarea>
 
     function nextQuestion() {
       const questions = currentExam.parsedQuestions;
-      const totalQuestions = (questions.mc?.length || 0) + (questions.essay?.length || 0);
+      const totalQuestions = questions.mc.length + questions.essay.length;
+      
       if (currentQuestionIndex < totalQuestions - 1) {
         currentQuestionIndex++;
         renderQuestion();
@@ -2791,21 +2929,24 @@ Score: 10"></textarea>
       `;
       document.body.appendChild(loadingOverlay);
 
-      const questions = currentExam.parsedQuestions || { mc: [], essay: [] };
+      const questions = currentExam.parsedQuestions;
       let mcScore = 0;
 
-      (questions.mc || []).forEach((q, i) => {
-        if (studentAnswers.mc[i] === q.answer) {
+      questions.mc.forEach((q, i) => {
+        const correctAnswer = currentExam.answerMap ? currentExam.answerMap[i] : q.answer;
+        // Compare actual choice keys
+        if (studentAnswers.mc[i] === correctAnswer) {
           mcScore += (q.score || currentExam.score_per_question || 1);
         }
       });
 
-      const hasEssay = (questions.essay || []).length > 0;
+      const hasEssay = questions.essay.length > 0;
+      const passThreshold = currentExam.passing_score !== undefined ? currentExam.passing_score : (currentExam.total_score / 2);
       
       const examResult = {
         id: generateId(),
         type: 'result',
-        member_id: currentExam.member_id,
+        member_id: getExams().find(e => e.id === currentExam.id)?.member_id,
         student_id: document.getElementById('student-id').value,
         fullname: document.getElementById('student-name').value,
         class_name: document.getElementById('student-class').value,
@@ -2817,6 +2958,7 @@ Score: 10"></textarea>
         mc_score: mcScore,
         score: mcScore,
         total_score: currentExam.total_score,
+        passing_score: passThreshold,
         submitted_at: new Date().toISOString(),
         graded: !hasEssay,
         warnings: warningCount,
@@ -2824,14 +2966,14 @@ Score: 10"></textarea>
       };
 
       const result = await window.dataSdk.create(examResult);
-      if (document.body.contains(loadingOverlay)) {
-        document.body.removeChild(loadingOverlay);
-      }
+      document.body.removeChild(loadingOverlay);
 
       if (result.isOk) {
         const resultIcon = document.getElementById('result-icon');
         const resultTitle = document.getElementById('result-title');
         const resultMessage = document.getElementById('result-message');
+
+        const isPassed = examResult.score >= passThreshold;
 
         if (warningCount >= 4) {
           resultIcon.className = 'w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6';
@@ -2839,18 +2981,18 @@ Score: 10"></textarea>
           resultTitle.textContent = 'ยุติการสอบ';
           resultTitle.className = 'text-3xl font-bold mb-2 text-red-600';
           resultMessage.textContent = 'ตรวจพบการทุจริตระหว่างการสอบ';
-        } else if (examResult.score >= (currentExam.pass_score || (currentExam.total_score * 0.5))) {
+        } else if (isPassed) {
           resultIcon.className = 'w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6';
           resultIcon.innerHTML = '<i class="fas fa-trophy text-5xl text-green-500"></i>';
-          resultTitle.textContent = 'ผ่านเกณฑ์!';
+          resultTitle.textContent = 'ผ่านเกณฑ์การสอบ!';
           resultTitle.className = 'text-3xl font-bold mb-2 text-green-600';
-          resultMessage.textContent = 'ยินดีด้วย คุณสอบผ่านตามเกณฑ์ที่กำหนด';
+          resultMessage.textContent = `คุณสอบผ่านเกณฑ์ (${passThreshold} คะแนนขึ้นไป)`;
         } else {
           resultIcon.className = 'w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6';
           resultIcon.innerHTML = '<i class="fas fa-book-reader text-5xl text-red-500"></i>';
           resultTitle.textContent = 'ไม่ผ่านเกณฑ์';
           resultTitle.className = 'text-3xl font-bold mb-2 text-red-600';
-          resultMessage.textContent = 'พยายามใหม่อีกครั้งนะ!';
+          resultMessage.textContent = `เกณฑ์ผ่านคือ ${passThreshold} คะแนน พยายามต่อไปนะ!`;
         }
 
         document.getElementById('result-score').textContent = warningCount >= 4 ? '-' : (hasEssay ? `${mcScore} (รอตรวจอัตนัย)` : examResult.score);
@@ -2860,10 +3002,15 @@ Score: 10"></textarea>
           <p><strong>ชื่อ-สกุล:</strong> ${examResult.fullname}</p>
           <p><strong>ชั้น/ห้อง:</strong> ${examResult.class_name}/${examResult.room}</p>
           <p><strong>รายวิชา:</strong> ${examResult.subject_name}</p>
+          <p><strong>เกณฑ์ผ่าน:</strong> ${passThreshold} คะแนน</p>
           <p><strong>เวลาส่ง:</strong> ${new Date(examResult.submitted_at).toLocaleString('th-TH')}</p>
           ${warningCount >= 4 ? '<p class="text-red-500"><strong>⚠️ สถานะ:</strong> ตรวจพบการทุจริต ไม่มีการให้คะแนน</p>' : ''}
           ${hasEssay && warningCount < 4 ? '<p class="text-orange-500"><strong>หมายเหตุ:</strong> รอตรวจข้อสอบอัตนัยเพิ่มเติม</p>' : ''}
         `;
+
+        if (currentExam.show_answer && warningCount < 4) {
+          displayAnswerReview(examResult, questions);
+        }
 
         showPage('result');
       }
@@ -2874,13 +3021,12 @@ Score: 10"></textarea>
       currentExam = null;
       currentQuestionIndex = 0;
       examTimeLeft = 0;
-      studentAnswers = { mc: {}, essay: {} };
+      studentAnswers = {};
       warningCount = 0;
-      const form = document.getElementById('student-form');
-      if (form) form.reset();
+      document.getElementById('student-form').reset();
     }
 
-    // Anti-Cheating Guard
+    // Anti-cheating & Protection Rules
     function setupExamProtection() {
       document.addEventListener('contextmenu', preventAction);
       document.addEventListener('copy', preventAction);
@@ -2893,7 +3039,7 @@ Score: 10"></textarea>
     function preventAction(e) {
       if (document.getElementById('page-exam').classList.contains('hidden')) return;
       e.preventDefault();
-      showWarning('ไม่อนุญาตให้คัดลอก คัดลอก หรือวางข้อความ');
+      showWarning('ไม่อนุญาตให้คัดลอกหรือวาง');
     }
 
     function handleVisibilityChange() {
@@ -2910,12 +3056,13 @@ Score: 10"></textarea>
 
     function addWarning(message) {
       warningCount++;
-      const warnEl = document.getElementById('exam-warning-count');
-      if (warnEl) warnEl.textContent = `คำเตือน: ${warningCount}/3`;
+      document.getElementById('exam-warning-count').textContent = `คำเตือน: ${warningCount}/3`;
       
       if (warningCount >= 4) {
         showAlert('error', 'ยุติการสอบ', 'ตรวจพบการทุจริตมากกว่า 3 ครั้ง การสอบถูกยุติ');
-        setTimeout(() => { submitExam(); }, 1500);
+        setTimeout(() => {
+          submitExam();
+        }, 2000);
       } else {
         showWarning(message);
       }
@@ -2927,124 +3074,99 @@ Score: 10"></textarea>
       showModal('warning-modal');
     }
 
-    // Profile Form Listener
-    safeAddEventListener('profile-form', 'submit', async (e) => {
-      e.preventDefault();
-      const btn = e.target.querySelector('button[type="submit"]');
-      const originalHTML = btn.innerHTML;
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner spin mr-2"></i> กำลังบันทึก...';
-
-      setTimeout(async () => {
-        if (!currentUser) return;
-        const fullname = document.getElementById('profile-fullname').value;
-        const email = document.getElementById('profile-email').value;
-        const newPassword = document.getElementById('profile-password').value;
-
-        const updatedUser = {
-          ...currentUser,
-          fullname: fullname,
-          email: email
-        };
-
-        if (newPassword && newPassword.trim().length > 0) {
-          updatedUser.password = newPassword;
-        }
-
-        const result = await window.dataSdk.update(updatedUser);
-        btn.disabled = false;
-        btn.innerHTML = originalHTML;
-        
-        if (result.isOk) {
-          currentUser = updatedUser;
-          document.getElementById('admin-name').textContent = updatedUser.fullname;
-          showAlert('success', 'สำเร็จ', 'บันทึกข้อมูลส่วนตัวเรียบร้อยแล้ว');
-        } else {
-          showAlert('error', 'ผิดพลาด', 'ไม่สามารถบันทึกได้');
-        }
-      }, 300);
+    window.addEventListener('beforeunload', () => {
+      document.removeEventListener('contextmenu', preventAction);
+      document.removeEventListener('copy', preventAction);
+      document.removeEventListener('paste', preventAction);
+      document.removeEventListener('cut', preventAction);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('blur', handleWindowBlur);
     });
 
-    function exportData(type, format = 'csv') {
-      let data = [];
-      let filename = '';
-      let headers = [];
+    // Answer Review
+    function displayAnswerReview(examResult, questions) {
+      const container = document.getElementById('answer-review-container');
+      const blockedDiv = document.getElementById('answer-review-blocked');
+      const allowedDiv = document.getElementById('answer-review-allowed');
+      const contentDiv = document.getElementById('answer-review-content');
+      const answers = (typeof examResult.answers === 'string') ? JSON.parse(examResult.answers) : examResult.answers;
 
-      switch(type) {
-        case 'members':
-          data = getMembers();
-          filename = 'สมาชิกระบบ';
-          headers = ['ลำดับ', 'ชื่อผู้ใช้', 'ชื่อ-สกุล', 'อีเมล', 'สถานะ', 'บทบาท'];
-          break;
-        case 'exams':
-          data = getExams();
-          filename = 'ข้อสอบ';
-          headers = ['ลำดับ', 'รายวิชา', 'จำนวนข้อ', 'คะแนนเต็ม', 'เวลา(นาที)', 'สถานะ'];
-          break;
-        case 'students':
-          data = getStudents();
-          filename = 'ข้อมูลผู้สอบ';
-          headers = ['ลำดับ', 'รหัสนักเรียน', 'ชื่อ-สกุล', 'ชั้น', 'ห้อง', 'เลขที่', 'รายวิชา'];
-          break;
-        case 'results':
-          data = getResults();
-          filename = 'ผลสอบ';
-          headers = ['ลำดับ', 'รหัสนักเรียน', 'ชื่อ-สกุล', 'รายวิชา', 'คะแนน', 'เวลาส่ง', 'สถานะ'];
-          break;
-      }
-
-      if (data.length === 0) {
-        showAlert('warning', 'ไม่มีข้อมูล', 'ไม่พบข้อมูลสำหรับส่งออก');
+      const isCheating = examResult.warnings >= 4;
+      if (isCheating) {
+        blockedDiv.classList.remove('hidden');
+        allowedDiv.classList.add('hidden');
+        container.classList.remove('hidden');
         return;
       }
 
-      let rows = [];
-      data.forEach((item, index) => {
-        let row = [];
-        switch(type) {
-          case 'members':
-            row = [index + 1, item.username, item.fullname, item.email, item.status === 'active' ? 'อนุมัติแล้ว' : 'รออนุมัติ', item.role === 'admin' ? 'ผู้ดูแลระบบ' : 'ครู'];
-            break;
-          case 'exams':
-            const questions = item.questions ? (typeof item.questions === 'string' ? JSON.parse(item.questions) : item.questions) : { mc: [], essay: [] };
-            const totalQuestions = (questions.mc?.length || 0) + (questions.essay?.length || 0);
-            row = [index + 1, item.subject_name, totalQuestions, item.total_score, item.time_limit, item.is_visible ? 'เปิด' : 'ปิด'];
-            break;
-          case 'students':
-            row = [index + 1, item.student_id, item.fullname, item.class_name, item.room, item.number, item.subject_name];
-            break;
-          case 'results':
-            row = [index + 1, item.student_id, item.fullname, item.subject_name, `${item.score}/${item.total_score}`, new Date(item.submitted_at).toLocaleString('th-TH'), item.graded ? 'ตรวจแล้ว' : 'รอตรวจ'];
-            break;
-        }
-        rows.push(row);
+      const exam = appData.find(d => d.__backendId && d.id === examResult.subject_id && d.type === 'exam');
+      
+      if (!exam || !exam.show_answer) {
+        container.classList.add('hidden');
+        return;
+      }
+
+      blockedDiv.classList.add('hidden');
+      allowedDiv.classList.remove('hidden');
+      container.classList.remove('hidden');
+
+      let reviewHTML = '';
+      
+      questions.mc.forEach((q, i) => {
+        const userAnswerKey = answers.mc[i];
+        const correctAnswerKey = q.answer;
+        const isCorrect = userAnswerKey === correctAnswerKey;
+        reviewHTML += `
+          <div class="border-2 ${isCorrect ? 'border-green-300 bg-green-50' : 'border-red-300 bg-red-50'} rounded-lg p-3">
+            <div class="flex items-start justify-between mb-2">
+              <p class="font-bold text-gray-800 flex-1"><span class="badge ${isCorrect ? 'badge-success' : 'badge-danger'}">ข้อที่ ${i + 1}</span> ${q.question}</p>
+              <span class="text-xs font-bold ${isCorrect ? 'text-green-600' : 'text-red-600'}">
+                ${isCorrect ? '<i class="fas fa-check-circle"></i> ถูกต้อง' : '<i class="fas fa-times-circle"></i> ผิด'}
+              </span>
+            </div>
+            <div class="space-y-1 text-sm pl-4">
+              ${q.choices.map(c => `
+                <div class="${c.key === correctAnswerKey ? 'font-bold text-green-700 bg-green-100 -ml-4 pl-4 py-1 rounded' : c.key === userAnswerKey ? 'font-bold text-red-700 bg-red-100 -ml-4 pl-4 py-1 rounded' : 'text-gray-700'}">
+                  <span class="font-semibold">${c.key}.</span> ${c.text}
+                  ${c.key === correctAnswerKey ? '<i class="fas fa-check-circle ml-2 text-green-600"></i>' : ''}
+                  ${c.key === userAnswerKey && c.key !== correctAnswerKey ? '<i class="fas fa-times-circle ml-2 text-red-600"></i>' : ''}
+                </div>
+              `).join('')}
+            </div>
+            ${userAnswerKey ? `<p class="text-xs text-gray-600 mt-2">คำตอบของคุณ: <strong>${userAnswerKey}</strong></p>` : '<p class="text-xs text-gray-500 mt-2"><em>ไม่ได้ตอบ</em></p>'}
+          </div>
+        `;
       });
 
-      if (format === 'excel' && typeof XLSX !== 'undefined') {
-        const wsData = [headers, ...rows];
-        const worksheet = XLSX.utils.aoa_to_sheet(wsData);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'ข้อมูล');
-        XLSX.writeFile(workbook, `${filename}_${new Date().toISOString().split('T')[0]}.xlsx`);
-      } else {
-        let csv = '\uFEFF' + headers.join(',') + '\n';
-        rows.forEach(row => {
-          csv += row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',') + '\n';
-        });
+      questions.essay.forEach((q, i) => {
+        const userAnswer = answers.essay[i];
+        reviewHTML += `
+          <div class="border-2 border-orange-300 bg-orange-50 rounded-lg p-3">
+            <p class="font-bold text-gray-800 mb-2"><span class="badge badge-warning">ข้อที่ ${questions.mc.length + i + 1}</span> ${q.question}</p>
+            <div class="bg-white rounded border-2 border-orange-200 p-2 text-sm text-gray-700 min-h-12 font-mono">
+              ${userAnswer ? userAnswer : '<em class="text-gray-400">ไม่ได้ตอบ</em>'}
+            </div>
+            <p class="text-xs text-orange-600 mt-2"><i class="fas fa-clipboard-list mr-1"></i>รอตรวจจากครู (คะแนนเต็ม: ${q.maxScore})</p>
+          </div>
+        `;
+      });
 
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `${filename}_${new Date().toISOString().split('T')[0]}.csv`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-      showAlert('success', 'ส่งออกสำเร็จ', 'ดาวน์โหลดข้อมูลเรียบร้อยแล้ว');
+      contentDiv.innerHTML = reviewHTML;
+      container.classList.remove('hidden');
     }
 
-    // Initialize App Engine on Load
+    function toggleAnswerReview() {
+      const contentDiv = document.getElementById('answer-review-content');
+      const icon = document.getElementById('review-toggle-icon');
+      
+      contentDiv.classList.toggle('hidden');
+      icon.classList.toggle('fa-eye');
+      icon.classList.toggle('fa-eye-slash');
+    }
+
+    // Call initApp on load
     window.onload = initApp;
+
   </script>
  </body>
 </html>
