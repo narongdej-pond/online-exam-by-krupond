@@ -91,7 +91,7 @@
  <body class="h-full bg-gray-50 font-sarabun">
   <div id="app" class="h-full">
     <!-- Loading Spinner -->
-   <div id="loading" class="fixed inset-0 bg-white z-50 flex items-center justify-center">
+   <div id="loading" class="fixed inset-0 bg-white z-50 flex items-center justify-center hidden">
     <div class="text-center">
         <i class="fas fa-circle-notch spin text-5xl text-primary-500 mb-4"></i>
         <p id="loadingText" class="text-gray-600 text-lg transition-all duration-300">กำลังโหลด...</p>
@@ -1083,6 +1083,23 @@ Score: 5"></textarea>
           console.error("Failed to load data:", err);
           showAlert('error', 'ผิดพลาด', 'โหลดข้อมูลล้มเหลว โปรดตรวจสอบ URL ของ Google Apps Script หรือรีเฟรชหน้าเว็บ');
           document.getElementById('loading').classList.add('hidden');
+      }
+    }
+
+    // Initialize App
+    async function initApp() {
+      startLoading();
+      try {
+          const data = await window.dataSdk._callAPI('getData');
+          appData = data || [];
+      } catch (err) {
+          console.warn("Failed to load data from GAS, initializing empty data SDK:", err);
+          appData = [];
+      } finally {
+          stopLoading();
+          showPage('home');
+          updateUI();
+          setupPasswordHoldToReveal();
       }
     }
 
