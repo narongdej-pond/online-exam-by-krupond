@@ -131,7 +131,7 @@
     document.getElementById('loading').classList.add('hidden');
   }
 </script>
-   
+    
    <!-- Page 1: Home/Student Login -->
    <div id="page-home" class="hidden h-full flex flex-col">
     <!-- Header -->
@@ -529,7 +529,7 @@ D. Chonburi
 Answer: A.
 Score: 1
 
-3. 泰国的首都是哪里？
+3. 泰국의首都是哪里？
 A、曼谷
 B、清迈
 C、普吉岛
@@ -1001,7 +1001,7 @@ Score: 5"></textarea>
     let currentQuestionIndex = 0;
     let examTimer = null;
     let examTimeLeft = 0;
-    let studentAnswers = {};
+    let studentAnswers = { mc: {}, essay: {} };
     let warningCount = 0;
     let parsedMCQuestions = [];
     let parsedEssayQuestions = [];
@@ -1064,27 +1064,6 @@ Score: 5"></textarea>
             }
         }
     };
-
-    // Initialize App
-    async function initApp() {
-      if (GAS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL') {
-          showAlert('warning', 'แจ้งเตือน', 'กรุณาเปลี่ยน YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL เป็น URL ที่ได้จากการ Deploy ก่อนใช้งาน');
-          return;
-      }
-        
-      try {
-          const data = await window.dataSdk._callAPI('getData');
-          appData = data || [];
-          document.getElementById('loading').classList.add('hidden');
-          showPage('home');
-          updateUI();
-          setupPasswordHoldToReveal();
-      } catch (err) {
-          console.error("Failed to load data:", err);
-          showAlert('error', 'ผิดพลาด', 'โหลดข้อมูลล้มเหลว โปรดตรวจสอบ URL ของ Google Apps Script หรือรีเฟรชหน้าเว็บ');
-          document.getElementById('loading').classList.add('hidden');
-      }
-    }
 
     // Initialize App
     async function initApp() {
@@ -1228,7 +1207,7 @@ Score: 5"></textarea>
     }
 
     function generateId() {
-      return Date.now().toString(36) + Math.random().toString(36).substr(2);
+      return Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
     }
 
     // Update UI
@@ -1584,8 +1563,20 @@ Score: 5"></textarea>
       if (!resultData) return;
 
       const exam = appData.find(e => e.id === resultData.subject_id && e.type === 'exam');
-      const questions = exam && exam.questions ? (typeof exam.questions === 'string' ? JSON.parse(exam.questions) : exam.questions) : { mc: [], essay: [] };
-      const answers = resultData.answers ? (typeof resultData.answers === 'string' ? JSON.parse(resultData.answers) : resultData.answers) : { mc: {}, essay: {} };
+      const rawQuestions = exam && exam.questions ? (typeof exam.questions === 'string' ? JSON.parse(exam.questions) : exam.questions) : { mc: [], essay: [] };
+      const rawAnswers = resultData.answers ? (typeof resultData.answers === 'string' ? JSON.parse(resultData.answers) : resultData.answers) : { mc: {}, essay: {} };
+
+      // Ensure answers support both Legacy structure & New Question-ID mapped structure
+      const answers = {
+        mc: rawAnswers.mc || {},
+        essay: rawAnswers.essay || {}
+      };
+
+      // Ensure questions have stable IDs matching
+      const questions = {
+        mc: (rawQuestions.mc || []).map((q, idx) => ({ ...q, id: q.id || `mc_${idx}` })),
+        essay: (rawQuestions.essay || []).map((q, idx) => ({ ...q, id: q.id || `essay_${idx}` }))
+      };
 
       let html = `
         <div class="bg-gray-50 rounded-xl p-4 mb-4 grid grid-cols-1 md:grid-cols-2 gap-2 text-sm border">
@@ -1611,7 +1602,8 @@ Score: 5"></textarea>
 
       if (questions.mc && questions.mc.length > 0) {
         questions.mc.forEach((q, idx) => {
-          const studentAns = answers.mc ? answers.mc[idx] : null;
+          // Look up answer by q.id first; fallback to numeric index for legacy records
+          const studentAns = answers.mc[q.id] !== undefined ? answers.mc[q.id] : answers.mc[idx];
           const isCorrect = studentAns === q.answer;
           html += `
             <div class="p-4 border-2 ${isCorrect ? 'border-green-200 bg-green-50/50' : 'border-red-200 bg-red-50/50'} rounded-xl mb-3">
@@ -1638,7 +1630,7 @@ Score: 5"></textarea>
 
       if (questions.essay && questions.essay.length > 0) {
         questions.essay.forEach((q, idx) => {
-          const essayAns = answers.essay ? answers.essay[idx] : null;
+          const essayAns = answers.essay[q.id] !== undefined ? answers.essay[q.id] : answers.essay[idx];
           html += `
             <div class="p-4 border-2 border-orange-200 bg-orange-50/50 rounded-xl mb-3">
               <p class="font-bold text-gray-800 mb-2"><span class="text-orange-600">ข้อที่ ${(questions.mc?.length || 0) + idx + 1} (อัตนัย).</span> ${q.question}</p>
@@ -1756,6 +1748,11 @@ Score: 5"></textarea>
     async function refreshData() {
         try {
             document.getElementById('loading').classList.remove('hidden');
+            const textEl = document.getElementById('loadingText');
+            if (textEl) {
+              textEl.innerText = "กำลังโหลด...";
+              textEl.className = "text-gray-600 text-lg transition-all duration-300";
+            }
             const data = await window.dataSdk._callAPI('getData');
             appData = data || [];
             updateUI();
@@ -2037,7 +2034,7 @@ Score: 5"></textarea>
         const questionBlocks = input.split(/\n(?=\d+[\.\、\)])/);
         parsedMCQuestions = [];
 
-        questionBlocks.forEach(block => {
+        questionBlocks.forEach((block, idx) => {
           const lines = block.trim().split('\n');
           if (lines.length < 3) return;
 
@@ -2069,7 +2066,13 @@ Score: 5"></textarea>
           }
 
           if (question && choices.length >= 2 && answer) {
-            parsedMCQuestions.push({ question, choices, answer, score: score || 1 });
+            parsedMCQuestions.push({ 
+              id: 'mc_' + generateId() + '_' + idx,
+              question, 
+              choices, 
+              answer, 
+              score: score || 1 
+            });
           }
         });
 
@@ -2124,7 +2127,7 @@ Score: 5"></textarea>
         const questionBlocks = input.split(/\n(?=\d+[\.\、\)])/);
         parsedEssayQuestions = [];
 
-        questionBlocks.forEach(block => {
+        questionBlocks.forEach((block, idx) => {
           const lines = block.trim().split('\n');
           if (lines.length < 1) return;
 
@@ -2143,7 +2146,11 @@ Score: 5"></textarea>
           }
 
           if (question) {
-            parsedEssayQuestions.push({ question, maxScore: maxScore || 1 });
+            parsedEssayQuestions.push({ 
+              id: 'essay_' + generateId() + '_' + idx,
+              question, 
+              maxScore: maxScore || 1 
+            });
           }
         });
 
@@ -2342,7 +2349,11 @@ Score: 5"></textarea>
       const exam = appData.find(d => d.__backendId === backendId);
       if (!exam) return;
 
-      const questions = exam.questions ? (typeof exam.questions === 'string' ? JSON.parse(exam.questions) : exam.questions) : { mc: [], essay: [] };
+      const rawQuestions = exam.questions ? (typeof exam.questions === 'string' ? JSON.parse(exam.questions) : exam.questions) : { mc: [], essay: [] };
+      const questions = {
+        mc: (rawQuestions.mc || []).map((q, idx) => ({ ...q, id: q.id || `mc_${idx}` })),
+        essay: (rawQuestions.essay || []).map((q, idx) => ({ ...q, id: q.id || `essay_${idx}` }))
+      };
 
       document.getElementById('exam-subject-name').value = exam.subject_name;
       document.getElementById('exam-total-score').value = exam.total_score;
@@ -2533,13 +2544,474 @@ Score: 5"></textarea>
       });
     }
 
+    // Student Exam Functions
+    document.getElementById('student-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      const originalHTML = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner spin mr-2"></i> กำลังเข้าสู่ระบบสอบ...';
+
+      setTimeout(async () => {
+        const subjectId = document.getElementById('subject-select').value;
+        const exam = appData.find(ex => ex.id === subjectId && ex.type === 'exam');
+        
+        if (!exam) {
+          btn.disabled = false;
+          btn.innerHTML = originalHTML;
+          showAlert('error', 'ผิดพลาด', 'ไม่พบรายวิชาที่เลือก');
+          return;
+        }
+
+        currentExam = exam;
+        const studentInfo = {
+          id: generateId(),
+          type: 'student',
+          member_id: currentExam.member_id,
+          student_id: document.getElementById('student-id').value,
+          fullname: document.getElementById('student-name').value,
+          class_name: document.getElementById('student-class').value,
+          room: document.getElementById('student-room').value,
+          number: document.getElementById('student-number').value,
+          subject_id: exam.id,
+          subject_name: exam.subject_name,
+          started_at: new Date().toISOString()
+        };
+
+        const result = await window.dataSdk.create(studentInfo);
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+        
+        if (result.isOk) {
+          document.getElementById('exam-student-info').textContent = 
+            `${studentInfo.student_id} ${studentInfo.fullname} ${studentInfo.class_name}/${studentInfo.room} เลขที่ ${studentInfo.number}`;
+          document.getElementById('exam-subject-info').textContent = exam.subject_name;
+          
+          examTimeLeft = exam.time_limit * 60;
+          warningCount = 0;
+          studentAnswers = { mc: {}, essay: {} };
+          currentQuestionIndex = 0;
+
+          const rawQuestions = (typeof exam.questions === 'string') ? JSON.parse(exam.questions) : exam.questions;
+          
+          // Ensure each question has a permanent unique ID
+          const questions = {
+            mc: (rawQuestions.mc || []).map((q, i) => ({ ...q, id: q.id || `mc_${i}` })),
+            essay: (rawQuestions.essay || []).map((q, i) => ({ ...q, id: q.id || `essay_${i}` }))
+          };
+
+          if (exam.shuffle_questions) {
+            questions.mc = shuffleArray([...questions.mc]);
+            questions.essay = shuffleArray([...questions.essay]);
+          }
+          currentExam.parsedQuestions = questions;
+
+          showPage('exam');
+          startExamTimer();
+          renderQuestion();
+          setupExamProtection();
+        }
+      }, 300);
+    });
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function startExamTimer() {
+      updateTimerDisplay();
+      examTimer = setInterval(() => {
+        examTimeLeft--;
+        updateTimerDisplay();
+        if (examTimeLeft <= 0) {
+          clearInterval(examTimer);
+          submitExam();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const hours = Math.floor(examTimeLeft / 3600);
+      const minutes = Math.floor((examTimeLeft % 3600) / 60);
+      const seconds = examTimeLeft % 60;
+      document.getElementById('exam-timer').textContent = 
+        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      
+      if (examTimeLeft <= 300) {
+        document.getElementById('exam-timer').classList.add('text-red-300');
+      }
+    }
+
+    function renderQuestion() {
+      const questions = currentExam.parsedQuestions;
+      const allQuestions = [...questions.mc.map((q, i) => ({ ...q, type: 'mc', displayIndex: i })),
+                            ...questions.essay.map((q, i) => ({ ...q, type: 'essay', displayIndex: i }))];
+      
+      const totalQuestions = allQuestions.length;
+      document.getElementById('exam-progress-text').textContent = `${currentQuestionIndex + 1}/${totalQuestions} ข้อ`;
+      document.getElementById('exam-progress-bar').style.width = `${((currentQuestionIndex + 1) / totalQuestions) * 100}%`;
+      document.getElementById('exam-warning-count').textContent = `คำเตือน: ${warningCount}/3`;
+
+      const q = allQuestions[currentQuestionIndex];
+      const container = document.getElementById('question-container');
+
+      if (q.type === 'mc') {
+        let displayChoices = [...q.choices];
+        // If random choices option is enabled, shuffle choices on load
+        if (currentExam.shuffle_choices) {
+          displayChoices = shuffleArray([...q.choices]);
+        }
+        
+        // Sequential Display Labels ALWAYS "ก., ข., ค., ง., จ."
+        const displayLabels = ['ก', 'ข', 'ค', 'ง', 'จ'];
+
+        container.innerHTML = `
+          <div class="fade-in">
+            <div class="flex items-center gap-2 mb-4">
+              <span class="badge badge-info">ปรนัย</span>
+              <span class="text-gray-500">ข้อที่ ${currentQuestionIndex + 1}</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-6">${q.question}</h3>
+            <div class="space-y-3">
+              ${displayChoices.map((choice, idx) => {
+                const uiLabel = displayLabels[idx] || (idx + 1);
+                // Answer is recorded using permanent q.id and choice.key to maintain accurate mapping
+                const isChecked = studentAnswers.mc[q.id] === choice.key;
+                return `
+                  <label class="flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition
+                    ${isChecked ? 'border-primary-500 bg-primary-50' : 'border-gray-200 hover:border-primary-300'}">
+                    <input type="radio" name="mc-answer" value="${choice.key}" 
+                      ${isChecked ? 'checked' : ''}
+                      onchange="selectMCAnswer('${q.id}', '${choice.key}')"
+                      class="w-5 h-5 text-primary-500">
+                    <span class="text-lg font-medium"><strong class="text-primary-600 mr-1">${uiLabel}.</strong> ${choice.text}</span>
+                  </label>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      } else {
+        container.innerHTML = `
+          <div class="fade-in">
+            <div class="flex items-center gap-2 mb-4">
+              <span class="badge badge-warning">อัตนัย</span>
+              <span class="text-gray-500">ข้อที่ ${currentQuestionIndex + 1}</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-6">${q.question}</h3>
+            <textarea id="essay-answer" rows="8"
+              class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none text-lg font-sarabun"
+              placeholder="พิมพ์คำตอบของคุณที่นี่..."
+              onchange="selectEssayAnswer('${q.id}', this.value)">${studentAnswers.essay[q.id] || ''}</textarea>
+          </div>
+        `;
+      }
+
+      document.getElementById('prev-btn').disabled = currentQuestionIndex === 0;
+      document.getElementById('next-btn').innerHTML = currentQuestionIndex === totalQuestions - 1 
+        ? '<i class="fas fa-flag-checkered"></i> สิ้นสุด' 
+        : 'ข้อถัดไป <i class="fas fa-chevron-right"></i>';
+      
+      document.getElementById('submit-container').classList.toggle('hidden', currentQuestionIndex !== totalQuestions - 1);
+    }
+
+    window.selectMCAnswer = function(qId, choiceKey) {
+      // Stores choice key by Question ID
+      studentAnswers.mc[qId] = choiceKey;
+      renderQuestion();
+    }
+
+    window.selectEssayAnswer = function(qId, value) {
+      studentAnswers.essay[qId] = value;
+    }
+
+    function prevQuestion() {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        renderQuestion();
+      }
+    }
+
+    function nextQuestion() {
+      const questions = currentExam.parsedQuestions;
+      const totalQuestions = questions.mc.length + questions.essay.length;
+      
+      if (currentQuestionIndex < totalQuestions - 1) {
+        currentQuestionIndex++;
+        renderQuestion();
+      }
+    }
+
+    async function submitExam() {
+      if (examTimer) clearInterval(examTimer);
+
+      const loadingOverlay = document.createElement('div');
+      loadingOverlay.className = 'fixed inset-0 bg-black/50 z-50 flex items-center justify-center';
+      loadingOverlay.innerHTML = `
+        <div class="bg-white rounded-2xl p-8 text-center">
+          <i class="fas fa-circle-notch spin text-5xl text-primary-500 mb-4 block"></i>
+          <p class="text-gray-600 text-lg font-medium">กำลังส่งคำตอบ...</p>
+        </div>
+      `;
+      document.body.appendChild(loadingOverlay);
+
+      const questions = currentExam.parsedQuestions;
+      let mcScore = 0;
+
+      // Grade MC using Question IDs to avoid index mismatches when shuffled
+      questions.mc.forEach((q) => {
+        const studentAns = studentAnswers.mc[q.id];
+        if (studentAns === q.answer) {
+          mcScore += (q.score || currentExam.score_per_question || 1);
+        }
+      });
+
+      const hasEssay = questions.essay.length > 0;
+      const passThreshold = currentExam.passing_score !== undefined ? currentExam.passing_score : (currentExam.total_score / 2);
+      
+      const examResult = {
+        id: generateId(),
+        type: 'result',
+        member_id: getExams().find(e => e.id === currentExam.id)?.member_id,
+        student_id: document.getElementById('student-id').value,
+        fullname: document.getElementById('student-name').value,
+        class_name: document.getElementById('student-class').value,
+        room: document.getElementById('student-room').value,
+        number: document.getElementById('student-number').value,
+        subject_id: currentExam.id,
+        subject_name: currentExam.subject_name,
+        answers: JSON.stringify(studentAnswers),
+        mc_score: mcScore,
+        score: mcScore,
+        total_score: currentExam.total_score,
+        passing_score: passThreshold,
+        submitted_at: new Date().toISOString(),
+        graded: !hasEssay,
+        warnings: warningCount,
+        cheating_detected: warningCount >= 4
+      };
+
+      const result = await window.dataSdk.create(examResult);
+      document.body.removeChild(loadingOverlay);
+
+      if (result.isOk) {
+        const resultIcon = document.getElementById('result-icon');
+        const resultTitle = document.getElementById('result-title');
+        const resultMessage = document.getElementById('result-message');
+
+        const isPassed = examResult.score >= passThreshold;
+
+        if (warningCount >= 4) {
+          resultIcon.className = 'w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6';
+          resultIcon.innerHTML = '<i class="fas fa-ban text-5xl text-red-500"></i>';
+          resultTitle.textContent = 'ยุติการสอบ';
+          resultTitle.className = 'text-3xl font-bold mb-2 text-red-600';
+          resultMessage.textContent = 'ตรวจพบการทุจริตระหว่างการสอบ';
+        } else if (isPassed) {
+          resultIcon.className = 'w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6';
+          resultIcon.innerHTML = '<i class="fas fa-trophy text-5xl text-green-500"></i>';
+          resultTitle.textContent = 'ผ่านเกณฑ์การสอบ!';
+          resultTitle.className = 'text-3xl font-bold mb-2 text-green-600';
+          resultMessage.textContent = `คุณสอบผ่านเกณฑ์ (${passThreshold} คะแนนขึ้นไป)`;
+        } else {
+          resultIcon.className = 'w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6';
+          resultIcon.innerHTML = '<i class="fas fa-book-reader text-5xl text-red-500"></i>';
+          resultTitle.textContent = 'ไม่ผ่านเกณฑ์';
+          resultTitle.className = 'text-3xl font-bold mb-2 text-red-600';
+          resultMessage.textContent = `เกณฑ์ผ่านคือ ${passThreshold} คะแนน พยายามต่อไปนะ!`;
+        }
+
+        document.getElementById('result-score').textContent = warningCount >= 4 ? '-' : (hasEssay ? `${mcScore} (รอตรวจอัตนัย)` : examResult.score);
+        document.getElementById('result-total').textContent = examResult.total_score;
+        document.getElementById('result-info').innerHTML = `
+          <p><strong>รหัสนักเรียน:</strong> ${examResult.student_id}</p>
+          <p><strong>ชื่อ-สกุล:</strong> ${examResult.fullname}</p>
+          <p><strong>ชั้น/ห้อง:</strong> ${examResult.class_name}/${examResult.room}</p>
+          <p><strong>รายวิชา:</strong> ${examResult.subject_name}</p>
+          <p><strong>เกณฑ์ผ่าน:</strong> ${passThreshold} คะแนน</p>
+          <p><strong>เวลาส่ง:</strong> ${new Date(examResult.submitted_at).toLocaleString('th-TH')}</p>
+          ${warningCount >= 4 ? '<p class="text-red-500"><strong>⚠️ สถานะ:</strong> ตรวจพบการทุจริต ไม่มีการให้คะแนน</p>' : ''}
+          ${hasEssay && warningCount < 4 ? '<p class="text-orange-500"><strong>หมายเหตุ:</strong> รอตรวจข้อสอบอัตนัยเพิ่มเติม</p>' : ''}
+        `;
+
+        if (currentExam.show_answer && warningCount < 4) {
+          displayAnswerReview(examResult, questions);
+        }
+
+        showPage('result');
+      }
+    }
+
+    function resetExamState() {
+      if (examTimer) clearInterval(examTimer);
+      currentExam = null;
+      currentQuestionIndex = 0;
+      examTimeLeft = 0;
+      studentAnswers = { mc: {}, essay: {} };
+      warningCount = 0;
+      document.getElementById('student-form').reset();
+    }
+
+    // Anti-cheating & Protection Rules
+    function setupExamProtection() {
+      document.addEventListener('contextmenu', preventAction);
+      document.addEventListener('copy', preventAction);
+      document.addEventListener('paste', preventAction);
+      document.addEventListener('cut', preventAction);
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      window.addEventListener('blur', handleWindowBlur);
+    }
+
+    function preventAction(e) {
+      if (document.getElementById('page-exam').classList.contains('hidden')) return;
+      e.preventDefault();
+      showWarning('ไม่อนุญาตให้คัดลอกหรือวาง');
+    }
+
+    function handleVisibilityChange() {
+      if (document.getElementById('page-exam').classList.contains('hidden')) return;
+      if (document.hidden) {
+        addWarning('ตรวจพบการสลับแท็บหรือออกจากหน้าจอ');
+      }
+    }
+
+    function handleWindowBlur() {
+      if (document.getElementById('page-exam').classList.contains('hidden')) return;
+      addWarning('ตรวจพบการออกจากหน้าต่างสอบ');
+    }
+
+    function addWarning(message) {
+      warningCount++;
+      document.getElementById('exam-warning-count').textContent = `คำเตือน: ${warningCount}/3`;
+      
+      if (warningCount >= 4) {
+        showAlert('error', 'ยุติการสอบ', 'ตรวจพบการทุจริตมากกว่า 3 ครั้ง การสอบถูกยุติ');
+        setTimeout(() => {
+          submitExam();
+        }, 2000);
+      } else {
+        showWarning(message);
+      }
+    }
+
+    function showWarning(message) {
+      document.getElementById('warning-message').textContent = message;
+      document.getElementById('warning-count').textContent = `ครั้งที่ ${warningCount}/3 (ครั้งที่ 4 จะถูกยุติการสอบ)`;
+      showModal('warning-modal');
+    }
+
+    window.addEventListener('beforeunload', () => {
+      document.removeEventListener('contextmenu', preventAction);
+      document.removeEventListener('copy', preventAction);
+      document.removeEventListener('paste', preventAction);
+      document.removeEventListener('cut', preventAction);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('blur', handleWindowBlur);
+    });
+
+    // Answer Review
+    function displayAnswerReview(examResult, questions) {
+      const container = document.getElementById('answer-review-container');
+      const blockedDiv = document.getElementById('answer-review-blocked');
+      const allowedDiv = document.getElementById('answer-review-allowed');
+      const contentDiv = document.getElementById('answer-review-content');
+      const rawAnswers = (typeof examResult.answers === 'string') ? JSON.parse(examResult.answers) : examResult.answers;
+      
+      const answers = {
+        mc: rawAnswers.mc || {},
+        essay: rawAnswers.essay || {}
+      };
+
+      const isCheating = examResult.warnings >= 4;
+      if (isCheating) {
+        blockedDiv.classList.remove('hidden');
+        allowedDiv.classList.add('hidden');
+        container.classList.remove('hidden');
+        return;
+      }
+
+      const exam = appData.find(d => d.__backendId && d.id === examResult.subject_id && d.type === 'exam');
+      
+      if (!exam || !exam.show_answer) {
+        container.classList.add('hidden');
+        return;
+      }
+
+      blockedDiv.classList.add('hidden');
+      allowedDiv.classList.remove('hidden');
+      container.classList.remove('hidden');
+
+      let reviewHTML = '';
+      
+      const mcList = (questions.mc || []).map((q, idx) => ({ ...q, id: q.id || `mc_${idx}` }));
+      const essayList = (questions.essay || []).map((q, idx) => ({ ...q, id: q.id || `essay_${idx}` }));
+
+      mcList.forEach((q, i) => {
+        // Look up by ID first, fallback to numeric index for backward compatibility
+        const userAnswerKey = answers.mc[q.id] !== undefined ? answers.mc[q.id] : answers.mc[i];
+        const correctAnswerKey = q.answer;
+        const isCorrect = userAnswerKey === correctAnswerKey;
+        reviewHTML += `
+          <div class="border-2 ${isCorrect ? 'border-green-300 bg-green-50' : 'border-red-300 bg-red-50'} rounded-lg p-3">
+            <div class="flex items-start justify-between mb-2">
+              <p class="font-bold text-gray-800 flex-1"><span class="badge ${isCorrect ? 'badge-success' : 'badge-danger'}">ข้อที่ ${i + 1}</span> ${q.question}</p>
+              <span class="text-xs font-bold ${isCorrect ? 'text-green-600' : 'text-red-600'}">
+                ${isCorrect ? '<i class="fas fa-check-circle"></i> ถูกต้อง' : '<i class="fas fa-times-circle"></i> ผิด'}
+              </span>
+            </div>
+            <div class="space-y-1 text-sm pl-4">
+              ${q.choices.map(c => `
+                <div class="${c.key === correctAnswerKey ? 'font-bold text-green-700 bg-green-100 -ml-4 pl-4 py-1 rounded' : c.key === userAnswerKey ? 'font-bold text-red-700 bg-red-100 -ml-4 pl-4 py-1 rounded' : 'text-gray-700'}">
+                  <span class="font-semibold">${c.key}.</span> ${c.text}
+                  ${c.key === correctAnswerKey ? '<i class="fas fa-check-circle ml-2 text-green-600"></i>' : ''}
+                  ${c.key === userAnswerKey && c.key !== correctAnswerKey ? '<i class="fas fa-times-circle ml-2 text-red-600"></i>' : ''}
+                </div>
+              `).join('')}
+            </div>
+            ${userAnswerKey ? `<p class="text-xs text-gray-600 mt-2">คำตอบของคุณ: <strong>${userAnswerKey}</strong></p>` : '<p class="text-xs text-gray-500 mt-2"><em>ไม่ได้ตอบ</em></p>'}
+          </div>
+        `;
+      });
+
+      essayList.forEach((q, i) => {
+        const userAnswer = answers.essay[q.id] !== undefined ? answers.essay[q.id] : answers.essay[i];
+        reviewHTML += `
+          <div class="border-2 border-orange-300 bg-orange-50 rounded-lg p-3">
+            <p class="font-bold text-gray-800 mb-2"><span class="badge badge-warning">ข้อที่ ${mcList.length + i + 1}</span> ${q.question}</p>
+            <div class="bg-white rounded border-2 border-orange-200 p-2 text-sm text-gray-700 min-h-12 font-sarabun">
+              ${userAnswer ? userAnswer : '<em class="text-gray-400">ไม่ได้ตอบ</em>'}
+            </div>
+            <p class="text-xs text-orange-600 mt-2"><i class="fas fa-clipboard-list mr-1"></i>รอตรวจจากครู (คะแนนเต็ม: ${q.maxScore})</p>
+          </div>
+        `;
+      });
+
+      contentDiv.innerHTML = reviewHTML;
+      container.classList.remove('hidden');
+    }
+
+    function toggleAnswerReview() {
+      const contentDiv = document.getElementById('answer-review-content');
+      const icon = document.getElementById('review-toggle-icon');
+      
+      contentDiv.classList.toggle('hidden');
+      icon.classList.toggle('fa-eye');
+      icon.classList.toggle('fa-eye-slash');
+    }
+
     // Grading Functions
     function openGrading(backendId) {
       const result_data = appData.find(d => d.__backendId === backendId);
       if (!result_data) return;
 
       currentGradingResult = result_data;
-      const answers = result_data.answers ? (typeof result_data.answers === 'string' ? JSON.parse(result_data.answers) : result_data.answers) : { mc: {}, essay: {} };
+      const rawAnswers = result_data.answers ? (typeof result_data.answers === 'string' ? JSON.parse(result_data.answers) : result_data.answers) : { mc: {}, essay: {} };
+      const answers = { mc: rawAnswers.mc || {}, essay: rawAnswers.essay || {} };
+
       const exam = getExams().find(e => e.id === result_data.subject_id);
       
       if (!exam) {
@@ -2547,8 +3019,8 @@ Score: 5"></textarea>
         return;
       }
 
-      const questions = (typeof exam.questions === 'string') ? JSON.parse(exam.questions) : exam.questions;
-      const essayAnswers = answers.essay || {};
+      const rawQuestions = (typeof exam.questions === 'string') ? JSON.parse(exam.questions) : exam.questions;
+      const essayQuestions = (rawQuestions.essay || []).map((q, idx) => ({ ...q, id: q.id || `essay_${idx}` }));
 
       const content = document.getElementById('grading-content');
       content.innerHTML = `
@@ -2556,21 +3028,24 @@ Score: 5"></textarea>
           <p class="font-medium">${result_data.student_id} - ${result_data.fullname}</p>
           <p class="text-sm text-gray-500">${result_data.subject_name}</p>
         </div>
-        ${questions.essay.map((q, i) => `
-          <div class="border border-gray-200 rounded-lg p-4">
-            <p class="font-medium text-gray-800 mb-2">ข้อที่ ${i + 1}: ${q.question}</p>
-            <div class="bg-blue-50 rounded p-3 mb-3">
-              <p class="text-sm text-gray-500 mb-1">คำตอบ:</p>
-              <p class="text-gray-800 font-sarabun">${essayAnswers[i] || '<em class="text-gray-400">ไม่ได้ตอบ</em>'}</p>
+        ${essayQuestions.map((q, i) => {
+          const essayAns = answers.essay[q.id] !== undefined ? answers.essay[q.id] : answers.essay[i];
+          return `
+            <div class="border border-gray-200 rounded-lg p-4">
+              <p class="font-medium text-gray-800 mb-2">ข้อที่ ${i + 1}: ${q.question}</p>
+              <div class="bg-blue-50 rounded p-3 mb-3">
+                <p class="text-sm text-gray-500 mb-1">คำตอบ:</p>
+                <p class="text-gray-800 font-sarabun">${essayAns || '<em class="text-gray-400">ไม่ได้ตอบ</em>'}</p>
+              </div>
+              <div class="flex items-center gap-2">
+                <label class="text-sm text-gray-600">คะแนน:</label>
+                <input type="number" id="essay-score-${q.id}" min="0" max="${q.maxScore || exam.score_per_question}" step="0.5" value="0"
+                  class="w-20 px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none text-center">
+                <span class="text-sm text-gray-500">/ ${q.maxScore || exam.score_per_question}</span>
+              </div>
             </div>
-            <div class="flex items-center gap-2">
-              <label class="text-sm text-gray-600">คะแนน:</label>
-              <input type="number" id="essay-score-${i}" min="0" max="${q.maxScore || exam.score_per_question}" step="0.5" value="0"
-                class="w-20 px-3 py-2 border-2 border-gray-200 rounded-lg focus:border-primary-500 focus:outline-none text-center">
-              <span class="text-sm text-gray-500">/ ${q.maxScore || exam.score_per_question}</span>
-            </div>
-          </div>
-        `).join('')}
+          `;
+        }).join('')}
       `;
       showModal('grading-modal');
     }
@@ -2591,11 +3066,12 @@ Score: 5"></textarea>
           return;
         }
 
-        const questions = (typeof exam.questions === 'string') ? JSON.parse(exam.questions) : exam.questions;
+        const rawQuestions = (typeof exam.questions === 'string') ? JSON.parse(exam.questions) : exam.questions;
+        const essayQuestions = (rawQuestions.essay || []).map((q, idx) => ({ ...q, id: q.id || `essay_${idx}` }));
         let essayScore = 0;
 
-        questions.essay.forEach((q, i) => {
-          const scoreInput = document.getElementById(`essay-score-${i}`);
+        essayQuestions.forEach((q, i) => {
+          const scoreInput = document.getElementById(`essay-score-${q.id}`) || document.getElementById(`essay-score-${i}`);
           if (scoreInput) {
             essayScore += parseFloat(scoreInput.value) || 0;
           }
@@ -2767,452 +3243,6 @@ Score: 5"></textarea>
         URL.revokeObjectURL(link.href);
         showAlert('success', 'ส่งออกสำเร็จ', `ดาวน์โหลดไฟล์ ${filename}.csv เรียบร้อยแล้ว`);
       }
-    }
-
-    // Student Exam Functions
-    document.getElementById('student-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = e.target.querySelector('button[type="submit"]');
-      const originalHTML = btn.innerHTML;
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner spin mr-2"></i> กำลังเข้าสู่ระบบสอบ...';
-
-      setTimeout(async () => {
-        const subjectId = document.getElementById('subject-select').value;
-        const exam = appData.find(ex => ex.id === subjectId && ex.type === 'exam');
-        
-        if (!exam) {
-          btn.disabled = false;
-          btn.innerHTML = originalHTML;
-          showAlert('error', 'ผิดพลาด', 'ไม่พบรายวิชาที่เลือก');
-          return;
-        }
-
-        currentExam = exam;
-        const studentInfo = {
-          id: generateId(),
-          type: 'student',
-          member_id: currentExam.member_id,
-          student_id: document.getElementById('student-id').value,
-          fullname: document.getElementById('student-name').value,
-          class_name: document.getElementById('student-class').value,
-          room: document.getElementById('student-room').value,
-          number: document.getElementById('student-number').value,
-          subject_id: exam.id,
-          subject_name: exam.subject_name,
-          started_at: new Date().toISOString()
-        };
-
-        const result = await window.dataSdk.create(studentInfo);
-        btn.disabled = false;
-        btn.innerHTML = originalHTML;
-        
-        if (result.isOk) {
-          document.getElementById('exam-student-info').textContent = 
-            `${studentInfo.student_id} ${studentInfo.fullname} ${studentInfo.class_name}/${studentInfo.room} เลขที่ ${studentInfo.number}`;
-          document.getElementById('exam-subject-info').textContent = exam.subject_name;
-          
-          examTimeLeft = exam.time_limit * 60;
-          warningCount = 0;
-          studentAnswers = { mc: {}, essay: {} };
-          currentQuestionIndex = 0;
-
-          const questions = (typeof exam.questions === 'string') ? JSON.parse(exam.questions) : exam.questions;
-          if (exam.shuffle_questions) {
-            questions.mc = shuffleArray([...questions.mc]);
-            questions.essay = shuffleArray([...questions.essay]);
-          }
-          currentExam.parsedQuestions = questions;
-
-          showPage('exam');
-          startExamTimer();
-          renderQuestion();
-          setupExamProtection();
-        }
-      }, 300);
-    });
-
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    }
-
-    function startExamTimer() {
-      updateTimerDisplay();
-      examTimer = setInterval(() => {
-        examTimeLeft--;
-        updateTimerDisplay();
-        if (examTimeLeft <= 0) {
-          clearInterval(examTimer);
-          submitExam();
-        }
-      }, 1000);
-    }
-
-    function updateTimerDisplay() {
-      const hours = Math.floor(examTimeLeft / 3600);
-      const minutes = Math.floor((examTimeLeft % 3600) / 60);
-      const seconds = examTimeLeft % 60;
-      document.getElementById('exam-timer').textContent = 
-        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-      
-      if (examTimeLeft <= 300) {
-        document.getElementById('exam-timer').classList.add('text-red-300');
-      }
-    }
-
-    function renderQuestion() {
-      const questions = currentExam.parsedQuestions;
-      const allQuestions = [...questions.mc.map((q, i) => ({ ...q, type: 'mc', originalIndex: i })),
-                            ...questions.essay.map((q, i) => ({ ...q, type: 'essay', originalIndex: i }))];
-      
-      const totalQuestions = allQuestions.length;
-      document.getElementById('exam-progress-text').textContent = `${currentQuestionIndex + 1}/${totalQuestions} ข้อ`;
-      document.getElementById('exam-progress-bar').style.width = `${((currentQuestionIndex + 1) / totalQuestions) * 100}%`;
-      document.getElementById('exam-warning-count').textContent = `คำเตือน: ${warningCount}/3`;
-
-      const q = allQuestions[currentQuestionIndex];
-      const container = document.getElementById('question-container');
-
-      if (q.type === 'mc') {
-        let displayChoices = [...q.choices];
-        // If random choices option is enabled, shuffle choices every time the question is loaded
-        if (currentExam.shuffle_choices) {
-          displayChoices = shuffleArray([...q.choices]);
-        }
-        
-        // Sequential Display Labels ALWAYS "ก., ข., ค., ง., จ." regardless of shuffled choices
-        const displayLabels = ['ก', 'ข', 'ค', 'ง', 'จ'];
-
-        container.innerHTML = `
-          <div class="fade-in">
-            <div class="flex items-center gap-2 mb-4">
-              <span class="badge badge-info">ปรนัย</span>
-              <span class="text-gray-500">ข้อที่ ${currentQuestionIndex + 1}</span>
-            </div>
-            <h3 class="text-xl font-bold text-gray-800 mb-6">${q.question}</h3>
-            <div class="space-y-3">
-              ${displayChoices.map((choice, idx) => {
-                const uiLabel = displayLabels[idx] || (idx + 1);
-                // Value sent to studentAnswers is the REAL original choice key/identifier (choice.key)
-                const isChecked = studentAnswers.mc[q.originalIndex] === choice.key;
-                return `
-                  <label class="flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition
-                    ${isChecked ? 'border-primary-500 bg-primary-50' : 'border-gray-200 hover:border-primary-300'}">
-                    <input type="radio" name="mc-answer" value="${choice.key}" 
-                      ${isChecked ? 'checked' : ''}
-                      onchange="selectMCAnswer(${q.originalIndex}, '${choice.key}')"
-                      class="w-5 h-5 text-primary-500">
-                    <span class="text-lg font-medium"><strong class="text-primary-600 mr-1">${uiLabel}.</strong> ${choice.text}</span>
-                  </label>
-                `;
-              }).join('')}
-            </div>
-          </div>
-        `;
-        
-        if (!currentExam.answerMap) currentExam.answerMap = {};
-        currentExam.answerMap[q.originalIndex] = q.answer;
-      } else {
-        container.innerHTML = `
-          <div class="fade-in">
-            <div class="flex items-center gap-2 mb-4">
-              <span class="badge badge-warning">อัตนัย</span>
-              <span class="text-gray-500">ข้อที่ ${currentQuestionIndex + 1}</span>
-            </div>
-            <h3 class="text-xl font-bold text-gray-800 mb-6">${q.question}</h3>
-            <textarea id="essay-answer" rows="8"
-              class="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-primary-500 focus:outline-none text-lg font-sarabun"
-              placeholder="พิมพ์คำตอบของคุณที่นี่..."
-              onchange="selectEssayAnswer(${q.originalIndex}, this.value)">${studentAnswers.essay[q.originalIndex] || ''}</textarea>
-          </div>
-        `;
-      }
-
-      document.getElementById('prev-btn').disabled = currentQuestionIndex === 0;
-      document.getElementById('next-btn').innerHTML = currentQuestionIndex === totalQuestions - 1 
-        ? '<i class="fas fa-flag-checkered"></i> สิ้นสุด' 
-        : 'ข้อถัดไป <i class="fas fa-chevron-right"></i>';
-      
-      document.getElementById('submit-container').classList.toggle('hidden', currentQuestionIndex !== totalQuestions - 1);
-    }
-
-    window.selectMCAnswer = function(index, choiceKey) {
-      // Stores actual choice key/id for scoring
-      studentAnswers.mc[index] = choiceKey;
-      renderQuestion();
-    }
-
-    window.selectEssayAnswer = function(index, value) {
-      studentAnswers.essay[index] = value;
-    }
-
-    function prevQuestion() {
-      if (currentQuestionIndex > 0) {
-        currentQuestionIndex--;
-        renderQuestion();
-      }
-    }
-
-    function nextQuestion() {
-      const questions = currentExam.parsedQuestions;
-      const totalQuestions = questions.mc.length + questions.essay.length;
-      
-      if (currentQuestionIndex < totalQuestions - 1) {
-        currentQuestionIndex++;
-        renderQuestion();
-      }
-    }
-
-    async function submitExam() {
-      if (examTimer) clearInterval(examTimer);
-
-      const loadingOverlay = document.createElement('div');
-      loadingOverlay.className = 'fixed inset-0 bg-black/50 z-50 flex items-center justify-center';
-      loadingOverlay.innerHTML = `
-        <div class="bg-white rounded-2xl p-8 text-center">
-          <i class="fas fa-circle-notch spin text-5xl text-primary-500 mb-4 block"></i>
-          <p class="text-gray-600 text-lg font-medium">กำลังส่งคำตอบ...</p>
-        </div>
-      `;
-      document.body.appendChild(loadingOverlay);
-
-      const questions = currentExam.parsedQuestions;
-      let mcScore = 0;
-
-      questions.mc.forEach((q, i) => {
-        const correctAnswer = currentExam.answerMap ? currentExam.answerMap[i] : q.answer;
-        // Compare actual choice keys
-        if (studentAnswers.mc[i] === correctAnswer) {
-          mcScore += (q.score || currentExam.score_per_question || 1);
-        }
-      });
-
-      const hasEssay = questions.essay.length > 0;
-      const passThreshold = currentExam.passing_score !== undefined ? currentExam.passing_score : (currentExam.total_score / 2);
-      
-      const examResult = {
-        id: generateId(),
-        type: 'result',
-        member_id: getExams().find(e => e.id === currentExam.id)?.member_id,
-        student_id: document.getElementById('student-id').value,
-        fullname: document.getElementById('student-name').value,
-        class_name: document.getElementById('student-class').value,
-        room: document.getElementById('student-room').value,
-        number: document.getElementById('student-number').value,
-        subject_id: currentExam.id,
-        subject_name: currentExam.subject_name,
-        answers: JSON.stringify(studentAnswers),
-        mc_score: mcScore,
-        score: mcScore,
-        total_score: currentExam.total_score,
-        passing_score: passThreshold,
-        submitted_at: new Date().toISOString(),
-        graded: !hasEssay,
-        warnings: warningCount,
-        cheating_detected: warningCount >= 4
-      };
-
-      const result = await window.dataSdk.create(examResult);
-      document.body.removeChild(loadingOverlay);
-
-      if (result.isOk) {
-        const resultIcon = document.getElementById('result-icon');
-        const resultTitle = document.getElementById('result-title');
-        const resultMessage = document.getElementById('result-message');
-
-        const isPassed = examResult.score >= passThreshold;
-
-        if (warningCount >= 4) {
-          resultIcon.className = 'w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6';
-          resultIcon.innerHTML = '<i class="fas fa-ban text-5xl text-red-500"></i>';
-          resultTitle.textContent = 'ยุติการสอบ';
-          resultTitle.className = 'text-3xl font-bold mb-2 text-red-600';
-          resultMessage.textContent = 'ตรวจพบการทุจริตระหว่างการสอบ';
-        } else if (isPassed) {
-          resultIcon.className = 'w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6';
-          resultIcon.innerHTML = '<i class="fas fa-trophy text-5xl text-green-500"></i>';
-          resultTitle.textContent = 'ผ่านเกณฑ์การสอบ!';
-          resultTitle.className = 'text-3xl font-bold mb-2 text-green-600';
-          resultMessage.textContent = `คุณสอบผ่านเกณฑ์ (${passThreshold} คะแนนขึ้นไป)`;
-        } else {
-          resultIcon.className = 'w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6';
-          resultIcon.innerHTML = '<i class="fas fa-book-reader text-5xl text-red-500"></i>';
-          resultTitle.textContent = 'ไม่ผ่านเกณฑ์';
-          resultTitle.className = 'text-3xl font-bold mb-2 text-red-600';
-          resultMessage.textContent = `เกณฑ์ผ่านคือ ${passThreshold} คะแนน พยายามต่อไปนะ!`;
-        }
-
-        document.getElementById('result-score').textContent = warningCount >= 4 ? '-' : (hasEssay ? `${mcScore} (รอตรวจอัตนัย)` : examResult.score);
-        document.getElementById('result-total').textContent = examResult.total_score;
-        document.getElementById('result-info').innerHTML = `
-          <p><strong>รหัสนักเรียน:</strong> ${examResult.student_id}</p>
-          <p><strong>ชื่อ-สกุล:</strong> ${examResult.fullname}</p>
-          <p><strong>ชั้น/ห้อง:</strong> ${examResult.class_name}/${examResult.room}</p>
-          <p><strong>รายวิชา:</strong> ${examResult.subject_name}</p>
-          <p><strong>เกณฑ์ผ่าน:</strong> ${passThreshold} คะแนน</p>
-          <p><strong>เวลาส่ง:</strong> ${new Date(examResult.submitted_at).toLocaleString('th-TH')}</p>
-          ${warningCount >= 4 ? '<p class="text-red-500"><strong>⚠️ สถานะ:</strong> ตรวจพบการทุจริต ไม่มีการให้คะแนน</p>' : ''}
-          ${hasEssay && warningCount < 4 ? '<p class="text-orange-500"><strong>หมายเหตุ:</strong> รอตรวจข้อสอบอัตนัยเพิ่มเติม</p>' : ''}
-        `;
-
-        if (currentExam.show_answer && warningCount < 4) {
-          displayAnswerReview(examResult, questions);
-        }
-
-        showPage('result');
-      }
-    }
-
-    function resetExamState() {
-      if (examTimer) clearInterval(examTimer);
-      currentExam = null;
-      currentQuestionIndex = 0;
-      examTimeLeft = 0;
-      studentAnswers = {};
-      warningCount = 0;
-      document.getElementById('student-form').reset();
-    }
-
-    // Anti-cheating & Protection Rules
-    function setupExamProtection() {
-      document.addEventListener('contextmenu', preventAction);
-      document.addEventListener('copy', preventAction);
-      document.addEventListener('paste', preventAction);
-      document.addEventListener('cut', preventAction);
-      document.addEventListener('visibilitychange', handleVisibilityChange);
-      window.addEventListener('blur', handleWindowBlur);
-    }
-
-    function preventAction(e) {
-      if (document.getElementById('page-exam').classList.contains('hidden')) return;
-      e.preventDefault();
-      showWarning('ไม่อนุญาตให้คัดลอกหรือวาง');
-    }
-
-    function handleVisibilityChange() {
-      if (document.getElementById('page-exam').classList.contains('hidden')) return;
-      if (document.hidden) {
-        addWarning('ตรวจพบการสลับแท็บหรือออกจากหน้าจอ');
-      }
-    }
-
-    function handleWindowBlur() {
-      if (document.getElementById('page-exam').classList.contains('hidden')) return;
-      addWarning('ตรวจพบการออกจากหน้าต่างสอบ');
-    }
-
-    function addWarning(message) {
-      warningCount++;
-      document.getElementById('exam-warning-count').textContent = `คำเตือน: ${warningCount}/3`;
-      
-      if (warningCount >= 4) {
-        showAlert('error', 'ยุติการสอบ', 'ตรวจพบการทุจริตมากกว่า 3 ครั้ง การสอบถูกยุติ');
-        setTimeout(() => {
-          submitExam();
-        }, 2000);
-      } else {
-        showWarning(message);
-      }
-    }
-
-    function showWarning(message) {
-      document.getElementById('warning-message').textContent = message;
-      document.getElementById('warning-count').textContent = `ครั้งที่ ${warningCount}/3 (ครั้งที่ 4 จะถูกยุติการสอบ)`;
-      showModal('warning-modal');
-    }
-
-    window.addEventListener('beforeunload', () => {
-      document.removeEventListener('contextmenu', preventAction);
-      document.removeEventListener('copy', preventAction);
-      document.removeEventListener('paste', preventAction);
-      document.removeEventListener('cut', preventAction);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('blur', handleWindowBlur);
-    });
-
-    // Answer Review
-    function displayAnswerReview(examResult, questions) {
-      const container = document.getElementById('answer-review-container');
-      const blockedDiv = document.getElementById('answer-review-blocked');
-      const allowedDiv = document.getElementById('answer-review-allowed');
-      const contentDiv = document.getElementById('answer-review-content');
-      const answers = (typeof examResult.answers === 'string') ? JSON.parse(examResult.answers) : examResult.answers;
-
-      const isCheating = examResult.warnings >= 4;
-      if (isCheating) {
-        blockedDiv.classList.remove('hidden');
-        allowedDiv.classList.add('hidden');
-        container.classList.remove('hidden');
-        return;
-      }
-
-      const exam = appData.find(d => d.__backendId && d.id === examResult.subject_id && d.type === 'exam');
-      
-      if (!exam || !exam.show_answer) {
-        container.classList.add('hidden');
-        return;
-      }
-
-      blockedDiv.classList.add('hidden');
-      allowedDiv.classList.remove('hidden');
-      container.classList.remove('hidden');
-
-      let reviewHTML = '';
-      
-      questions.mc.forEach((q, i) => {
-        const userAnswerKey = answers.mc[i];
-        const correctAnswerKey = q.answer;
-        const isCorrect = userAnswerKey === correctAnswerKey;
-        reviewHTML += `
-          <div class="border-2 ${isCorrect ? 'border-green-300 bg-green-50' : 'border-red-300 bg-red-50'} rounded-lg p-3">
-            <div class="flex items-start justify-between mb-2">
-              <p class="font-bold text-gray-800 flex-1"><span class="badge ${isCorrect ? 'badge-success' : 'badge-danger'}">ข้อที่ ${i + 1}</span> ${q.question}</p>
-              <span class="text-xs font-bold ${isCorrect ? 'text-green-600' : 'text-red-600'}">
-                ${isCorrect ? '<i class="fas fa-check-circle"></i> ถูกต้อง' : '<i class="fas fa-times-circle"></i> ผิด'}
-              </span>
-            </div>
-            <div class="space-y-1 text-sm pl-4">
-              ${q.choices.map(c => `
-                <div class="${c.key === correctAnswerKey ? 'font-bold text-green-700 bg-green-100 -ml-4 pl-4 py-1 rounded' : c.key === userAnswerKey ? 'font-bold text-red-700 bg-red-100 -ml-4 pl-4 py-1 rounded' : 'text-gray-700'}">
-                  <span class="font-semibold">${c.key}.</span> ${c.text}
-                  ${c.key === correctAnswerKey ? '<i class="fas fa-check-circle ml-2 text-green-600"></i>' : ''}
-                  ${c.key === userAnswerKey && c.key !== correctAnswerKey ? '<i class="fas fa-times-circle ml-2 text-red-600"></i>' : ''}
-                </div>
-              `).join('')}
-            </div>
-            ${userAnswerKey ? `<p class="text-xs text-gray-600 mt-2">คำตอบของคุณ: <strong>${userAnswerKey}</strong></p>` : '<p class="text-xs text-gray-500 mt-2"><em>ไม่ได้ตอบ</em></p>'}
-          </div>
-        `;
-      });
-
-      questions.essay.forEach((q, i) => {
-        const userAnswer = answers.essay[i];
-        reviewHTML += `
-          <div class="border-2 border-orange-300 bg-orange-50 rounded-lg p-3">
-            <p class="font-bold text-gray-800 mb-2"><span class="badge badge-warning">ข้อที่ ${questions.mc.length + i + 1}</span> ${q.question}</p>
-            <div class="bg-white rounded border-2 border-orange-200 p-2 text-sm text-gray-700 min-h-12 font-sarabun">
-              ${userAnswer ? userAnswer : '<em class="text-gray-400">ไม่ได้ตอบ</em>'}
-            </div>
-            <p class="text-xs text-orange-600 mt-2"><i class="fas fa-clipboard-list mr-1"></i>รอตรวจจากครู (คะแนนเต็ม: ${q.maxScore})</p>
-          </div>
-        `;
-      });
-
-      contentDiv.innerHTML = reviewHTML;
-      container.classList.remove('hidden');
-    }
-
-    function toggleAnswerReview() {
-      const contentDiv = document.getElementById('answer-review-content');
-      const icon = document.getElementById('review-toggle-icon');
-      
-      contentDiv.classList.toggle('hidden');
-      icon.classList.toggle('fa-eye');
-      icon.classList.toggle('fa-eye-slash');
     }
 
     // Call initApp on load
