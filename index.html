@@ -500,7 +500,7 @@
          <!-- Multiple Choice Section -->
          <div class="border-2 border-gray-200 rounded-xl p-4">
           <h4 class="font-bold text-gray-800 mb-2"><i class="fas fa-list-ul mr-2 text-primary-500"></i>ตอนที่ 1: ข้อสอบปรนัย (รองรับ ไทย / English / 中文)</h4>
-          <p class="text-xs text-gray-500 mb-4">รองรับรูปแบบตัวเลือก: ก.-จ., A.-E., a.-e., 1.-5. หรือตัวเลือกจีน A、 B、 C、</p>
+          <p class="text-xs text-gray-500 mb-4">รองรับรูปแบบตัวเลือก: ก.-จ., A.-E. หรือ A、-E、</p>
           <div class="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4 text-sm text-blue-800">
            <p class="font-medium mb-1">📋 รูปแบบตัวอย่างที่รองรับ:</p>
            <pre class="text-xs overflow-auto font-sarabun">1.คำถาม (ไทย / English / 中文)
@@ -508,7 +508,7 @@
 ข.ตัวเลือก2 หรือ B.Choice2 หรือ B、选项2
 ค.ตัวเลือก3 หรือ C.Choice3 หรือ C、选项3
 ง.ตัวเลือก4 หรือ D.Choice4 หรือ D、选项4
-เฉลย: ก. (หรือ Answer: A. หรือ 答案: A)
+เฉลย: ก. (หรือ Answer: A. หรือ 答案: A、)
 คะแนน: 1 (หรือ Score: 1 หรือ 得分: 1)</pre>
           </div>
           <div class="mb-4">
@@ -534,7 +534,7 @@ A、曼谷
 B、清迈
 C、普吉岛
 D、芭提雅
-答案: A
+答案: A、
 得分: 1"></textarea>
           </div>
           <div class="flex gap-2">
@@ -559,7 +559,7 @@ D、芭提雅
           <h4 class="font-bold text-gray-800 mb-4"><i class="fas fa-pen-fancy mr-2 text-orange-600"></i>ตอนที่ 2: ข้อสอบอัตนัย</h4>
           <div class="bg-white border-2 border-orange-200 rounded-lg p-4 mb-4">
            <p class="font-bold text-orange-900 mb-3">📋 รูปแบบที่ถูกต้อง:</p>
-           <pre class="text-xs overflow-auto bg-orange-100 p-3 rounded border-l-4 border-orange-500 font-sarabun">1.คำถาม1
+           <pre class="text-xs overflow-auto bg-orange-100 p-3 rounded border-l-4 border-orange-500 font-sarabun">1.คำถาม1 (ไทย / English / 中文)
 คะแนน: 10 (หรือ Score: 10 / 得分: 10)
 
 2.คำถาม2
@@ -2661,13 +2661,19 @@ Score: 5"></textarea>
 
       if (q.type === 'mc') {
         let displayChoices = [...q.choices];
-        // If random choices option is enabled, shuffle choices on load
         if (currentExam.shuffle_choices) {
           displayChoices = shuffleArray([...q.choices]);
         }
         
-        // Sequential Display Labels ALWAYS "ก., ข., ค., ง., จ."
-        const displayLabels = ['ก', 'ข', 'ค', 'ง', 'จ'];
+        let displayLabels = ['ก.', 'ข.', 'ค.', 'ง.', 'จ.'];
+        if (q.choices && q.choices.length > 0) {
+          const firstKey = (q.choices[0].key || '').toString().trim();
+          if (/^[A-Ea-e]/.test(firstKey)) {
+            displayLabels = ['A.', 'B.', 'C.', 'D.', 'E.'];
+          } else if (/^[1-5]/.test(firstKey)) {
+            displayLabels = ['A、', 'B、', 'C、', 'D、', 'E、'];
+          }
+        }
 
         container.innerHTML = `
           <div class="fade-in">
@@ -2679,7 +2685,6 @@ Score: 5"></textarea>
             <div class="space-y-3">
               ${displayChoices.map((choice, idx) => {
                 const uiLabel = displayLabels[idx] || (idx + 1);
-                // Answer is recorded using permanent q.id and choice.key to maintain accurate mapping
                 const isChecked = studentAnswers.mc[q.id] === choice.key;
                 return `
                   <label class="flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition
@@ -2752,9 +2757,9 @@ Score: 5"></textarea>
       const loadingOverlay = document.createElement('div');
       loadingOverlay.className = 'fixed inset-0 bg-black/50 z-50 flex items-center justify-center';
       loadingOverlay.innerHTML = `
-        <div class="bg-white rounded-2xl p-8 text-center">
-          <i class="fas fa-circle-notch spin text-5xl text-primary-500 mb-4 block"></i>
-          <p class="text-gray-600 text-lg font-medium">กำลังส่งคำตอบ...</p>
+        <div class="text-center">
+          <i class="fas fa-circle-notch spin text-5xl text-primary-500 mb-4"></i>
+          <p class="text-red-600 text-lg font-bold">โดนเขาหลอกยังไม่พอ...ยังโดนข้อสอบหลอกอีก</p>
         </div>
       `;
       document.body.appendChild(loadingOverlay);
