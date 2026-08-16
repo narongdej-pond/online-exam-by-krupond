@@ -2665,13 +2665,13 @@ Score: 5"></textarea>
           displayChoices = shuffleArray([...q.choices]);
         }
         
-        let displayLabels = ['ก.', 'ข.', 'ค.', 'ง.', 'จ.'];
+        let displayLabels = ['ก', 'ข', 'ค', 'ง', 'จ'];
         if (q.choices && q.choices.length > 0) {
           const firstKey = (q.choices[0].key || '').toString().trim();
           if (/^[A-Ea-e]/.test(firstKey)) {
-            displayLabels = ['A.', 'B.', 'C.', 'D.', 'E.'];
+            displayLabels = ['A', 'B', 'C', 'D', 'E'];
           } else if (/^[1-5]/.test(firstKey)) {
-            displayLabels = ['A、', 'B、', 'C、', 'D、', 'E、'];
+            displayLabels = ['1', '2', '3', '4', '5'];
           }
         }
 
@@ -2755,7 +2755,7 @@ Score: 5"></textarea>
       if (examTimer) clearInterval(examTimer);
 
       const loadingOverlay = document.createElement('div');
-      loadingOverlay.className = 'fixed inset-0 bg-black/50 z-50 flex items-center justify-center';
+      loadingOverlay.className = 'fixed inset-0 bg-white/100 z-50 flex items-center justify-center';
       loadingOverlay.innerHTML = `
         <div class="text-center">
           <i class="fas fa-circle-notch spin text-5xl text-primary-500 mb-4"></i>
