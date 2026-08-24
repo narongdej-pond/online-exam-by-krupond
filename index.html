@@ -2613,6 +2613,7 @@ Score: 5"></textarea>
 
       setTimeout(async () => {
         const subjectId = document.getElementById('subject-select').value;
+        const studentIdVal = document.getElementById('student-id').value.trim();
         const exam = appData.find(ex => ex.id === subjectId && ex.type === 'exam');
         
         if (!exam) {
@@ -2621,22 +2622,55 @@ Score: 5"></textarea>
           return;
         }
 
+        // 1. ตรวจสอบว่าเคยส่งข้อสอบวิชานี้ไปแล้วหรือไม่
+        const existingResult = appData.find(r => r.type === 'result' && String(r.student_id) === String(studentIdVal) && String(r.subject_id) === String(subjectId));
+        if (existingResult) {
+          setButtonLoading(btn, false);
+          showAlert('error', 'เข้าสอบไม่ได้', 'คุณได้ส่งข้อสอบวิชานี้เรียบร้อยแล้ว ไม่สามารถเข้าสอบซ้ำได้');
+          return;
+        }
+
+        // 2. ตรวจสอบการเข้าสอบซ้ำจากอุปกรณ์อื่น (Device Locking / Single Device Limit)
+        const sessionKey = `exam_session_${studentIdVal}_${subjectId}`;
+        let localSessionToken = localStorage.getItem(sessionKey);
+
+        const existingStudent = appData.find(s => s.type === 'student' && String(s.student_id) === String(studentIdVal) && String(s.subject_id) === String(subjectId));
+
+        if (existingStudent) {
+          // หากพบว่ามีประวัติเข้าสอบอยู่แล้ว แต่ session token ในเครื่องไม่ตรงกัน -> ปฏิเสธการเข้าสอบจากอุปกรณ์อื่น
+          if (!localSessionToken || localSessionToken !== existingStudent.session_token) {
+            setButtonLoading(btn, false);
+            showAlert('error', 'จำกัด 1 อุปกรณ์', 'รหัสนักเรียนนี้กำลังทำข้อสอบบนอุปกรณ์อื่นอยู่แล้ว (อนุญาตให้เข้าสอบได้เพียง 1 อุปกรณ์เท่านั้น)');
+            return;
+          }
+        } else {
+          // ถ้ายังไม่เคยเข้าสอบ ให้สร้าง session token ใหม่สำหรับอุปกรณ์นี้
+          localSessionToken = 'sess_' + generateId();
+          localStorage.setItem(sessionKey, localSessionToken);
+        }
+
         currentExam = exam;
         const studentInfo = {
-          id: generateId(),
+          id: existingStudent ? existingStudent.id : generateId(),
           type: 'student',
           member_id: currentExam.member_id,
-          student_id: document.getElementById('student-id').value,
+          student_id: studentIdVal,
           fullname: document.getElementById('student-name').value,
           class_name: document.getElementById('student-class').value,
           room: document.getElementById('student-room').value,
           number: document.getElementById('student-number').value,
           subject_id: exam.id,
           subject_name: exam.subject_name,
-          started_at: new Date().toISOString()
+          session_token: localSessionToken,
+          started_at: existingStudent ? existingStudent.started_at : new Date().toISOString()
         };
 
-        const result = await window.dataSdk.create(studentInfo);
+        let result;
+        if (existingStudent) {
+          result = { isOk: true, data: existingStudent };
+        } else {
+          result = await window.dataSdk.create(studentInfo);
+        }
         setButtonLoading(btn, false);
         
         if (result.isOk) {
