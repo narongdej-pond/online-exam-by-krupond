@@ -1074,7 +1074,7 @@ Score: 5"></textarea>
        <button onclick="hideModal('broadcast-message-modal')" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times"></i></button>
       </div>
       <form id="broadcast-message-form" class="space-y-4">
-       <div class="bg-blue-50/60 p-3 rounded-xl border border-blue-200 text-sm">
+       <div class="bg-gray-50/60 p-3 rounded-xl border border-blue-200 text-sm">
         <p class="text-gray-600 text-xs">รายวิชาที่ส่ง:</p>
         <p id="broadcast-subject-name-label" class="font-bold text-primary-950 text-base"></p>
        </div>
@@ -1373,6 +1373,7 @@ Score: 5"></textarea>
     let clientLocalIp = 'กำลังตรวจจับ...';
     let watermarkTimer = null;
     let isStudentSyncing = false;
+    let isStudentDisqualified = false;
 
     function parseAndFormatThaiDateTime(rawDate) {
       if (!rawDate) {
@@ -2264,7 +2265,7 @@ Score: 5"></textarea>
             created_at: new Date().toISOString()
           });
 
-          logActivity(`ผู้คุมสอบสั่งตัดสิทธิ์การสอบ: ${studentId} (${fullname})`);
+          logActivity(`ผู้คุมสอบสั่งตัดสิทธิ์การสอบ ${studentId} (${fullname})`);
           renderProctoringLive();
           showAlert('success', 'ตัดสิทธิ์เรียบร้อย', `ตัดสิทธิ์การสอบของ "${fullname}" เรียบร้อยแล้ว`);
         }
@@ -2324,6 +2325,8 @@ Score: 5"></textarea>
         const studentResult = appData.find(r => r.type === 'result' && String(r.student_id).trim() === String(studentId).trim() && String(r.subject_id).trim() === String(subjectId).trim());
 
         if ((studentRecord && studentRecord.is_disqualified) || (studentResult && (studentResult.cheating_detected || studentResult.warnings >= 4))) {
+          isStudentDisqualified = true;
+          warningCount = 4;
           clearInterval(studentSyncInterval);
           showStudentDisqualificationPopup('ผู้คุมสอบได้สั่งตัดสิทธิ์การสอบของคุณทันที เนื่องจากตรวจพบการกระทำทุจริตหรือไม่ปฏิบัติตามกฎระเบียบการสอบ');
           return;
@@ -2339,6 +2342,8 @@ Score: 5"></textarea>
           if (!seenMessageIds.has(msg.id)) {
             seenMessageIds.add(msg.id);
             if (msg.action === 'DISQUALIFY') {
+              isStudentDisqualified = true;
+              warningCount = 4;
               clearInterval(studentSyncInterval);
               showStudentDisqualificationPopup(msg.message);
               return;
@@ -2372,7 +2377,7 @@ Score: 5"></textarea>
 
       if (isBroadcast) {
         // ธีมประกาศทุกคน: น้ำเงิน Gradient เดียวกับระบบ
-        if (headerBanner) headerBanner.className = 'gradient-bg text-white px-6 py-4 flex items-center justify-between shadow-md';
+        if (headerBanner) headerBanner.className = 'gradient-bg text-black px-6 py-4 flex items-center justify-between shadow-md';
         if (iconWrapper) iconWrapper.className = 'w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center text-white text-xl shadow-inner shrink-0';
         if (icon) icon.className = 'fas fa-bullhorn text-xl animate-bounce';
         if (title) title.textContent = 'ประกาศแจ้งเตือนทุกคน';
@@ -2384,13 +2389,13 @@ Score: 5"></textarea>
         if (confirmBtn) confirmBtn.className = 'w-full gradient-bg text-white font-bold py-3.5 px-6 rounded-xl btn-hover shadow-lg flex items-center justify-center gap-2 text-base transition';
       } else {
         // ธีมเตือนรายบุคคล: สีเหลืองอำพัน-ส้ม เรียบหรูสไตล์การ์ดระบบ
-        if (headerBanner) headerBanner.className = 'bg-gradient-to-r from-amber-600 via-orange-500 to-amber-600 text-white px-6 py-4 flex items-center justify-between shadow-md';
+        if (headerBanner) headerBanner.className = 'bg-gradient-to-r from-amber-600 via-orange-500 to-amber-600 text-black px-6 py-4 flex items-center justify-between shadow-md';
         if (iconWrapper) iconWrapper.className = 'w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center text-white text-xl shadow-inner shrink-0';
         if (icon) icon.className = 'fas fa-triangle-exclamation text-xl animate-pulse';
         if (title) title.textContent = 'คำเตือนจากผู้คุมสอบ';
         if (badge) {
           badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur text-white';
-          badge.innerHTML = '<i class="fas fa-user-lock mr-1"></i> เตือนเฉพาะคุณ';
+          badge.innerHTML = '<i class="fas fa-user-lock mr-1"></i> คำเตือนเฉพาะคุณ';
         }
         if (contentBox) contentBox.className = 'bg-amber-50/80 border-2 border-amber-200 rounded-xl p-4 my-2 text-amber-950 font-semibold text-base whitespace-pre-wrap leading-relaxed';
         if (confirmBtn) confirmBtn.className = 'w-full bg-gradient-to-r from-amber-600 to-orange-500 hover:from-amber-700 hover:to-orange-600 text-white font-bold py-3.5 px-6 rounded-xl btn-hover shadow-lg flex items-center justify-center gap-2 text-base transition';
@@ -2403,6 +2408,8 @@ Score: 5"></textarea>
     }
 
     function showStudentDisqualificationPopup(reason) {
+      isStudentDisqualified = true;
+      warningCount = 4;
       const reasonEl = document.getElementById('student-disqualified-reason');
       if (reasonEl && reason) reasonEl.textContent = reason;
       unblurExamView();
@@ -4526,6 +4533,9 @@ Score: 5"></textarea>
 
     async function submitExam() {
       if (examTimer) clearInterval(examTimer);
+      if (studentSyncInterval) clearInterval(studentSyncInterval);
+
+      const isDisqualifiedNow = isStudentDisqualified || warningCount >= 4;
 
       const loadingOverlay = document.createElement('div');
       loadingOverlay.className = 'fixed inset-0 bg-white/100 z-50 flex items-center justify-center';
@@ -4540,12 +4550,14 @@ Score: 5"></textarea>
       const questions = currentExam.parsedQuestions;
       let mcScore = 0;
 
-      questions.mc.forEach((q) => {
-        const studentAns = studentAnswers.mc[q.id];
-        if (studentAns === q.answer) {
-          mcScore += (q.score || currentExam.score_per_question || 1);
-        }
-      });
+      if (!isDisqualifiedNow) {
+        questions.mc.forEach((q) => {
+          const studentAns = studentAnswers.mc[q.id];
+          if (studentAns === q.answer) {
+            mcScore += (q.score || currentExam.score_per_question || 1);
+          }
+        });
+      }
 
       const hasEssay = questions.essay.length > 0;
       const passThreshold = currentExam.passing_score !== undefined ? currentExam.passing_score : (currentExam.total_score / 2);
@@ -4562,33 +4574,33 @@ Score: 5"></textarea>
         subject_id: currentExam.id,
         subject_name: currentExam.subject_name,
         answers: JSON.stringify(studentAnswers),
-        mc_score: mcScore,
-        score: mcScore,
+        mc_score: isDisqualifiedNow ? 0 : mcScore,
+        score: isDisqualifiedNow ? 0 : mcScore,
         total_score: currentExam.total_score,
         passing_score: passThreshold,
         submitted_at: new Date().toISOString(),
-        graded: !hasEssay,
-        warnings: warningCount,
-        cheating_detected: warningCount >= 4
+        graded: isDisqualifiedNow ? true : !hasEssay,
+        warnings: isDisqualifiedNow ? Math.max(warningCount, 4) : warningCount,
+        cheating_detected: isDisqualifiedNow
       };
 
       const result = await window.dataSdk.create(examResult);
       document.body.removeChild(loadingOverlay);
 
       if (result.isOk) {
-        logActivity(`นักเรียน ${examResult.student_id} (${examResult.fullname}) ส่งข้อสอบวิชา ${examResult.subject_name} (คะแนนปรนัย: ${mcScore}/${examResult.total_score})`);
+        logActivity(`นักเรียน ${examResult.student_id} (${examResult.fullname}) ส่งข้อสอบวิชา ${examResult.subject_name} (${isDisqualifiedNow ? 'ถูกตัดสิทธิ์' : `คะแนนปรนัย: ${mcScore}/${examResult.total_score}`})`);
         const resultIcon = document.getElementById('result-icon');
         const resultTitle = document.getElementById('result-title');
         const resultMessage = document.getElementById('result-message');
 
-        const isPassed = examResult.score >= passThreshold;
+        const isPassed = !isDisqualifiedNow && examResult.score >= passThreshold;
 
-        if (warningCount >= 4) {
+        if (isDisqualifiedNow) {
           resultIcon.className = 'w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6';
           resultIcon.innerHTML = '<i class="fas fa-ban text-5xl text-red-500"></i>';
-          resultTitle.textContent = 'ยุติการสอบ';
+          resultTitle.textContent = 'ยุติการสอบ / ถูกตัดสิทธิ์';
           resultTitle.className = 'text-3xl font-bold mb-2 text-red-600';
-          resultMessage.textContent = 'ตรวจพบการทุจริตระหว่างการสอบ';
+          resultMessage.textContent = 'ตรวจพบการทุจริตหรือถูกสั่งตัดสิทธิ์การสอบตามระเบียบห้องสอบ';
         } else if (isPassed) {
           resultIcon.className = 'w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6';
           resultIcon.innerHTML = '<i class="fas fa-trophy text-5xl text-green-500"></i>';
@@ -4603,7 +4615,7 @@ Score: 5"></textarea>
           resultMessage.textContent = `เกณฑ์ผ่านคือ ${passThreshold} คะแนน พยายามต่อไปนะ!`;
         }
 
-        document.getElementById('result-score').textContent = warningCount >= 4 ? '-' : (hasEssay ? `${mcScore} (รอตรวจอัตนัย)` : examResult.score);
+        document.getElementById('result-score').textContent = isDisqualifiedNow ? '0 (ถูกตัดสิทธิ์)' : (hasEssay ? `${mcScore} (รอตรวจอัตนัย)` : examResult.score);
         document.getElementById('result-total').textContent = examResult.total_score;
         document.getElementById('result-info').innerHTML = `
           <p><strong>รหัสนักเรียน:</strong> ${examResult.student_id}</p>
@@ -4612,13 +4624,12 @@ Score: 5"></textarea>
           <p><strong>รายวิชา:</strong> ${examResult.subject_name}</p>
           <p><strong>เกณฑ์ผ่าน:</strong> ${passThreshold} คะแนน</p>
           <p><strong>เวลาส่ง:</strong> ${new Date(examResult.submitted_at).toLocaleString('th-TH')}</p>
-          ${warningCount >= 4 ? '<p class="text-red-500"><strong>⚠️ สถานะ:</strong> ตรวจพบการทุจริต ไม่มีการให้คะแนน</p>' : ''}
-          ${hasEssay && warningCount < 4 ? '<p class="text-orange-500"><strong>หมายเหตุ:</strong> รอตรวจข้อสอบอัตนัยเพิ่มเติม</p>' : ''}
+          ${isDisqualifiedNow ? '<p class="text-red-500 font-bold"><strong>⚠️ สถานะ:</strong> ตรวจพบการทุจริต/ถูกตัดสิทธิ์การสอบ (ไม่ได้รับคะแนนและไม่อนุญาตให้ดูเฉลย)</p>' : ''}
+          ${hasEssay && !isDisqualifiedNow ? '<p class="text-orange-500"><strong>หมายเหตุ:</strong> รอตรวจข้อสอบอัตนัยเพิ่มเติม</p>' : ''}
         `;
 
-        if (currentExam.show_answer && warningCount < 4) {
-          displayAnswerReview(examResult, questions);
-        }
+        // ตรวจสอบการแสดงเฉลย: หากโดนตัดสิทธิ์หรือทุจริต จะต้องไม่สามารถดูเฉลยได้เด็ดขาด แม้ครูจะเปิดเฉลยไว้ก็ตาม
+        displayAnswerReview(examResult, questions, isDisqualifiedNow);
 
         showPage('result');
       }
@@ -4629,6 +4640,7 @@ Score: 5"></textarea>
       if (studentSyncInterval) clearInterval(studentSyncInterval);
       if (watermarkTimer) clearInterval(watermarkTimer);
       isStudentSyncing = false;
+      isStudentDisqualified = false;
       currentExam = null;
       currentQuestionIndex = 0;
       examTimeLeft = 0;
@@ -4811,6 +4823,7 @@ Score: 5"></textarea>
       }
 
       if (warningCount >= 4) {
+        isStudentDisqualified = true;
         unblurExamView();
         hideModal('warning-modal');
         showAlert('error', 'ยุติการสอบทันที', 'ตรวจพบการหลุดโฟกัสหรือทุจริตครบ 4 ครั้ง ระบบทำการส่งข้อสอบและยุติการสอบ');
@@ -4828,36 +4841,51 @@ Score: 5"></textarea>
       showModal('warning-modal');
     }
 
-    function displayAnswerReview(examResult, questions) {
+    function displayAnswerReview(examResult, questions, isDisqualifiedParam = false) {
       const container = document.getElementById('answer-review-container');
       const blockedDiv = document.getElementById('answer-review-blocked');
       const allowedDiv = document.getElementById('answer-review-allowed');
       const contentDiv = document.getElementById('answer-review-content');
+      
+      const isCheatingOrDisqualified = isDisqualifiedParam || 
+                                       isStudentDisqualified || 
+                                       Boolean(examResult.cheating_detected) || 
+                                       Number(examResult.warnings) >= 4;
+
+      // กรณีตรวจพบการทุจริต หรือถูกตัดสิทธิ์การสอบ: บล็อกการดูเฉลยทันทีเด็ดขาด แม้ครูจะเปิดเฉลยไว้ก็ตาม
+      if (isCheatingOrDisqualified) {
+        if (contentDiv) contentDiv.innerHTML = ''; // ล้างข้อสอบและเฉลยออกจาก DOM ป้องกันการ Inspect
+        if (allowedDiv) allowedDiv.classList.add('hidden');
+        if (blockedDiv) {
+          blockedDiv.classList.remove('hidden');
+          blockedDiv.innerHTML = `
+            <i class="fas fa-ban text-4xl text-red-500 mb-3 block animate-pulse"></i>
+            <p class="text-red-700 font-bold text-lg">ระงับสิทธิ์การดูเฉลย</p>
+            <p class="text-red-600 text-sm mt-2 font-medium">คุณถูกตัดสิทธิ์การสอบหรือตรวจพบการกระทำทุจริต ระบบจึงไม่อนุญาตให้ดูเฉลยคำตอบทุกกรณี</p>
+          `;
+        }
+        if (container) container.classList.remove('hidden');
+        return;
+      }
+
+      // ตรวจสอบว่าครูเปิดเฉลยวิชานี้ไว้หรือไม่
+      const exam = appData.find(d => (d.id === examResult.subject_id || d.__backendId === examResult.subject_id) && d.type === 'exam') || currentExam;
+      
+      if (!exam || !exam.show_answer) {
+        if (container) container.classList.add('hidden');
+        return;
+      }
+
+      if (blockedDiv) blockedDiv.classList.add('hidden');
+      if (allowedDiv) allowedDiv.classList.remove('hidden');
+      if (container) container.classList.remove('hidden');
+
       const rawAnswers = (typeof examResult.answers === 'string') ? JSON.parse(examResult.answers) : examResult.answers;
       
       const answers = {
         mc: rawAnswers.mc || {},
         essay: rawAnswers.essay || {}
       };
-
-      const isCheating = examResult.warnings >= 4;
-      if (isCheating) {
-        blockedDiv.classList.remove('hidden');
-        allowedDiv.classList.add('hidden');
-        container.classList.remove('hidden');
-        return;
-      }
-
-      const exam = appData.find(d => d.__backendId && d.id === examResult.subject_id && d.type === 'exam');
-      
-      if (!exam || !exam.show_answer) {
-        container.classList.add('hidden');
-        return;
-      }
-
-      blockedDiv.classList.add('hidden');
-      allowedDiv.classList.remove('hidden');
-      container.classList.remove('hidden');
 
       let reviewHTML = '';
       
@@ -4903,8 +4931,7 @@ Score: 5"></textarea>
         `;
       });
 
-      contentDiv.innerHTML = reviewHTML;
-      container.classList.remove('hidden');
+      if (contentDiv) contentDiv.innerHTML = reviewHTML;
     }
 
     function toggleAnswerReview() {
