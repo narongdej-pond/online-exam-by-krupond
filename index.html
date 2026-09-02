@@ -613,7 +613,7 @@
           <p id="proctor-stat-submitted" class="text-2xl font-bold text-emerald-900 mt-1">0</p>
          </div>
          <div class="bg-rose-50/70 border border-rose-200 rounded-xl p-4">
-          <p class="text-xs font-bold text-rose-700 uppercase">ตรวจพบทุจริต/ตัดสิทธิ์</p>
+          <p class="text-xs font-bold text-rose-700 uppercase">ตรวจพบทุจริต/ถูกตัดสิทธิ์</p>
           <p id="proctor-stat-disqualified" class="text-2xl font-bold text-rose-900 mt-1">0</p>
          </div>
         </div>
@@ -1076,7 +1076,7 @@ Score: 5"></textarea>
       <form id="broadcast-message-form" class="space-y-4">
        <div class="bg-gray-50/60 p-3 rounded-xl border border-blue-200 text-sm">
         <p class="text-gray-600 text-xs">รายวิชาที่ส่ง:</p>
-        <p id="broadcast-subject-name-label" class="font-bold text-primary-950 text-base"></p>
+        <p id="broadcast-subject-name-label" class="font-bold text-gray-950 text-base"></p>
        </div>
        <div>
         <label class="block text-gray-700 font-medium mb-1 text-sm">ข้อความประกาศแจ้งเตือนทุกคน</label>
@@ -2131,7 +2131,7 @@ Score: 5"></textarea>
 
           let statusBadge = '<span class="badge badge-info"><i class="fas fa-spinner spin mr-1"></i> กำลังสอบ</span>';
           if (isDisqualified) {
-            statusBadge = '<span class="badge badge-danger"><i class="fas fa-ban mr-1"></i> ถูกตัดสิทธิ์/ทุจริต</span>';
+            statusBadge = '<span class="badge badge-danger"><i class="fas fa-ban mr-1"></i> ทุจริต/ถูกตัดสิทธิ์</span>';
           } else if (isSubmitted) {
             statusBadge = `<span class="badge badge-success"><i class="fas fa-check mr-1"></i> ส่งแล้ว (${result.score}/${result.total_score})</span>`;
           } else if (warnings >= 3) {
@@ -2382,7 +2382,7 @@ Score: 5"></textarea>
         if (icon) icon.className = 'fas fa-bullhorn text-xl animate-bounce';
         if (title) title.textContent = 'ประกาศแจ้งเตือนทุกคน';
         if (badge) {
-          badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur text-white';
+          badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 backdrop-blur text-white';
           badge.innerHTML = '<i class="fas fa-users mr-1"></i> แจ้งเตือนทุกคน';
         }
         if (contentBox) contentBox.className = 'bg-primary-50/70 border-2 border-primary-200 rounded-xl p-4 my-2 text-slate-800 font-semibold text-base whitespace-pre-wrap leading-relaxed';
@@ -2394,7 +2394,7 @@ Score: 5"></textarea>
         if (icon) icon.className = 'fas fa-triangle-exclamation text-xl animate-pulse';
         if (title) title.textContent = 'คำเตือนจากผู้คุมสอบ';
         if (badge) {
-          badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur text-white';
+          badge.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 backdrop-blur text-white';
           badge.innerHTML = '<i class="fas fa-user-lock mr-1"></i> คำเตือนเฉพาะคุณ';
         }
         if (contentBox) contentBox.className = 'bg-amber-50/80 border-2 border-amber-200 rounded-xl p-4 my-2 text-amber-950 font-semibold text-base whitespace-pre-wrap leading-relaxed';
@@ -4598,9 +4598,9 @@ Score: 5"></textarea>
         if (isDisqualifiedNow) {
           resultIcon.className = 'w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6';
           resultIcon.innerHTML = '<i class="fas fa-ban text-5xl text-red-500"></i>';
-          resultTitle.textContent = 'ยุติการสอบ / ถูกตัดสิทธิ์';
+          resultTitle.textContent = 'ทุจริต/ถูกตัดสิทธิ์';
           resultTitle.className = 'text-3xl font-bold mb-2 text-red-600';
-          resultMessage.textContent = 'ตรวจพบการทุจริตหรือถูกสั่งตัดสิทธิ์การสอบตามระเบียบห้องสอบ';
+          resultMessage.textContent = 'ตรวจพบการทุจริตหรือถูกตัดสิทธิ์การสอบตามระเบียบการสอบ';
         } else if (isPassed) {
           resultIcon.className = 'w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6';
           resultIcon.innerHTML = '<i class="fas fa-trophy text-5xl text-green-500"></i>';
@@ -4615,7 +4615,7 @@ Score: 5"></textarea>
           resultMessage.textContent = `เกณฑ์ผ่านคือ ${passThreshold} คะแนน พยายามต่อไปนะ!`;
         }
 
-        document.getElementById('result-score').textContent = isDisqualifiedNow ? '0 (ถูกตัดสิทธิ์)' : (hasEssay ? `${mcScore} (รอตรวจอัตนัย)` : examResult.score);
+        document.getElementById('result-score').textContent = isDisqualifiedNow ? '0 (ทุจริต/ถูกตัดสิทธิ์)' : (hasEssay ? `${mcScore} (รอตรวจอัตนัย)` : examResult.score);
         document.getElementById('result-total').textContent = examResult.total_score;
         document.getElementById('result-info').innerHTML = `
           <p><strong>รหัสนักเรียน:</strong> ${examResult.student_id}</p>
