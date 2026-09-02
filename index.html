@@ -1375,6 +1375,7 @@ Score: 5"></textarea>
     let clientPublicIp = 'กำลังตรวจจับ...';
     let clientLocalIp = 'กำลังตรวจจับ...';
     let watermarkTimer = null;
+    let isStudentSyncing = false;
 
     function parseAndFormatThaiDateTime(rawDate) {
       if (!rawDate) {
@@ -2294,15 +2295,21 @@ Score: 5"></textarea>
 
     function startStudentProctorSync(studentId, subjectId) {
       if (studentSyncInterval) clearInterval(studentSyncInterval);
+      isStudentSyncing = false;
       
       // บันทึกข้อความที่มีอยู่เดิมไว้ก่อนเข้าสอบ เพื่อไม่ให้แจ้งเตือนข้อความเก่าซ้ำ
       seenMessageIds = new Set(appData.filter(d => d.type === 'proctor_msg').map(m => m.id));
 
+      // ซิงก์ข้อมูลสดทุก 1 วินาที (1,000 ms) แบบเรียลไทม์
       studentSyncInterval = setInterval(async () => {
         if (document.getElementById('page-exam').classList.contains('hidden')) {
           clearInterval(studentSyncInterval);
           return;
         }
+
+        // ป้องกันการส่งคำขอซ้ำซ้อนหากรอบก่อนหน้ากำลังดาวน์โหลดข้อมูลอยู่
+        if (isStudentSyncing) return;
+        isStudentSyncing = true;
 
         try {
           const freshData = await window.dataSdk._callAPI('getData');
@@ -2311,6 +2318,8 @@ Score: 5"></textarea>
           }
         } catch (e) {
           // ละเว้นกรณีมีปัญหาเครือข่ายชั่วคราว
+        } finally {
+          isStudentSyncing = false;
         }
 
         // 1. ตรวจสอบสถานะการตัดสิทธิ์สอบจากข้อมูลผู้เรียนหรือผลสอบ
@@ -2343,7 +2352,7 @@ Score: 5"></textarea>
             }
           }
         }
-      }, 2500);
+      }, 1000);
     }
 
     function displayStudentProctorAlert(message, isBroadcast, senderName, createdAt) {
@@ -4622,6 +4631,7 @@ Score: 5"></textarea>
       if (examTimer) clearInterval(examTimer);
       if (studentSyncInterval) clearInterval(studentSyncInterval);
       if (watermarkTimer) clearInterval(watermarkTimer);
+      isStudentSyncing = false;
       currentExam = null;
       currentQuestionIndex = 0;
       examTimeLeft = 0;
