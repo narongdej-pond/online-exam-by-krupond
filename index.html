@@ -595,9 +595,6 @@
           <button onclick="broadcastAlertToAllModal()" class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2.5 rounded-xl shadow-md transition flex items-center gap-2">
            <i class="fas fa-bullhorn"></i> แจ้งเตือนทุกคน
           </button>
-          <button onclick="refreshProctoringLive()" class="bg-primary-50 hover:bg-primary-100 text-primary-700 px-4 py-2.5 rounded-xl transition flex items-center gap-2 border border-primary-200">
-           <i class="fas fa-rotate mr-1"></i> อัปเดตสด
-          </button>
          </div>
         </div>
 
@@ -1095,7 +1092,7 @@ Score: 5"></textarea>
 
     <!-- Student Live Alert Modal (Broadcast & Individual alerts) -->
     <div id="student-proctor-alert-modal" class="hidden fixed inset-0 z-[70] flex items-center justify-center modal-overlay">
-     <div id="student-proctor-alert-modal-card" class="bg-white rounded-2xl card-shadow p-6 w-full max-w-md mx-4 fade-in text-center border-t-8 border-primary-500 shadow-2xl">
+     <div id="student-proctor-alert-modal-card" class="bg-white rounded-2xl card-shadow p-6 w-full max-w-md mx-4 fade-in text-center shadow-2xl">
       <div id="student-alert-icon-container" class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
        <i id="student-alert-icon" class="fas fa-bullhorn text-3xl text-primary-600"></i>
       </div>
@@ -1112,7 +1109,7 @@ Score: 5"></textarea>
 
     <!-- Student Disqualified Modal -->
     <div id="student-disqualified-modal" class="hidden fixed inset-0 z-[75] flex items-center justify-center modal-overlay">
-     <div class="bg-white rounded-2xl card-shadow p-6 md:p-8 w-full max-w-md mx-4 fade-in text-center border-t-8 border-red-600 shadow-2xl animate-pulse">
+     <div class="bg-white rounded-2xl card-shadow p-6 md:p-8 w-full max-w-md mx-4 fade-in text-center shadow-2xl">
       <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4 border-2 border-red-300">
        <i class="fas fa-ban text-4xl text-red-600"></i>
       </div>
@@ -2300,7 +2297,7 @@ Score: 5"></textarea>
       // บันทึกข้อความที่มีอยู่เดิมไว้ก่อนเข้าสอบ เพื่อไม่ให้แจ้งเตือนข้อความเก่าซ้ำ
       seenMessageIds = new Set(appData.filter(d => d.type === 'proctor_msg').map(m => m.id));
 
-      // ซิงก์ข้อมูลสดทุก 1 วินาที (1,000 ms) แบบเรียลไทม์
+      // ซิงก์ข้อมูลสดทุก 0.5 วินาที (500 ms) แบบ Ultra Real-Time
       studentSyncInterval = setInterval(async () => {
         if (document.getElementById('page-exam').classList.contains('hidden')) {
           clearInterval(studentSyncInterval);
@@ -2352,7 +2349,7 @@ Score: 5"></textarea>
             }
           }
         }
-      }, 1000);
+      }, 500);
     }
 
     function displayStudentProctorAlert(message, isBroadcast, senderName, createdAt) {
