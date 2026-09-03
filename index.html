@@ -1355,6 +1355,81 @@ Score: 5"></textarea>
     let appData = [];
     let currentUser = null;
     let currentExam = null;
+    let isInAppBrowserDetected = false;
+
+    function detectInAppBrowser() {
+      const ua = navigator.userAgent || navigator.vendor || window.opera || '';
+
+      // LINE Auto-breakout trick: if opened inside LINE, appending openExternalBrowser=1 breaks out on both iOS/Android
+      if (/Line\//i.test(ua) && !window.location.search.includes('openExternalBrowser=1')) {
+        const sep = window.location.href.includes('?') ? '&' : '?';
+        window.location.replace(window.location.href + sep + 'openExternalBrowser=1');
+        return true;
+      }
+
+      // Check common In-App Browser User-Agent patterns
+      const inAppPatterns = [
+        /Line\//i,
+        /FBAN/i,
+        /FBAV/i,
+        /FB_IAB/i,
+        /FB4A/i,
+        /Instagram/i,
+        /Twitter/i,
+        /musical_ly/i,
+        /TikTok/i,
+        /ByteLocale/i,
+        /BytedanceWebview/i,
+        /MicroMessenger/i,
+        /Snapchat/i,
+        /Pinterest/i,
+        /LinkedInApp/i,
+        /KAKAOTALK/i,
+        /Viber/i,
+        /wv\b/i,
+        /WebView/i
+      ];
+
+      const isIAB = inAppPatterns.some(pattern => pattern.test(ua));
+      if (isIAB) {
+        isInAppBrowserDetected = true;
+        const overlay = document.getElementById('in-app-browser-overlay');
+        if (overlay) {
+          overlay.classList.remove('hidden');
+        }
+        return true;
+      }
+      return false;
+    }
+
+    function openInChromeAndroid() {
+      const currentUrl = window.location.href.replace(/([?&])openExternalBrowser=1/g, '');
+      const cleanUrl = currentUrl.replace(/^https?:\/\//i, '');
+      // Android Intent for Google Chrome
+      const intentUrl = `intent://${cleanUrl}#Intent;scheme=https;package=com.android.chrome;end`;
+      window.location.href = intentUrl;
+    }
+
+    function copyExamPortalLink() {
+      const cleanUrl = window.location.href.replace(/([?&])openExternalBrowser=1/g, '');
+      const dummyInput = document.createElement('input');
+      dummyInput.setAttribute('value', cleanUrl);
+      document.body.appendChild(dummyInput);
+      dummyInput.select();
+      dummyInput.setSelectionRange(0, 99999);
+      try {
+        document.execCommand('copy');
+        const feedback = document.getElementById('copy-feedback');
+        if (feedback) {
+          feedback.classList.remove('hidden');
+          setTimeout(() => feedback.classList.add('hidden'), 5000);
+        }
+      } catch (err) {
+        prompt('กรุณาคัดลอกลิงก์ด้านล่างเพื่อนำไปเปิดใน Safari หรือ Google Chrome:', cleanUrl);
+      }
+      document.body.removeChild(dummyInput);
+    }
+
     let currentQuestionIndex = 0;
     let examTimer = null;
     let examTimeLeft = 0;
@@ -1735,6 +1810,7 @@ Score: 5"></textarea>
     };
 
     async function initApp() {
+      detectInAppBrowser();
       startLoading();
       fetchNetworkIPs();
       try {
